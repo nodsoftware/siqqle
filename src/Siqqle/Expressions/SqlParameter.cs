@@ -1,0 +1,82 @@
+﻿using System;
+using System.Data;
+
+namespace Siqqle.Expressions
+{
+    /// <summary>
+    /// Represents a named parameter in SQL.
+    /// </summary>
+    public class SqlParameter : SqlValue
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlParameter"/> class using
+        /// the specified parameter name and <paramref name="value"/>.
+        /// </summary>
+        /// <param name="parameterName">
+        /// The name of the parameter.
+        /// </param>
+        /// <param name="value">
+        /// The value of the parameter.
+        /// </param>
+        public SqlParameter(string parameterName, object value)
+        {
+            if (string.IsNullOrWhiteSpace(parameterName)) throw new ArgumentNullException(nameof(parameterName));
+            ParameterName = parameterName;
+            Value = value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlParameter"/> class using
+        /// the specified parameter name and <paramref name="value"/>.
+        /// </summary>
+        /// <param name="parameterName">
+        /// The name of the parameter.
+        /// </param>
+        /// <param name="dbType">
+        /// The <see cref="DbType"/> of the parameter.
+        /// </param>
+        /// <param name="value">
+        /// The value of the parameter.
+        /// </param>
+        public SqlParameter(string parameterName, DbType dbType, object value)
+        {
+            if (string.IsNullOrWhiteSpace(parameterName)) throw new ArgumentNullException(nameof(parameterName));
+            ParameterName = parameterName;
+            Value = value;
+            DbType = dbType;
+        }
+
+        /// <summary>
+        /// Returns the expression type of this expression.
+        /// </summary>
+        public sealed override SqlExpressionType ExpressionType
+            => SqlExpressionType.Parameter;
+
+        /// <summary>
+        /// Gets the parameter name name of this <see cref="SqlParameter"/>.
+        /// </summary>
+        public string ParameterName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the value of this <see cref="SqlParameter"/>.
+        /// </summary>
+        public object Value
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DbType"/> of this <see cref="SqlParameter"/>.
+        /// </summary>
+        public DbType? DbType
+        {
+            get;
+            private set;
+        }
+    }
+}

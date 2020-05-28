@@ -1,0 +1,66 @@
+﻿using Siqqle.Expressions.Visitors;
+using System.Collections.Generic;
+
+namespace Siqqle.Expressions
+{
+    /// <summary>
+    /// Represents a SQL INSERT INTO statement.
+    /// </summary>
+    public class SqlInsert : SqlStatement
+    {
+        private SqlValues _values;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlInsert"/> class.
+        /// </summary>
+        public SqlInsert()
+        {
+        }
+
+        /// <summary>
+        /// Gets the table into which this <see cref="SqlInsert" /> inserts rows.
+        /// </summary>
+        public SqlInto Into
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the collection of columns into which this <see cref="SqlInsert" /> inserts rows.
+        /// </summary>
+        public IEnumerable<SqlColumn> Columns
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the collection of values to be inserted by this <see cref="SqlInsert"/>.
+        /// </summary>
+        public SqlValues Values
+            => _values = (_values ?? new SqlValues());
+
+        /// <summary>
+        /// Returns the expression type of this expression.
+        /// </summary>
+        public override SqlExpressionType ExpressionType
+            => SqlExpressionType.Insert;
+
+        /// <summary>
+        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+        /// methods for this object.
+        /// </summary>
+        /// <param name="visitor">
+        /// The <see cref="ISqlVisitor" /> to visit this object with.
+        /// </param>
+        public override void Accept(ISqlVisitor visitor)
+        {
+            base.Accept(visitor);
+
+            Into?.Accept(visitor);
+            Columns?.Accept(visitor);
+            Values.Accept(visitor);
+        }
+    }
+}

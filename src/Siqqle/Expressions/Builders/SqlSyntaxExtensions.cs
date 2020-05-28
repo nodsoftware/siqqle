@@ -1,0 +1,21 @@
+﻿using Siqqle.Syntax;
+using System;
+
+namespace Siqqle.Expressions.Builders
+{
+    public static class SqlSyntaxExtensions
+    {
+        public static TStatement Go<TStatement>(this ISqlSyntaxEnd<TStatement> syntax)
+            where TStatement : SqlStatement
+        {
+            if (syntax == null) throw new ArgumentNullException(nameof(syntax));
+
+            if (syntax is IHasSqlStatementBuilder<ISqlStatementBuilder<TStatement>, TStatement> provider)
+            {
+                return provider.Builder.Build();
+            }
+
+            throw new InvalidOperationException("Could not resolve a builder for the specified SQL syntax tree.");
+        }
+    }
+}

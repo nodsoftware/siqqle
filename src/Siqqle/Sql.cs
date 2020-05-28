@@ -1,0 +1,101 @@
+using Siqqle.Expressions;
+using Siqqle.Expressions.Builders;
+using Siqqle.Syntax;
+using System.Linq;
+
+namespace Siqqle
+{
+    /// <summary>
+    /// Provides <see langword="static" /> factory methods for building SQL expression trees.
+    /// </summary>
+    public static class Sql
+    {
+        /// <summary>
+        /// Creates a <see cref="SqlSelect"/> that selects the specified <paramref name="columns"/> from a table.
+        /// </summary>
+        /// <param name="columns">
+        /// The columns to select from the table.
+        /// </param>
+        /// <returns>
+        /// A <see cref="SqlSelect"/> that selects the specified <paramref name="columns"/> from a table.
+        /// </returns>
+        public static ISqlSelectSyntax Select(params SqlColumn[] columns)
+        {
+            return new SqlSelectBuilder(columns);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlSelect"/> that selects the specified <paramref name="columns"/> from a table.
+        /// </summary>
+        /// <param name="columns">
+        /// The columns to select from the table.
+        /// </param>
+        /// <returns>
+        /// A <see cref="SqlSelect"/> that selects the specified <paramref name="columns"/> from a table.
+        /// </returns>
+        public static ISqlSelectSyntax Select(params SqlValue[] columns)
+        {
+            return new SqlSelectBuilder(columns);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlUnion"/> that combines the specified <see cref="SqlSelect"/> <paramref name="statements"/>.
+        /// </summary>
+        /// <param name="statements"></param>
+        /// <returns>
+        /// A <see cref="SqlUnion"/> that combines the specified <see cref="SqlSelect"/> <paramref name="statements"/>.
+        /// </returns>
+        public static SqlUnion Union(params SqlSelect[] statements)
+        {
+            return new SqlUnion(statements);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlUnion"/> that combines the specified <see cref="SqlSelect"/> <paramref name="statements"/>.
+        /// </summary>
+        /// <param name="statements"></param>
+        /// <returns>
+        /// A <see cref="SqlUnion"/> that combines the specified <see cref="SqlSelect"/> <paramref name="statements"/>.
+        /// </returns>
+        public static SqlUnion Union(params ISqlSyntaxEnd<SqlSelect>[] statements)
+        {
+            return new SqlUnion(statements.Where(_ => _ != null).Select(_ => _.Go()));
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlDelete"/> that deletes rows from a table.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="SqlDelete"/> that deletes rows from a table.
+        /// </returns>
+        public static ISqlDeleteSyntax Delete()
+        {
+            return new SqlDeleteBuilder();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlInsert"/> that inserts rows into a table.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="SqlInsert"/> that inserts rows into a table.
+        /// </returns>
+        public static ISqlInsertSyntax Insert()
+        {
+            return new SqlInsertBuilder();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlUpdate"/> that updates rows in the specified <paramref name="table"/>.
+        /// </summary>
+        /// <param name="table">
+        /// The table to update.
+        /// </param>
+        /// <returns>
+        /// A <see cref="SqlUpdate"/> that updates rows in the specified <paramref name="table"/>.
+        /// </returns>
+        public static ISqlUpdateSyntax Update(SqlTable table)
+        {
+            return new SqlUpdateBuilder(table);
+        }
+    }
+}
