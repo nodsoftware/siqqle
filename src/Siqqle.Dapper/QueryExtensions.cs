@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Siqqle.Expressions;
+using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
 using System.Collections.Generic;
 using System.Data;
@@ -19,11 +20,9 @@ namespace Siqqle.Dapper
         /// <param name="commandTimeout">The command timeout (in seconds).</param>
         /// <param name="commandType">The type of command to execute.</param>
         /// <remarks>Note: each row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
-        public static IEnumerable<dynamic> Query<TStatement>(this IDbConnection cnn, ISqlSyntaxEnd<TStatement> sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-            where TStatement : SqlStatement
+        public static IEnumerable<dynamic> Query(this IDbConnection cnn, ISqlSyntaxEnd<SqlSelect> sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
         {
-            var command = CommandDefinitionFactory.Create(sql, param, transaction, commandTimeout, commandType);
-            return cnn.Query<dynamic>(command);
+            return cnn.Query(sql?.Go(), param, transaction, buffered, commandTimeout, commandType);
         }
 
         /// <summary>
@@ -37,11 +36,10 @@ namespace Siqqle.Dapper
         /// <param name="commandTimeout">The command timeout (in seconds).</param>
         /// <param name="commandType">The type of command to execute.</param>
         /// <remarks>Note: each row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
-        public static IEnumerable<dynamic> Query<TStatement>(this IDbConnection cnn, TStatement sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-            where TStatement : SqlStatement
+        public static IEnumerable<dynamic> Query(this IDbConnection cnn, SqlSelect sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
         {
-            var command = CommandDefinitionFactory.Create(sql, param, transaction, commandTimeout, commandType);
-            return cnn.Query<dynamic>(command);
+            (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+            return cnn.Query(commandText, parameters, transaction, buffered, commandTimeout, commandType);
         }
 
         /// <summary>
@@ -59,11 +57,9 @@ namespace Siqqle.Dapper
         /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
         /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
         /// </returns>
-        public static IEnumerable<T> Query<TStatement, T>(this IDbConnection cnn, ISqlSyntaxEnd<TStatement> sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-            where TStatement : SqlStatement
+        public static IEnumerable<T> Query<T>(this IDbConnection cnn, ISqlSyntaxEnd<SqlSelect> sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
         {
-            var command = CommandDefinitionFactory.Create(sql, param, transaction, commandTimeout, commandType, buffered ? CommandFlags.Buffered : CommandFlags.None);
-            return cnn.Query<T>(command);
+            return cnn.Query<T>(sql?.Go(), param, transaction, buffered, commandTimeout, commandType);
         }
 
         /// <summary>
@@ -81,11 +77,10 @@ namespace Siqqle.Dapper
         /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
         /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
         /// </returns>
-        public static IEnumerable<T> Query<TStatement, T>(this IDbConnection cnn, TStatement sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-            where TStatement : SqlStatement
+        public static IEnumerable<T> Query<T>(this IDbConnection cnn, SqlSelect sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
         {
-            var command = CommandDefinitionFactory.Create(sql, param, transaction, commandTimeout, commandType, buffered ? CommandFlags.Buffered : CommandFlags.None);
-            return cnn.Query<T>(command);
+            (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+            return cnn.Query<T>(commandText, parameters, transaction, buffered, commandTimeout, commandType);
         }
     }
 }

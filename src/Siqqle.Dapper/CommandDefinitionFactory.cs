@@ -11,30 +11,14 @@ namespace Siqqle.Dapper
         public static CommandDefinition Create<TStatement>(ISqlSyntaxEnd<TStatement> sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, CommandFlags flags = CommandFlags.Buffered, CancellationToken cancellationToken = default)
             where TStatement : SqlStatement
         {
-            var parameters = new DynamicParameters(param);
-            var commandText = sql
-                .ToSql(
-                    parameter =>
-                    {
-                        parameters.Add(parameter.ParameterName, value: parameter.Value, dbType: parameter.DbType);
-                    }
-                );
-
+            (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
             return new CommandDefinition(commandText, parameters, transaction, commandTimeout, commandType, flags, cancellationToken);
         }
 
         public static CommandDefinition Create<TStatement>(TStatement sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, CommandFlags flags = CommandFlags.Buffered, CancellationToken cancellationToken = default)
             where TStatement : SqlStatement
         {
-            var parameters = new DynamicParameters(param);
-            var commandText = sql
-                .ToSql(
-                    parameter =>
-                    {
-                        parameters.Add(parameter.ParameterName, value: parameter.Value, dbType: parameter.DbType);
-                    }
-                );
-
+            (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
             return new CommandDefinition(commandText, parameters, transaction, commandTimeout, commandType, flags, cancellationToken);
         }
     }
