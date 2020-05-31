@@ -15,7 +15,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-  - job: Prepare
+  - job: Build
     steps:
       - task: NuGetToolInstaller@1
         displayName: Installing NuGet
@@ -25,21 +25,55 @@ jobs:
         inputs:
           restoreSolution: '$(solution)'
 
-  - job: Build
-    dependsOn: Prepare
-    steps:
       - task: VSBuild@1
         displayName: Building solution
         inputs:
           solution: '$(solution)'
+          msbuildArgs: '/p:OutDir=$(Build.BinariesDirectory)'
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
+
+      - task: CopyFiles@2
+        displayName: Copying build output
+        inputs:
+          SourceFolder: '$(Build.BinariesDirectory)'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: Publishing build output
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'Build Output'
+          publishLocation: 'Container'
 
   - job: Test
     dependsOn: Build
     steps:
+      - task: DownloadPipelineArtifact@2
+        displayName: Downloading build output
+        inputs:
+          buildType: 'current'
+          artifactName: 'Build Output'
+          targetPath: '$(Pipeline.Workspace)'
+
       - task: VSTest@2
         displayName: Running unit tests
         inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\*test*.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(Pipeline.Workspace)'
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
+          codeCoverageEnabled: true
+
+      - task: PublishTestResults@2
+        displayName: Publishing test results
+        inputs:
+          testResultsFormat: 'VSTest'
+          testResultsFiles: '**/TEST-*.xml'
+          searchFolder: '$(Pipeline.Workspace)'
+          mergeTestResults: true
