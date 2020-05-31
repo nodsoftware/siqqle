@@ -44,7 +44,7 @@ jobs:
         displayName: Publishing binaries
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'Build Output'
+          ArtifactName: 'Binaries'
           publishLocation: 'Container'
 
       - task: CopyFiles@2
