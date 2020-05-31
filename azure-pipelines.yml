@@ -34,27 +34,43 @@ jobs:
           configuration: '$(buildConfiguration)'
 
       - task: CopyFiles@2
-        displayName: Copying build output
+        displayName: Preparing binaries
         inputs:
           SourceFolder: '$(Build.BinariesDirectory)'
           Contents: '**'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
-        displayName: Publishing build output
+        displayName: Publishing binaries
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: 'Build Output'
+          publishLocation: 'Container'
+
+      - task: CopyFiles@2
+        displayName: Preparing packages
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: '**/bin/$(buildConfiguration)/**/*.nupkg'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          CleanTargetFolder: true
+          flattenFolders: true
+
+      - task: PublishBuildArtifacts@1
+        displayName: Publishing packages
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'Packages'
           publishLocation: 'Container'
 
   - job: Test
     dependsOn: Build
     steps:
       - task: DownloadPipelineArtifact@2
-        displayName: Downloading build output
+        displayName: Downloading binaries
         inputs:
           buildType: 'current'
-          artifactName: 'Build Output'
+          artifactName: 'Binaries'
           targetPath: '$(Pipeline.Workspace)'
 
       - task: VSTest@2
@@ -77,3 +93,22 @@ jobs:
           testResultsFiles: '**/TEST-*.xml'
           searchFolder: '$(Pipeline.Workspace)'
           mergeTestResults: true
+
+  - job: Publish
+    dependsOn: Test
+    steps:
+      - task: DownloadPipelineArtifact@2
+        displayName: Downloading packages
+        inputs:
+          buildType: 'current'
+          artifactName: 'Packages'
+          targetPath: '$(Pipeline.Workspace)'
+
+      - task: NuGetCommand@2
+        displayName: Publishing packages to feed
+        inputs:
+          command: 'push'
+          packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg'
+          nuGetFeedType: 'internal'
+          publishVstsFeed: '5e504c28-3c5f-442f-b4d7-6b5eeae74624'
+          allowPackageConflicts: true
