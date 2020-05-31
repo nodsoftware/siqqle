@@ -41,11 +41,11 @@
 
   <PropertyGroup>
     <OutputPath>bin\$(Configuration)</OutputPath>
-    <DocumentationFile>bin\$(Configuration)\Siqqle.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\Siqqle.Dapper.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper.StrongName" Version="2.0.30" />
+    <PackageReference Include="Dapper.StrongName" Version="2.0.35" />
   </ItemGroup>
 
   <ItemGroup>

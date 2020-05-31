@@ -1,8 +1,4 @@
 ﻿using Siqqle.Text;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Siqqle.Dialects.SqlServer
 {
     /// <summary>
@@ -11,7 +7,7 @@ namespace Siqqle.Dialects.SqlServer
     public class SqlServerDialect : SqlDialect
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MySqlDialect"/> class.
+        /// Initializes a new instance of the <see cref="SqlServerDialect"/> class.
         /// </summary>
         public SqlServerDialect()
         {
