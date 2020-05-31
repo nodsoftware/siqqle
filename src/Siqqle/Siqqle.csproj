@@ -40,8 +40,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputPath>..\..\bin\$(Configuration)</OutputPath>
-    <DocumentationFile>..\..\bin\$(Configuration)\Siqqle.xml</DocumentationFile>
+    <OutputPath>bin\$(Configuration)</OutputPath>
+    <DocumentationFile>bin\$(Configuration)\Siqqle.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
