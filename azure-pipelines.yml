@@ -110,5 +110,5 @@ jobs:
           command: 'push'
           packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg'
           nuGetFeedType: 'internal'
-          publishVstsFeed: '5e504c28-3c5f-442f-b4d7-6b5eeae74624'
+          publishVstsFeed: '3217e703-6082-4eae-98ab-928df738a396/b42321da-cfb0-4228-bbb0-ff48f3d36dc1'
           allowPackageConflicts: true
