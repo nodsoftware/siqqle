@@ -25,11 +25,17 @@ jobs:
         inputs:
           restoreSolution: '$(solution)'
 
+      - task: PowerShell@2
+        displayName: Generating version number
+        inputs:
+          filePath: '$(Build.SourcesDirectory)/build/version.ps1'
+          workingDirectory: '$(Build.SourcesDirectory)'
+
       - task: VSBuild@1
         displayName: Building solution
         inputs:
           solution: '$(solution)'
-          msbuildArgs: '/p:OutDir=$(Build.BinariesDirectory)'
+          msbuildArgs: '/p:OutDir=$(Build.BinariesDirectory) /p:PackageVersion=$(PackageVersion) /p:AssemblyVersion=$(AssemblyVersion) /p:FileVersion=$(FileVersion) /p:ProductVersion=$(ProductVersion) /p:Product=$(ProductName)'
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
 
@@ -110,5 +116,5 @@ jobs:
           command: 'push'
           packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg'
           nuGetFeedType: 'internal'
-          publishVstsFeed: '3217e703-6082-4eae-98ab-928df738a396/b42321da-cfb0-4228-bbb0-ff48f3d36dc1'
+          publishVstsFeed: '3217e703-6082-4eae-98ab-928df738a396/220f50b0-b82e-4725-bb50-845ac1838fe3'
           allowPackageConflicts: true
