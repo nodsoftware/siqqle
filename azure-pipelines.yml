@@ -35,7 +35,7 @@ jobs:
         displayName: Building solution
         inputs:
           solution: '$(solution)'
-          msbuildArgs: '/p:OutDir=$(Build.BinariesDirectory) /p:PackageVersion=$(PackageVersion) /p:AssemblyVersion=$(AssemblyVersion) /p:FileVersion=$(FileVersion) /p:ProductVersion=$(ProductVersion) /p:Product=$(ProductName)'
+          msbuildArgs: '/p:OutDir="$(Build.BinariesDirectory)" /p:PackageVersion="$(PackageVersion)" /p:AssemblyVersion="$(AssemblyVersion)" /p:FileVersion="$(FileVersion)" /p:ProductVersion="$(ProductVersion)" /p:Product="$(ProductName)"'
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
 
