@@ -1,10 +1,7 @@
 ﻿using Dapper;
 using Siqqle.Expressions;
 using Siqqle.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace Siqqle.Dapper
 {
@@ -23,8 +20,8 @@ namespace Siqqle.Dapper
         public static int Execute<TStatement>(this IDbConnection cnn, ISqlSyntaxEnd<TStatement> sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
             where TStatement : SqlStatement
         {
-            var command = CommandDefinitionFactory.Create(sql, param, transaction, commandTimeout, commandType);
-            return cnn.Execute(command);
+            (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+            return cnn.Execute(commandText, parameters, transaction, commandTimeout, commandType);
         }
 
         /// <summary>
@@ -40,8 +37,8 @@ namespace Siqqle.Dapper
         public static int Execute<TStatement>(this IDbConnection cnn, TStatement sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
             where TStatement : SqlStatement
         {
-            var command = CommandDefinitionFactory.Create(sql, param, transaction, commandTimeout, commandType);
-            return cnn.Execute(command);
+            (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+            return cnn.Execute(commandText, parameters, transaction, commandTimeout, commandType);
         }
     }
 }
