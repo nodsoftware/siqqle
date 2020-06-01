@@ -6,6 +6,8 @@
     <PackageVersion Condition=" '$(PackageVersion)' == '' ">4.0.0</PackageVersion>
     <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">4.0.0.0</AssemblyVersion>
     <FileVersion Condition=" '$(FileVersion)' == '' ">4.0.0.0</FileVersion>
+    <Product Condition=" '$(Product)' == '' ">Siqqle 4.0.0</Product>
+    <ProductVersion Condition=" '$(ProductVersion)' == '' ">4.0.0</ProductVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
