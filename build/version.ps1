@@ -21,7 +21,7 @@ $src = $env:BUILD_SOURCESDIRECTORY
 if (-not $src)
 {
 	$src = Get-ScriptDirectory
-	$src = Resolve-Path "$src\..\src\"
+	$src = Resolve-Path "$src/../"
 }
 
 function Get-YearsSince($now, $then)
@@ -54,7 +54,7 @@ $patchVersion = $env:PATCHVERSION
 $prereleaseLabel = $env:PRERELEASELABEL
 
 # Auto-generate version numbers.
-$generatedVersion = Get-FileVersion $majorVersion $minorVersion (Join-Path $src 'Siqqle.sln')
+$generatedVersion = Get-FileVersion $majorVersion $minorVersion (Join-Path $src 'src/Siqqle.sln')
 
 $packageVersion = "$majorVersion.$minorVersion.$patchVersion"
 if (-not $prereleaseLabel -eq "")
