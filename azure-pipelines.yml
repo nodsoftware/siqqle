@@ -81,7 +81,7 @@ jobs:
         displayName: Publishing code coverage results  
         inputs:  
           codeCoverageTool: Cobertura  
-          summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+          summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
 
   - job: Publish
     dependsOn: Test
@@ -92,12 +92,11 @@ jobs:
           buildType: 'current'
           artifactName: 'Packages'
           targetPath: '$(Pipeline.Workspace)'
-
-      - task: NuGetCommand@2
+      
+      - task: DotNetCoreCLI@2
         displayName: Publishing packages to feed
         inputs:
           command: 'push'
           packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg'
           nuGetFeedType: 'internal'
           publishVstsFeed: '3217e703-6082-4eae-98ab-928df738a396/220f50b0-b82e-4725-bb50-845ac1838fe3'
-          allowPackageConflicts: true
