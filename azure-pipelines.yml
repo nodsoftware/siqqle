@@ -35,7 +35,7 @@ jobs:
         inputs:
           command: 'build'
           projects: '$(solution)'
-          arguments: '-c $(buildConfiguration) -p:OutDir="$(Build.BinariesDirectory)" -p:PackageVersion="$(PackageVersion)" -p:AssemblyVersion="$(AssemblyVersion)" -p:FileVersion="$(FileVersion)" -p:ProductVersion="$(ProductVersion)" -p:Product="$(ProductName)"'
+          arguments: '-c $(buildConfiguration) -p:PackageVersion="$(PackageVersion)" -p:AssemblyVersion="$(AssemblyVersion)" -p:FileVersion="$(FileVersion)" -p:ProductVersion="$(ProductVersion)" -p:Product="$(ProductName)"'
 
       - task: CopyFiles@2
         displayName: Preparing binaries
