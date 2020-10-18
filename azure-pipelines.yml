@@ -80,10 +80,9 @@ jobs:
 
       - task: PublishCodeCoverageResults@1
         displayName: Publishing code coverage results  
-          displayName: 'Publish code coverage'  
-          inputs:  
-            codeCoverageTool: Cobertura  
-            summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+        inputs:  
+          codeCoverageTool: Cobertura  
+          summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
 
   - job: Publish
     dependsOn: Test
