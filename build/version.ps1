@@ -1,4 +1,4 @@
-if(-not $Env:MajorVersion)
+if(-not $env:MAJORVERSION)
 {
     Write-Host "You must set the following environment variables to test this script interactively:"
     Write-Host '$env:MAJORVERSION = 4'
