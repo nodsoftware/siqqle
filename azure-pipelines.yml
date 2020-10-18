@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   solution: '**/*.sln'
@@ -30,14 +30,13 @@ jobs:
         inputs:
           filePath: '$(Build.SourcesDirectory)/build/version.ps1'
           workingDirectory: '$(Build.SourcesDirectory)'
-
-      - task: VSBuild@1
+      
+      - task: DotNetCoreCLI@2
         displayName: Building solution
         inputs:
-          solution: '$(solution)'
-          msbuildArgs: '/p:OutDir="$(Build.BinariesDirectory)" /p:PackageVersion="$(PackageVersion)" /p:AssemblyVersion="$(AssemblyVersion)" /p:FileVersion="$(FileVersion)" /p:ProductVersion="$(ProductVersion)" /p:Product="$(ProductName)"'
-          platform: '$(buildPlatform)'
-          configuration: '$(buildConfiguration)'
+          command: 'build'
+          projects: '**/*.sln'
+          arguments: '-c $(buildConfiguration) -p:OutDir="$(Build.BinariesDirectory)" -p:PackageVersion="$(PackageVersion)" -p:AssemblyVersion="$(AssemblyVersion)" -p:FileVersion="$(FileVersion)" -p:ProductVersion="$(ProductVersion)" -p:Product="$(ProductName)"'
 
       - task: CopyFiles@2
         displayName: Preparing binaries
@@ -72,33 +71,19 @@ jobs:
   - job: Test
     dependsOn: Build
     steps:
-      - task: DownloadPipelineArtifact@2
-        displayName: Downloading binaries
-        inputs:
-          buildType: 'current'
-          artifactName: 'Binaries'
-          targetPath: '$(Pipeline.Workspace)'
-
-      - task: VSTest@2
+      - task: DotNetCoreCLI@2
         displayName: Running unit tests
         inputs:
-          testSelector: 'testAssemblies'
-          testAssemblyVer2: |
-            **\*test*.dll
-            !**\*TestAdapter.dll
-            !**\obj\**
-          searchFolder: '$(Pipeline.Workspace)'
-          platform: '$(buildPlatform)'
-          configuration: '$(buildConfiguration)'
-          codeCoverageEnabled: true
+          command: 'test'
+          projects: '**/*Tests.csproj'
+          arguments: '-c $(buildConfiguration) --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true'
 
-      - task: PublishTestResults@2
-        displayName: Publishing test results
-        inputs:
-          testResultsFormat: 'VSTest'
-          testResultsFiles: '**/TEST-*.xml'
-          searchFolder: '$(Pipeline.Workspace)'
-          mergeTestResults: true
+      - task: PublishCodeCoverageResults@1
+      displayName: Publishing code coverage results  
+        displayName: 'Publish code coverage'  
+        inputs:  
+          codeCoverageTool: Cobertura  
+          summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
 
   - job: Publish
     dependsOn: Test
