@@ -96,7 +96,7 @@ namespace Siqqle.Expressions
             base.Accept(visitor);
 
             Select.Accept(visitor);
-            From.Accept(visitor);
+            From?.Accept(visitor);
             Where?.Accept(visitor);
             GroupBy?.Accept(visitor);
             OrderBy.IfAny(orderBy => OrderBy.Accept(visitor));

@@ -20,6 +20,17 @@ namespace Siqqle.Expressions.Tests
         }
 
         [Fact]
+        public void ToSql_WithSqlSelectFunction_ReturnsSql()
+        {
+            const string expected = "SELECT SCOPE_IDENTITY()";
+            var actual = Sql
+                .Select(new SqlFunction("SCOPE_IDENTITY"))
+                .ToSql();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void ToSql_WithSqlSelect_ReturnsSql()
         {
             const string expected = "SELECT [Id], [Name] FROM [User] WHERE [Id] = 5";

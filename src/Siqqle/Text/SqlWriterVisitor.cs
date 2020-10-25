@@ -143,7 +143,7 @@ namespace Siqqle.Text
             Writer.Write(expression.FunctionName);
             Writer.WriteRaw("(");
             Writer.ClearPendingSpace();
-            expression.Arguments.Accept(this);
+            expression.Arguments?.Accept(this);
             Writer.WriteCloseParenthesis();
             if (expression.Alias != null)
             {
