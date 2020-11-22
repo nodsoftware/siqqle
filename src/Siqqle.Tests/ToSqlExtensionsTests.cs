@@ -543,5 +543,18 @@ namespace Siqqle.Expressions.Tests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void ToSql_WithSqlBatch_ReturnsSql()
+        {
+            const string expected = "INSERT INTO [User] ([Name]) VALUES (@UserName); SELECT SCOPE_IDENTITY()";
+            var actual = Sql
+                .Batch(
+                    Sql.Insert().Into("User", "Name").Values(new SqlParameter("UserName", 5)),
+                    Sql.Select(new SqlFunction("SCOPE_IDENTITY")))
+                .ToSql();
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

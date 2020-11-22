@@ -110,6 +110,10 @@ namespace Siqqle.Expressions.Visitors
                     Visit((SqlUnion)expression);
                     break;
 
+                case SqlExpressionType.Batch:
+                    Visit((SqlBatch)expression);
+                    break;
+
                 case SqlExpressionType.Update:
                     Visit((SqlUpdate)expression);
                     break;
@@ -146,6 +150,16 @@ namespace Siqqle.Expressions.Visitors
         /// The expression to visit.
         /// </param>
         public virtual void Visit(SqlUnion expression)
+        {
+        }
+
+        /// <summary>
+        /// Visits the specified <see cref="SqlBatch"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        public virtual void Visit(SqlBatch expression)
         {
         }
 

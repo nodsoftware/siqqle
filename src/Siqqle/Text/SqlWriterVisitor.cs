@@ -170,6 +170,17 @@ namespace Siqqle.Text
                     Writer.WriteCloseParenthesis();
                 });
         }
+        
+
+        public override void Visit(SqlBatch expression)
+        {
+            expression.Statements.For(
+                (index, statement) =>
+                {
+                    if (index > 0) Writer.WriteRaw(";");
+                    statement.Accept(this);
+                });
+        }
 
         public override void Visit(SqlValues expression)
         {

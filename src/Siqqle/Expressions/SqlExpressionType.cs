@@ -120,6 +120,10 @@
         /// <summary>
         /// Represents a SQL CAST expression.
         /// </summary>
-        Cast
+        Cast,
+        /// <summary>
+        /// Represents a batch of SQL statements.
+        /// </summary>
+        Batch
     }
 }

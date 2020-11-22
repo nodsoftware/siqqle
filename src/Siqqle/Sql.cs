@@ -63,6 +63,30 @@ namespace Siqqle
         }
 
         /// <summary>
+        /// Creates a <see cref="SqlBatch"/> that concatenates the specified <see cref="SqlStatement"/> <paramref name="statements"/>.
+        /// </summary>
+        /// <param name="statements"></param>
+        /// <returns>
+        /// A <see cref="SqlBatch"/> that concatenates the specified <see cref="SqlStatement"/> <paramref name="statements"/>.
+        /// </returns>
+        public static SqlBatch Batch(params SqlStatement[] statements)
+        {
+            return new SqlBatch(statements);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlBatch"/> that concatanates the specified <see cref="SqlStatement"/> <paramref name="statements"/>.
+        /// </summary>
+        /// <param name="statements"></param>
+        /// <returns>
+        /// A <see cref="SqlBatch"/> that concatenates the specified <see cref="SqlStatement"/> <paramref name="statements"/>.
+        /// </returns>
+        public static SqlBatch Batch(params ISqlSyntaxEnd<SqlStatement>[] statements)
+        {
+            return new SqlBatch(statements.Where(_ => _ != null).Select(_ => _.Go()));
+        }
+
+        /// <summary>
         /// Creates a <see cref="SqlDelete"/> that deletes rows from a table.
         /// </summary>
         /// <returns>

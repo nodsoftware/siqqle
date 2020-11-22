@@ -305,6 +305,14 @@ namespace Siqqle.Expressions.Visitors
         void Visit(SqlUnion expression);
 
         /// <summary>
+        /// Visits the specified <see cref="SqlBatch"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        void Visit(SqlBatch expression);
+
+        /// <summary>
         /// Visits the specified <see cref="SqlGroupBy"/>.
         /// </summary>
         /// <param name="expression">
