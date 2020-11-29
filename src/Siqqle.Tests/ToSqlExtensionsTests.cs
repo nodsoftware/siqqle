@@ -59,6 +59,48 @@ namespace Siqqle.Expressions.Tests
         }
 
         [Fact]
+        public void ToSql_WithSqlCase_ReturnsSql()
+        {
+            const string expected = "SELECT [Id], [Name], CASE WHEN [Age] > 60 THEN 'Elder' WHEN [Age] > 18 THEN 'Adult' ELSE 'Child' END AS [AgeGroup] FROM [User] WHERE [Id] = 5";
+            var actual = Sql
+                .Select(
+                    (SqlColumn)"Id",
+                    (SqlColumn)"Name",
+                    SqlExpression.Case()
+                        .When(SqlExpression.GreaterThan("Age", 60)).Then("Elder")
+                        .When(SqlExpression.GreaterThan("Age", 18)).Then("Adult")
+                        .Else("Child")
+                        .End("AgeGroup"))
+                .From("User")
+                .Where(SqlExpression.Equal("Id", 5))
+                .Go()
+                .ToSql();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ToSql_WithSqlCase_UsingValue_ReturnsSql()
+        {
+            const string expected = "SELECT [Id], [Name], CASE [Age] WHEN 30 THEN 'Thirty' WHEN 20 THEN 'Twenty' ELSE [Age] END AS [AgeString] FROM [User] WHERE [Id] = 5";
+            var actual = Sql
+                .Select(
+                    (SqlColumn)"Id",
+                    (SqlColumn)"Name",
+                    SqlExpression.Case((SqlColumn)"Age")
+                        .When(30).Then("Thirty")
+                        .When(20).Then("Twenty")
+                        .Else((SqlColumn)"Age")
+                        .End("AgeString"))
+                .From("User")
+                .Where(SqlExpression.Equal("Id", 5))
+                .Go()
+                .ToSql();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void ToSql_WithSqlSelectWithParameter_ReturnsSql()
         {
             const string expected = "SELECT [Id], [Name] FROM [User] WHERE [Id] = @Id";

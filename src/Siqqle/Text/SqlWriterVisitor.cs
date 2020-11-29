@@ -88,14 +88,49 @@ namespace Siqqle.Text
             Writer.WriteKeyword(SqlKeywords.Update);
         }
 
+        public override void Visit(SqlCase expression)
+        {
+            Writer.WriteKeyword(SqlKeywords.Case);
+            if (expression.Value != null)
+            {
+                expression.Value.Accept(this);
+            }
+
+            expression.When.ForEach(item => item.Accept(this));
+            expression.Else.Accept(this);
+
+            Writer.WriteKeyword(SqlKeywords.End);
+
+            if (expression.Alias != null)
+            {
+                Writer.WriteKeyword(SqlKeywords.As);
+                Writer.WriteIdentifier(expression.Alias);
+            }
+        }
+
+        public override void Visit(SqlWhen expression)
+        {
+            Writer.WriteKeyword(SqlKeywords.When);
+            expression.Condition.Accept(this);
+
+            Writer.WriteKeyword(SqlKeywords.Then);
+            expression.Value.Accept(this);
+        }
+
+        public override void Visit(SqlElse expression)
+        {
+            Writer.WriteKeyword(SqlKeywords.Else);
+            expression.Value.Accept(this);
+        }
+
         public override void Visit(SqlCast expression)
         {
             Writer.WriteKeyword(SqlKeywords.Cast);
             Writer.WriteRaw("(");
             Writer.ClearPendingSpace();
-            Visit(expression.Value);
+            expression.Value.Accept(this);
             Writer.WriteKeyword(SqlKeywords.As);
-            Visit(expression.DataType);
+            expression.DataType.Accept(this);
             Writer.WriteCloseParenthesis();
         }
 

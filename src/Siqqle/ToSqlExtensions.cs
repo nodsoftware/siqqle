@@ -15,6 +15,7 @@ namespace Siqqle
         {
             return statement.ToSqlInternal();
         }
+
         public static string ToSql<TStatement>(this TStatement statement, Action<SqlParameter> parameterCallback)
             where TStatement : SqlStatement
         {

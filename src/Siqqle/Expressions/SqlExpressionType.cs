@@ -121,6 +121,9 @@
         /// Represents a SQL CAST expression.
         /// </summary>
         Cast,
+        Case,
+        When,
+        Else
         /// <summary>
         /// Represents a batch of SQL statements.
         /// </summary>

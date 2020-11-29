@@ -33,6 +33,14 @@ namespace Siqqle.Expressions.Visitors
         void Visit(SqlBinaryExpression expression);
 
         /// <summary>
+        /// Visits the specified <see cref="SqlCase"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        void Visit(SqlCase expression);
+
+        /// <summary>
         /// Visits the specified <see cref="SqlCast"/>.
         /// </summary>
         /// <param name="expression">
@@ -289,6 +297,14 @@ namespace Siqqle.Expressions.Visitors
         void Visit(SqlSortOrder sortOrder);
 
         /// <summary>
+        /// Visits the specified <see cref="SqlUnion"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        void Visit(SqlUnion expression);
+
+        /// <summary>
         /// Visits the specified <see cref="SqlValueList"/>.
         /// </summary>
         /// <param name="expression">
@@ -297,12 +313,20 @@ namespace Siqqle.Expressions.Visitors
         void Visit(SqlValueList expression);
 
         /// <summary>
-        /// Visits the specified <see cref="SqlUnion"/>.
+        /// Visits the specified <see cref="SqlWhen"/>.
         /// </summary>
         /// <param name="expression">
         /// The expression to visit.
         /// </param>
-        void Visit(SqlUnion expression);
+        void Visit(SqlWhen expression);
+
+        /// <summary>
+        /// Visits the specified <see cref="SqlElse"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        void Visit(SqlElse expression);
 
         /// <summary>
         /// Visits the specified <see cref="SqlBatch"/>.
