@@ -123,7 +123,7 @@
         Cast,
         Case,
         When,
-        Else
+        Else,
         /// <summary>
         /// Represents a batch of SQL statements.
         /// </summary>
