@@ -120,6 +120,9 @@
         /// <summary>
         /// Represents a SQL CAST expression.
         /// </summary>
-        Cast
+        Cast,
+        Case,
+        When,
+        Else
     }
 }

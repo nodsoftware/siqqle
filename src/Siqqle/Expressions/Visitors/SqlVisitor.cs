@@ -26,6 +26,10 @@ namespace Siqqle.Expressions.Visitors
                     Visit((SqlBinaryExpression)expression);
                     break;
 
+                case SqlExpressionType.Case:
+                    Visit((SqlCase)expression);
+                    break;
+
                 case SqlExpressionType.Cast:
                     Visit((SqlCast)expression);
                     break;
@@ -44,6 +48,10 @@ namespace Siqqle.Expressions.Visitors
 
                 case SqlExpressionType.Delete:
                     Visit((SqlDelete)expression);
+                    break;
+
+                case SqlExpressionType.Else:
+                    Visit((SqlElse)expression);
                     break;
 
                 case SqlExpressionType.Limit:
@@ -122,6 +130,10 @@ namespace Siqqle.Expressions.Visitors
                     Visit((SqlValues)expression);
                     break;
 
+                case SqlExpressionType.When:
+                    Visit((SqlWhen)expression);
+                    break;
+
                 case SqlExpressionType.Where:
                     Visit((SqlWhere)expression);
                     break;
@@ -180,6 +192,16 @@ namespace Siqqle.Expressions.Visitors
         }
 
         /// <summary>
+        /// Visits the specified <see cref="SqlCase"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        public virtual void Visit(SqlCase expression)
+        {
+        }
+
+        /// <summary>
         /// Visits the specified <see cref="SqlCast"/>.
         /// </summary>
         /// <param name="expression">
@@ -226,6 +248,16 @@ namespace Siqqle.Expressions.Visitors
         /// The expression to visit.
         /// </param>
         public virtual void Visit(SqlDelete expression)
+        {
+        }
+
+        /// <summary>
+        /// Visits the specified <see cref="SqlElse"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        public virtual void Visit(SqlElse expression)
         {
         }
 
@@ -464,6 +496,16 @@ namespace Siqqle.Expressions.Visitors
         /// The expression to visit.
         /// </param>
         public virtual void Visit(SqlValues expression)
+        {
+        }
+
+        /// <summary>
+        /// Visits the specified <see cref="SqlWhen"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        public virtual void Visit(SqlWhen expression)
         {
         }
 

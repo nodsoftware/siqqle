@@ -129,5 +129,25 @@
         /// Represents the SQL CAST keyword.
         /// </summary>
         public static readonly SqlKeyword Cast = "CAST";
+        /// <summary>
+        /// Represents the SQL CASE keyword.
+        /// </summary>
+        public static readonly SqlKeyword Case = "CASE";
+        /// <summary>
+        /// Represents the SQL WHEN keyword.
+        /// </summary>
+        public static readonly SqlKeyword When = "WHEN";
+        /// <summary>
+        /// Represents the SQL THEN keyword.
+        /// </summary>
+        public static readonly SqlKeyword Then = "THEN";
+        /// <summary>
+        /// Represents the SQL ELSE keyword.
+        /// </summary>
+        public static readonly SqlKeyword Else = "ELSE";
+        /// <summary>
+        /// Represents the SQL END keyword.
+        /// </summary>
+        public static readonly SqlKeyword End = "END";
     }
 }

@@ -58,6 +58,11 @@ namespace Siqqle.Text
         {
         }
 
+        internal void WriteKeyword(object @case)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlWriter"/> class that writes to the
         /// specified <see cref="StringBuilder"/> using the specified <see cref="SqlDialect"/>.

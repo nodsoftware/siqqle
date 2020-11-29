@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using Siqqle.Expressions.Builders;
 using Siqqle.Expressions.Visitors;
+using Siqqle.Syntax;
 
 namespace Siqqle.Expressions
 {
@@ -10,6 +12,21 @@ namespace Siqqle.Expressions
     /// </summary>
     public abstract class SqlExpression : ISqlVisitable
     {
+        public static ISqlCaseSyntax Case()
+        {
+            return new SqlCaseBuilder();
+        }
+
+        public static ISqlCaseValueSyntax Case(SqlValue value)
+        {
+            return new SqlCaseBuilder(value);
+        }
+
+        public static ISqlCaseValueSyntax Case(SqlColumn value)
+        {
+            return new SqlCaseBuilder(value);
+        }
+
         /// <summary>
         /// Creates a <see cref="SqlCast"/> that represents a conversion of the specified <paramref name="value"/>
         /// to the specified data type.
