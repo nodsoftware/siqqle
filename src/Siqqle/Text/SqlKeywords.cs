@@ -149,5 +149,13 @@
         /// Represents the SQL END keyword.
         /// </summary>
         public static readonly SqlKeyword End = "END";
+        /// <summary>
+        /// Represents the SQL IS NULL keyword.
+        /// </summary>
+        public static readonly SqlKeyword IsNull = "IS NULL";
+        /// <summary>
+        /// Represents the SQL IS NOT NULL keyword.
+        /// </summary>
+        public static readonly SqlKeyword IsNotNull = "IS NOT NULL";
     }
 }

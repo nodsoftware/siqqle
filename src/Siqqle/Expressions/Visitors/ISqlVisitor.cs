@@ -25,6 +25,14 @@ namespace Siqqle.Expressions.Visitors
         void Visit(SqlAssign expression);
 
         /// <summary>
+        /// Visits the specified <see cref="SqlUnaryExpression"/>.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression to visit.
+        /// </param>
+        void Visit(SqlUnaryExpression expression);
+
+        /// <summary>
         /// Visits the specified <see cref="SqlBinaryExpression"/>.
         /// </summary>
         /// <param name="expression">
@@ -279,6 +287,14 @@ namespace Siqqle.Expressions.Visitors
         /// The expressions to visit.
         /// </param>
         void Visit(IEnumerable<IEnumerable<SqlValue>> expressions);
+
+        /// <summary>
+        /// Visits the specified <see cref="SqlUnaryOperator"/>.
+        /// </summary>
+        /// <param name="operator">
+        /// The <see cref="SqlUnaryOperator"/> to visit.
+        /// </param>
+        void Visit(SqlUnaryOperator @operator);
 
         /// <summary>
         /// Visits the specified <see cref="SqlBinaryOperator"/>.

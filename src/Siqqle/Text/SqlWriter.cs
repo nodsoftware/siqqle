@@ -330,6 +330,31 @@ namespace Siqqle.Text
         /// <param name="operator">
         /// The operator to write to the output stream.
         /// </param>
+        public void WriteOperator(SqlUnaryOperator @operator)
+        {
+            EnsureNotDisposed();
+
+            switch (@operator)
+            {
+                case SqlUnaryOperator.IsNull:
+                    WriteKeyword(SqlKeywords.IsNull);
+                    break;
+
+                case SqlUnaryOperator.IsNotNull:
+                    WriteKeyword(SqlKeywords.IsNotNull);
+                    break;
+
+                default:
+                    throw new InvalidEnumArgumentException(nameof(@operator), (int)@operator, typeof(SqlUnaryOperator));
+            }
+        }
+
+        /// <summary>
+        /// Writes the specified operator to the output stream.
+        /// </summary>
+        /// <param name="operator">
+        /// The operator to write to the output stream.
+        /// </param>
         public void WriteOperator(SqlBinaryOperator @operator)
         {
             EnsureNotDisposed();

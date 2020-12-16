@@ -291,6 +291,11 @@ namespace Siqqle.Text
             Writer.WriteKeyword(SqlKeywords.OrderBy);
         }
 
+        public override void Visit(SqlUnaryOperator @operator)
+        {
+            Writer.WriteOperator(@operator);
+        }
+
         public override void Visit(SqlBinaryOperator @operator)
         {
             Writer.WriteOperator(@operator);
@@ -304,6 +309,13 @@ namespace Siqqle.Text
         public override void Visit(SqlSet expression)
         {
             Writer.WriteKeyword(SqlKeywords.Set);
+        }
+
+        public override void Visit(SqlUnaryExpression expression)
+        {
+            // TODO: The accept code should be in the class itself.
+            expression.Operand.Accept(this);
+            expression.Operator.Accept(this);
         }
 
         public override void Visit(SqlBinaryExpression expression)

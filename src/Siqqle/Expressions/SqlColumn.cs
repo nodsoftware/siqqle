@@ -100,5 +100,25 @@ namespace Siqqle.Expressions
         {
             return new SqlSort(column, sortOrder);
         }
+
+        /// <summary>
+        /// Adds the specified <paramref name="alias"/> to a <see cref="SqlColumn"/>.
+        /// </summary>
+        /// <param name="column">
+        /// The <see cref="SqlColumn"/> to be sorted.
+        /// </param>
+        /// <param name="alias">
+        /// The alias to use for the column.
+        /// </param>
+        /// <returns>
+        /// The same <see cref="SqlColumn"/> with the new alias.
+        /// </returns>
+        public static SqlColumn operator +(SqlColumn column, string alias)
+        {
+            if (column == null) throw new ArgumentNullException(nameof(column));
+
+            column.Alias = alias;
+            return column;
+        }
     }
 }

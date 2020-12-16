@@ -38,10 +38,10 @@ namespace Siqqle.Expressions
         /// The alias used for the subquery.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when the <paramref name="query"/> or <paramref name="alias"/> argument is
+        /// Thrown when the <paramref name="query"/> argument is
         /// <see langword="null"/>.
         /// </exception>
-        public SqlSubquery(ISqlSyntaxEnd<SqlSelect> query, string alias)
+        public SqlSubquery(ISqlSyntaxEnd<SqlSelect> query, string alias = null)
             : base(alias)
         {
             if (query == null) throw new ArgumentNullException(nameof(query));
@@ -60,10 +60,10 @@ namespace Siqqle.Expressions
         /// The alias used for the subquery.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when the <paramref name="query"/> or <paramref name="alias"/> argument is
+        /// Thrown when the <paramref name="query"/> argument is
         /// <see langword="null"/>.
         /// </exception>
-        public SqlSubquery(SqlSelect query, string alias)
+        public SqlSubquery(SqlSelect query, string alias = null)
             : base(alias)
         {
             if (query == null) throw new ArgumentNullException(nameof(query));

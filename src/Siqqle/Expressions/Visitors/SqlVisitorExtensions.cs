@@ -103,6 +103,23 @@ namespace Siqqle.Expressions.Visitors
         /// methods for this object.
         /// </summary>
         /// <param name="operator">
+        /// The <see cref="SqlUnaryOperator"/> on which to accept the visitor.
+        /// </param>
+        /// <param name="visitor">
+        /// The <see cref="ISqlVisitor" /> to visit this object with.
+        /// </param>
+        public static void Accept(this SqlUnaryOperator @operator, ISqlVisitor visitor)
+        {
+            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+
+            visitor.Visit(@operator);
+        }
+
+        /// <summary>
+        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+        /// methods for this object.
+        /// </summary>
+        /// <param name="operator">
         /// The <see cref="SqlBinaryOperator"/> on which to accept the visitor.
         /// </param>
         /// <param name="visitor">

@@ -42,6 +42,10 @@
         /// </summary>
         Parameter,
         /// <summary>
+        /// Represents a unary expression in SQL.
+        /// </summary>
+        Unary,
+        /// <summary>
         /// Represents a binary expression in SQL.
         /// </summary>
         Binary,

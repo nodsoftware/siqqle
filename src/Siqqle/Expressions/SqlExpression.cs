@@ -83,6 +83,40 @@ namespace Siqqle.Expressions
         }
 
         /// <summary>
+        /// Creates a <see cref="SqlUnaryExpression"/> that represents a <c>null</c> value comparison.
+        /// </summary>
+        /// <param name="column">
+        /// A <see cref="SqlColumn"/> to use as the operand in the expression.
+        /// </param>
+        /// <returns>
+        /// A <see cref="SqlUnaryExpression"/> that represents a null value comparison on
+        /// the value of the specified <paramref name="column"/>.
+        /// </returns>
+        public static SqlUnaryExpression IsNull(SqlColumn column)
+        {
+            return new SqlUnaryExpression(column, SqlUnaryOperator.IsNull);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SqlUnaryExpression"/> that represents a <c>null</c> value comparison.
+        /// </summary>
+        /// <param name="column">
+        /// A <see cref="SqlColumn"/> to use as the operand in the expression.
+        /// </param>
+        /// <returns>
+        /// A <see cref="SqlUnaryExpression"/> that represents a <c>not-null</c> value comparison on
+        /// the value of the specified <paramref name="column"/>.
+        /// </returns>
+        /// <remarks>
+        /// If you pass <see langword="null"/> for the <paramref name="value"/> argument, it
+        /// will be automatically converted to <see cref="SqlConstant.Null"/>.
+        /// </remarks>
+        public static SqlUnaryExpression IsNotNull(SqlColumn column)
+        {
+            return new SqlUnaryExpression(column, SqlUnaryOperator.IsNotNull);
+        }
+
+        /// <summary>
         /// Creates a <see cref="SqlBinaryExpression"/> that represents an equality comparison.
         /// </summary>
         /// <param name="column">
