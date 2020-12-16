@@ -20,7 +20,7 @@ namespace Siqqle.Expressions
         internal SqlUnaryExpression(SqlExpression operand, SqlUnaryOperator @operator)
         {
             if (operand == null) throw new ArgumentNullException(nameof(operand));
-            operand = operand;
+            Operand = operand;
             Operator = @operator;
         }
 
