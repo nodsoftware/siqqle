@@ -305,15 +305,21 @@ namespace Siqqle.Text
 
             for (int index = 0; index < identifier.Segments.Length; index++)
             {
+                Action<string> write = (string value) => Write(value);
                 var segment = identifier.Segments[index];
                 if (index > 0)
                 {
                     WriteRaw(".");
-                    WriteRaw(Dialect.FormatIdentifier(segment));
+                    write = (string value) => WriteRaw(value);
+                }
+
+                if (index == identifier.Segments.Length - 1 && segment == "*")
+                {
+                    write(segment);
                 }
                 else
                 {
-                    Write(Dialect.FormatIdentifier(segment));
+                    write(Dialect.FormatIdentifier(segment));
                 }
             }
         }

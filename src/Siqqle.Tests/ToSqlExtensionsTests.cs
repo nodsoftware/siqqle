@@ -45,6 +45,19 @@ namespace Siqqle.Expressions.Tests
         }
 
         [Fact]
+        public void ToSql_WithSqlSelectStar_ReturnsSql()
+        {
+            const string expected = "SELECT * FROM [User] WHERE [Id] = 5";
+            var actual = Sql
+                .Select("*")
+                .From("User")
+                .Where(SqlExpression.Equal("Id", 5))
+                .ToSql();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void ToSql_WithSqlCast_ReturnsSql()
         {
             const string expected = "SELECT [Id], [Name], CAST([Age] AS FLOAT(10)) FROM [User] WHERE [Id] = 5";
@@ -189,6 +202,25 @@ namespace Siqqle.Expressions.Tests
             const string expected = "SELECT [o].[Id], [o].[CreatedOn], [oi].[ProductId], [oi].[ProductName], [oi].[Quantity], [oi].[UnitPrice], [oi].[Total] AS [ItemTotal] FROM [Order] [o] INNER JOIN [OrderItem] [oi] ON [o].[Id] = [oi].[OrderId]";
             var actual = Sql
                 .Select(order + "Id", order + "CreatedOn", orderItem + "ProductId", orderItem + "ProductName", orderItem + "Quantity", orderItem + "UnitPrice", itemTotal)
+                .From(order)
+                .InnerJoin(orderItem)
+                .On(SqlExpression.Equal(order + "Id", orderItem + "OrderId"))
+                .Go()
+                .ToSql();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ToSql_WithSqlSelectStarWithInnerJoin_ReturnsSql()
+        {
+            SqlTable order = new SqlTable("Order", "o");
+            SqlTable orderItem = new SqlTable("OrderItem", "oi");
+            SqlColumn itemTotal = new SqlColumn("oi.Total", "ItemTotal");
+
+            const string expected = "SELECT [o].[Id], [o].[CreatedOn], [o].*, [oi].[ProductId], [oi].[ProductName], [oi].[Quantity], [oi].[UnitPrice], [oi].[Total] AS [ItemTotal], [oi].* FROM [Order] [o] INNER JOIN [OrderItem] [oi] ON [o].[Id] = [oi].[OrderId]";
+            var actual = Sql
+                .Select(order + "Id", order + "CreatedOn", order + "*", orderItem + "ProductId", orderItem + "ProductName", orderItem + "Quantity", orderItem + "UnitPrice", itemTotal, orderItem + "*")
                 .From(order)
                 .InnerJoin(orderItem)
                 .On(SqlExpression.Equal(order + "Id", orderItem + "OrderId"))
