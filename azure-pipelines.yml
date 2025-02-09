@@ -36,21 +36,7 @@ jobs:
         inputs:
           command: "build"
           projects: "$(solution)"
-          arguments: '-c $(buildConfiguration) -p:PackageVersion="$(PackageVersion)" -p:AssemblyVersion="$(AssemblyVersion)" -p:FileVersion="$(FileVersion)" -p:ProductVersion="$(ProductVersion)" -p:Product="$(ProductName)" -o "$(Build.BinariesDirectory)"'
-
-      - task: CopyFiles@2
-        displayName: Preparing binaries
-        inputs:
-          SourceFolder: "$(Build.BinariesDirectory)"
-          Contents: "**"
-          TargetFolder: "$(Build.ArtifactStagingDirectory)"
-
-      - task: PublishBuildArtifacts@1
-        displayName: Publishing binaries
-        inputs:
-          PathtoPublish: "$(Build.ArtifactStagingDirectory)"
-          ArtifactName: "Binaries"
-          publishLocation: "Container"
+          arguments: '-c $(buildConfiguration) -p:PackageVersion="$(PackageVersion)" -p:AssemblyVersion="$(AssemblyVersion)" -p:FileVersion="$(FileVersion)" -p:ProductVersion="$(ProductVersion)" -p:Product="$(ProductName)"'
 
       - task: CopyFiles@2
         displayName: Preparing packages
@@ -76,7 +62,7 @@ jobs:
         inputs:
           command: "test"
           projects: "**/*Tests.csproj"
-          arguments: '-c $(buildConfiguration) --collect "XPlat Code coverage" -r "$(Build.StagingDirectory)/tests" -- RunConfiguration.DisableAppDomain=true'
+          arguments: '-c $(buildConfiguration) --collect "XPlat Code coverage" --results-directory "$(Build.StagingDirectory)/tests" -- RunConfiguration.DisableAppDomain=true'
 
       - task: PublishCodeCoverageResults@2
         displayName: Publishing code coverage results
