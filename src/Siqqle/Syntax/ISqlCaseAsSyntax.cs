@@ -1,10 +1,9 @@
 ﻿using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
+namespace Siqqle.Syntax;
+
+public interface ISqlCaseAsSyntax : ISqlSyntaxEnd
 {
-    public interface ISqlCaseAsSyntax : ISqlSyntaxEnd
-    {
-        SqlCase End();
-        SqlCase End(string alias);
-    }
+    SqlCase End();
+    SqlCase End(string alias);
 }

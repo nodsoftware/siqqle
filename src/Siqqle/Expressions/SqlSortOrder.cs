@@ -1,17 +1,17 @@
-﻿namespace Siqqle.Expressions
+﻿namespace Siqqle.Expressions;
+
+/// <summary>
+/// Represents all available sorting options in SQL.
+/// </summary>
+public enum SqlSortOrder
 {
     /// <summary>
-    /// Represents all available sorting options in SQL.
+    /// Represents ascending sort ordering.
     /// </summary>
-    public enum SqlSortOrder
-    {
-        /// <summary>
-        /// Represents ascending sort ordering.
-        /// </summary>
-        Ascending,
-        /// <summary>
-        /// Represents descending sort ordering.
-        /// </summary>
-        Descending
-    }
+    Ascending,
+
+    /// <summary>
+    /// Represents descending sort ordering.
+    /// </summary>
+    Descending,
 }

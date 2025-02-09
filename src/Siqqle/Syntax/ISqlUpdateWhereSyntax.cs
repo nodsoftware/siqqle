@@ -1,8 +1,5 @@
 ﻿using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
-{
-    public interface ISqlUpdateWhereSyntax : ISqlSyntaxEnd<SqlUpdate>
-    {
-    }
-}
+namespace Siqqle.Syntax;
+
+public interface ISqlUpdateWhereSyntax : ISqlSyntaxEnd<SqlUpdate> { }

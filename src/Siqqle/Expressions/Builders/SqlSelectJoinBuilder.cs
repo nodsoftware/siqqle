@@ -1,29 +1,17 @@
 ﻿using Siqqle.Syntax;
 
-namespace Siqqle.Expressions.Builders
+namespace Siqqle.Expressions.Builders;
+
+internal class SqlSelectJoinBuilder(SqlSelectFromBuilder builder, SqlJoin join)
+    : ISqlSelectJoinSyntax
 {
-    internal class SqlSelectJoinBuilder : ISqlSelectJoinSyntax
+    public SqlSelectFromBuilder Builder { get; } = builder;
+
+    public SqlJoin Join { get; } = join;
+
+    public ISqlSelectJoinOnSyntax On(SqlExpression predicate)
     {
-        public SqlSelectJoinBuilder(SqlSelectFromBuilder builder, SqlJoin join)
-        {
-            Builder = builder;
-            Join = join;
-        }
-
-        public SqlSelectFromBuilder Builder 
-        { 
-            get; 
-        }
-
-        public SqlJoin Join
-        {
-            get;
-        }
-
-        public ISqlSelectJoinOnSyntax On(SqlExpression predicate)
-        {
-            Join.On = new SqlOn(predicate);
-            return Builder;
-        }
+        Join.On = new SqlOn(predicate);
+        return Builder;
     }
 }

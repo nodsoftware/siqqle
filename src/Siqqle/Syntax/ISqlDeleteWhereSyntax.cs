@@ -1,8 +1,5 @@
 ﻿using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
-{
-    public interface ISqlDeleteWhereSyntax : ISqlSyntaxEnd<SqlDelete>
-    {
-    }
-}
+namespace Siqqle.Syntax;
+
+public interface ISqlDeleteWhereSyntax : ISqlSyntaxEnd<SqlDelete> { }

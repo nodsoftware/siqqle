@@ -1,6 +1,3 @@
-﻿namespace Siqqle.Syntax
-{
-    public interface ISqlSelectHavingSyntax : ISqlSelectOrderBySyntax
-    {
-    }
-}
+﻿namespace Siqqle.Syntax;
+
+public interface ISqlSelectHavingSyntax : ISqlSelectOrderBySyntax { }

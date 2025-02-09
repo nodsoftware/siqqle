@@ -1,24 +1,17 @@
 ﻿using Siqqle.Syntax;
-using System;
 
-namespace Siqqle.Expressions.Builders
+namespace Siqqle.Expressions.Builders;
+
+internal class SqlDeleteFromBuilder(SqlDeleteBuilder builder)
+    : ISqlDeleteFromSyntax,
+        ISqlDeleteWhereSyntax,
+        IHasSqlStatementBuilder<SqlDeleteBuilder, SqlDelete>
 {
-    internal class SqlDeleteFromBuilder : ISqlDeleteFromSyntax, ISqlDeleteWhereSyntax, IHasSqlStatementBuilder<SqlDeleteBuilder, SqlDelete>
+    public SqlDeleteBuilder Builder { get; } = builder;
+
+    public ISqlDeleteWhereSyntax Where(SqlExpression predicate)
     {
-        public SqlDeleteFromBuilder(SqlDeleteBuilder builder)
-        {
-            Builder = builder;
-        }
-
-        public SqlDeleteBuilder Builder
-        {
-            get;
-        }
-
-        public ISqlDeleteWhereSyntax Where(SqlExpression predicate)
-        {
-            Builder.Statement.Where = new SqlWhere(predicate);
-            return this;
-        }
+        Builder.Statement.Where = new SqlWhere(predicate);
+        return this;
     }
 }

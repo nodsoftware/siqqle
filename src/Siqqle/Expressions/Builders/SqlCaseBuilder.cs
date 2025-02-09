@@ -1,33 +1,28 @@
 using Siqqle.Syntax;
 
-namespace Siqqle.Expressions.Builders
+namespace Siqqle.Expressions.Builders;
+
+public class SqlCaseBuilder : SqlValueBuilder<SqlCase>, ISqlCaseSyntax, ISqlCaseValueSyntax
 {
-    public class SqlCaseBuilder : SqlValueBuilder<SqlCase>, ISqlCaseSyntax, ISqlCaseValueSyntax
+    internal SqlCaseBuilder()
+        : base(new SqlCase()) { }
+
+    internal SqlCaseBuilder(SqlValue value)
+        : base(new SqlCase(value)) { }
+
+    public ISqlCaseWhenSyntax When(SqlExpression condition)
     {
-        internal SqlCaseBuilder()
-            : base(new SqlCase())
-        {
-        }
+        var when = new SqlWhen(condition);
 
-        internal SqlCaseBuilder(SqlValue value)
-            : base(new SqlCase(value))
-        {
-        }
+        Value.AddWhen(when);
+        return new SqlCaseWhenBuilder(this, when);
+    }
 
-        public ISqlCaseWhenSyntax When(SqlExpression condition)
-        {
-            var when = new SqlWhen(condition);
+    ISqlCaseValueWhenSyntax ISqlCaseValueSyntax.When(SqlValue value)
+    {
+        var when = new SqlWhen(value);
 
-            Value.AddWhen(when);
-            return new SqlCaseWhenBuilder(this, when);
-        }
-
-        ISqlCaseValueWhenSyntax ISqlCaseValueSyntax.When(SqlValue value)
-        {
-            var when = new SqlWhen(value);
-
-            Value.AddWhen(when);
-            return new SqlCaseWhenBuilder(this, when);
-        }
+        Value.AddWhen(when);
+        return new SqlCaseWhenBuilder(this, when);
     }
 }

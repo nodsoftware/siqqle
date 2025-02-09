@@ -1,12 +1,8 @@
-﻿namespace Siqqle.Expressions.Builders
+﻿namespace Siqqle.Expressions.Builders;
+
+public interface IHasSqlStatementBuilder<out TBuilder, out TStatement>
+    where TBuilder : ISqlStatementBuilder<TStatement>
+    where TStatement : SqlStatement
 {
-    public interface IHasSqlStatementBuilder<out TBuilder, out TStatement>
-        where TBuilder : ISqlStatementBuilder<TStatement>
-        where TStatement : SqlStatement
-    {
-        TBuilder Builder
-        {
-            get;
-        }
-    }
+    TBuilder Builder { get; }
 }

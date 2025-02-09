@@ -1,9 +1,8 @@
 ﻿using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
+namespace Siqqle.Syntax;
+
+public interface ISqlSelectGroupBySyntax : ISqlSelectOrderBySyntax
 {
-    public interface ISqlSelectGroupBySyntax : ISqlSelectOrderBySyntax
-    {
-        ISqlSelectHavingSyntax Having(SqlExpression predicate);
-    }
+    ISqlSelectHavingSyntax Having(SqlExpression predicate);
 }

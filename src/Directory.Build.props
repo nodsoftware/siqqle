@@ -1,0 +1,77 @@
+<Project>
+  <!-- Define target frameworks. -->
+  <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Versioning and product name. -->
+  <PropertyGroup>
+    <SemanticVersion>5.0.0</SemanticVersion>
+
+    <PackageVersion Condition=" '$(PackageVersion)' == '' ">$(SemanticVersion)</PackageVersion>
+    <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(SemanticVersion)</AssemblyVersion>
+    <FileVersion Condition=" '$(FileVersion)' == '' ">$(SemanticVersion)</FileVersion>
+    <Product Condition=" '$(Product)' == '' ">$(AssemblyName) $(SemanticVersion)</Product>
+    <ProductVersion Condition=" '$(ProductVersion)' == '' ">$(SemanticVersion)</ProductVersion>
+  </PropertyGroup>
+
+  <!-- Define Debug and Release configurations. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <!-- Define NuGet package metadata. -->
+  <PropertyGroup>
+    <Version>$(PackageVersion)</Version>
+    <Authors>Wouter Demuynck</Authors>
+    <Description>Siqqle is a library eliminating the need for magic SQL strings in your code.</Description>
+    <Copyright Condition=" '$(Copyright)' == '' ">Copyright © 2012-$([System.DateTime]::Now.ToString(yyyy)) $(Authors)</Copyright>
+    <!--<PackageLicenseUrl>https://raw.githubusercontent.com/WouterDemuynck/popsql/master/LICENSE.md</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.github.com/WouterDemuynck/popsql/master/res/logo.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/WouterDemuynck/popsql</PackageProjectUrl>
+    <RepositoryUrl></RepositoryUrl>-->
+    <PackageTags>sql orm micro-orm database</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <!-- Assembly signing. -->
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Siqqle.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <!-- XML documentation settings. -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Globally treat warnings as errors. -->
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors>$(TreatWarningsAsErrors)</WarningsAsErrors>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- Enable analyzers. -->
+  <PropertyGroup>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <AnalysisMode>Minimum</AnalysisMode>
+  </PropertyGroup>
+
+  <!-- Set the default language version to the latest stable version. -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+</Project>

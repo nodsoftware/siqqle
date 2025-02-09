@@ -1,15 +1,12 @@
-﻿namespace Siqqle.Expressions
+﻿namespace Siqqle.Expressions;
+
+/// <summary>
+/// Represents a SQL statement clause.
+/// </summary>
+public abstract class SqlClause : SqlStatement
 {
     /// <summary>
-    /// Represents a SQL statement clause.
+    /// Initializes a new instance of the <see cref="SqlClause"/> class.
     /// </summary>
-    public abstract class SqlClause : SqlStatement
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SqlClause"/> class.
-        /// </summary>
-        protected SqlClause()
-        {
-        }
-    }
+    protected SqlClause() { }
 }

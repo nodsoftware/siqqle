@@ -1,152 +1,151 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Siqqle.Expressions.Visitors
+namespace Siqqle.Expressions.Visitors;
+
+/// <summary>
+/// Provides extension methods that allow accepting visitors on specific collection types.
+/// </summary>
+public static class SqlVisitorExtensions
 {
     /// <summary>
-    /// Provides extension methods that allow accepting visitors on specific collection types.
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
     /// </summary>
-    public static class SqlVisitorExtensions
+    /// <param name="source">
+    /// The collection of <see cref="SqlColumn"/> expressions on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this IEnumerable<SqlColumn> source, ISqlVisitor visitor)
     {
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="source">
-        /// The collection of <see cref="SqlColumn"/> expressions on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this IEnumerable<SqlColumn> source, ISqlVisitor visitor)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(source);
-        }
+        visitor.Visit(source);
+    }
 
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="source">
-        /// The collection of <see cref="SqlValue"/> expression sets on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this IEnumerable<IEnumerable<SqlValue>> source, ISqlVisitor visitor)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+    /// <summary>
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
+    /// </summary>
+    /// <param name="source">
+    /// The collection of <see cref="SqlValue"/> expression sets on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this IEnumerable<IEnumerable<SqlValue>> source, ISqlVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(source);
-        }
+        visitor.Visit(source);
+    }
 
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="source">
-        /// The collection of <see cref="SqlValue"/> expressions on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this IEnumerable<SqlValue> source, ISqlVisitor visitor)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+    /// <summary>
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
+    /// </summary>
+    /// <param name="source">
+    /// The collection of <see cref="SqlValue"/> expressions on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this IEnumerable<SqlValue> source, ISqlVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(source);
-        }
+        visitor.Visit(source);
+    }
 
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="source">
-        /// The collection of <see cref="SqlSort"/> expressions on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this IEnumerable<SqlSort> source, ISqlVisitor visitor)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+    /// <summary>
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
+    /// </summary>
+    /// <param name="source">
+    /// The collection of <see cref="SqlSort"/> expressions on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this IEnumerable<SqlSort> source, ISqlVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(source);
-        }
+        visitor.Visit(source);
+    }
 
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="source">
-        /// The collection of <see cref="SqlAssign"/> expressions on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this IEnumerable<SqlAssign> source, ISqlVisitor visitor)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+    /// <summary>
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
+    /// </summary>
+    /// <param name="source">
+    /// The collection of <see cref="SqlAssign"/> expressions on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this IEnumerable<SqlAssign> source, ISqlVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(source);
-        }
+        visitor.Visit(source);
+    }
 
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="operator">
-        /// The <see cref="SqlUnaryOperator"/> on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this SqlUnaryOperator @operator, ISqlVisitor visitor)
-        {
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+    /// <summary>
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
+    /// </summary>
+    /// <param name="operator">
+    /// The <see cref="SqlUnaryOperator"/> on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this SqlUnaryOperator @operator, ISqlVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(@operator);
-        }
+        visitor.Visit(@operator);
+    }
 
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="operator">
-        /// The <see cref="SqlBinaryOperator"/> on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this SqlBinaryOperator @operator, ISqlVisitor visitor)
-        {
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+    /// <summary>
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
+    /// </summary>
+    /// <param name="operator">
+    /// The <see cref="SqlBinaryOperator"/> on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this SqlBinaryOperator @operator, ISqlVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(@operator);
-        }
+        visitor.Visit(@operator);
+    }
 
-        /// <summary>
-        /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
-        /// methods for this object.
-        /// </summary>
-        /// <param name="sortOrder">
-        /// The <see cref="SqlSortOrder"/> on which to accept the visitor.
-        /// </param>
-        /// <param name="visitor">
-        /// The <see cref="ISqlVisitor" /> to visit this object with.
-        /// </param>
-        public static void Accept(this SqlSortOrder sortOrder, ISqlVisitor visitor)
-        {
-            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
+    /// <summary>
+    /// Accepts the specified <paramref name="visitor"/> and dispatches calls to the specific visitor
+    /// methods for this object.
+    /// </summary>
+    /// <param name="sortOrder">
+    /// The <see cref="SqlSortOrder"/> on which to accept the visitor.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor" /> to visit this object with.
+    /// </param>
+    public static void Accept(this SqlSortOrder sortOrder, ISqlVisitor visitor)
+    {
+        ArgumentNullException.ThrowIfNull(visitor);
 
-            visitor.Visit(sortOrder);
-        }
+        visitor.Visit(sortOrder);
     }
 }

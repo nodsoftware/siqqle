@@ -1,39 +1,38 @@
 ﻿using Siqqle.Text;
-namespace Siqqle.Dialects.SqlServer
+
+namespace Siqqle.Dialects.SqlServer;
+
+/// <summary>
+/// Provides support for the <b>SQL Server (T-SQL)</b> SQL dialect.
+/// </summary>
+public class SqlServerDialect : SqlDialect
 {
     /// <summary>
-    /// Provides support for the <b>SQL Server (T-SQL)</b> SQL dialect.
+    /// Initializes a new instance of the <see cref="SqlServerDialect"/> class.
     /// </summary>
-    public class SqlServerDialect : SqlDialect
+    public SqlServerDialect() { }
+
+    /// <summary>
+    /// Writes the specified result set limitation for the current SQL dialect.
+    /// Writes the <c>OFFSET <paramref name="offset"/> ROWS FETCH FIRST <paramref name="count"/> ROWS ONLY</c> clause
+    /// to the output <paramref name="writer"/>.
+    /// syntax.
+    /// </summary>
+    /// <param name="writer">
+    /// The <see cref="SqlWriter"/> to write to.
+    /// </param>
+    /// <param name="offset">
+    /// The row offset at which to start.
+    /// </param>
+    /// <param name="count">
+    /// The number of rows to fetch.
+    /// </param>
+    public override void WriteLimit(SqlWriter writer, int? offset, int? count)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SqlServerDialect"/> class.
-        /// </summary>
-        public SqlServerDialect()
-        {
-        }
+        // SQL Server requires an offset...
+        if (offset == null && count != null)
+            offset = 0;
 
-        /// <summary>
-        /// Writes the specified result set limitation for the current SQL dialect. 
-        /// Writes the <c>OFFSET <paramref name="offset"/> ROWS FETCH FIRST <paramref name="count"/> ROWS ONLY</c> clause
-        /// to the output <paramref name="writer"/>.
-        /// syntax.
-        /// </summary>
-        /// <param name="writer">
-        /// The <see cref="SqlWriter"/> to write to.
-        /// </param>
-        /// <param name="offset">
-        /// The row offset at which to start.
-        /// </param>
-        /// <param name="count">
-        /// The number of rows to fetch.
-        /// </param>
-        public override void WriteLimit(SqlWriter writer, int? offset, int? count)
-        {
-            // SQL Server requires an offset...
-            if (offset == null && count != null) offset = 0;
-
-            base.WriteLimit(writer, offset, count);
-        }
+        base.WriteLimit(writer, offset, count);
     }
 }

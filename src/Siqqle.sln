@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siqqle", "Siqqle\Siqqle.csproj", "{5AC47E88-A80C-4F5D-9453-9C70EA319CE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siqqle.Tests", "Siqqle.Tests\Siqqle.Tests.csproj", "{A0742333-B648-4F98-A8D3-ED3773FE28FE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siqqle.Dialects.SqlServer", "Siqqle.Dialects.SqlServer\Siqqle.Dialects.SqlServer.csproj", "{37132484-FA1A-4309-BC44-D4556EDBF9DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siqqle.Dialects.MySql", "Siqqle.Dialects.MySql\Siqqle.Dialects.MySql.csproj", "{05B75BA1-C0B5-4431-9804-64B395589EB4}"
@@ -14,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siqqle.Dialects.SQLite", "Siqqle.Dialects.SQLite\Siqqle.Dialects.SQLite.csproj", "{57C06187-829D-4E88-849D-0FC7C44CA854}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siqqle.Dapper", "Siqqle.Dapper\Siqqle.Dapper.csproj", "{B80F557C-890B-47AF-B4D5-56999B9FD5E1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siqqle.Tests", "..\tests\Siqqle.Tests\Siqqle.Tests.csproj", "{A0742333-B648-4F98-A8D3-ED3773FE28FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

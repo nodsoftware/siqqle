@@ -1,8 +1,7 @@
-﻿namespace Siqqle.Expressions.Builders
+﻿namespace Siqqle.Expressions.Builders;
+
+public interface ISqlStatementBuilder<out TStatement>
+    where TStatement : SqlStatement
 {
-    public interface ISqlStatementBuilder<out TStatement>
-        where TStatement : SqlStatement
-    {
-        TStatement Build();
-    }
+    TStatement Build();
 }

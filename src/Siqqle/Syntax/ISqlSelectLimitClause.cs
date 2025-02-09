@@ -1,8 +1,5 @@
 ﻿using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
-{
-    public interface ISqlSelectLimitClause : ISqlSyntaxEnd<SqlSelect>
-    {
-    }
-}
+namespace Siqqle.Syntax;
+
+public interface ISqlSelectLimitClause : ISqlSyntaxEnd<SqlSelect> { }

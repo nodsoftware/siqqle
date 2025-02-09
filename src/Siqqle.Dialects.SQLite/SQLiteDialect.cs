@@ -1,9 +1,6 @@
-﻿namespace Siqqle.Dialects.SQLite
+﻿namespace Siqqle.Dialects.SQLite;
+
+public class SQLiteDialect : SqlDialect
 {
-    public class SQLiteDialect : SqlDialect
-    {
-        public SQLiteDialect()
-        {
-        }
-    }
+    public SQLiteDialect() { }
 }

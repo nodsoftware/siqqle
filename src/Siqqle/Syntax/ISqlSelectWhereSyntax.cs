@@ -1,9 +1,8 @@
 using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
+namespace Siqqle.Syntax;
+
+public interface ISqlSelectWhereSyntax : ISqlSelectOrderBySyntax
 {
-    public interface ISqlSelectWhereSyntax : ISqlSelectOrderBySyntax
-    {
-        ISqlSelectGroupBySyntax GroupBy(SqlColumn column);
-    }
+    ISqlSelectGroupBySyntax GroupBy(SqlColumn column);
 }

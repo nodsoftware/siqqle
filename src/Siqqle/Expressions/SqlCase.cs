@@ -1,51 +1,34 @@
-using Siqqle.Expressions.Visitors;
 using System.Collections.Generic;
 
-namespace Siqqle.Expressions
+namespace Siqqle.Expressions;
+
+public class SqlCase : SqlValue
 {
-    public class SqlCase : SqlValue
+    private List<SqlWhen> _when;
+
+    public SqlCase() { }
+
+    public SqlCase(SqlValue value)
     {
-        private List<SqlWhen> _when;
+        Value = value;
+    }
 
-        public SqlCase()
-        {
-        }
+    public IReadOnlyCollection<SqlWhen> When => _when ?? (_when = new List<SqlWhen>());
 
-        public SqlCase(SqlValue value)
-        {
-            Value = value;
-        }
-        
-        public IReadOnlyCollection<SqlWhen> When
-            => _when ?? (_when = new List<SqlWhen>());
+    public SqlValue Value { get; }
 
-        public SqlValue Value
-        {
-            get;
-        }
+    public SqlElse Else { get; internal set; }
 
-        public SqlElse Else
-        {
-            get;
-            internal set;
-        }
-            
-        public string Alias
-        {
-            get;
-            internal set;
-        }
+    public string Alias { get; internal set; }
 
-        public override SqlExpressionType ExpressionType
-            => SqlExpressionType.Case;
+    public override SqlExpressionType ExpressionType => SqlExpressionType.Case;
 
-        internal void AddWhen(SqlWhen when)
+    internal void AddWhen(SqlWhen when)
+    {
+        if (_when == null)
         {
-            if (_when == null)
-            {
-                _when = new List<SqlWhen>();
-            }
-            _when.Add(when);
+            _when = new List<SqlWhen>();
         }
+        _when.Add(when);
     }
 }

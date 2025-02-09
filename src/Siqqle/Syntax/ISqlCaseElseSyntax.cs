@@ -1,6 +1,3 @@
-﻿namespace Siqqle.Syntax
-{
-    public interface ISqlCaseElseSyntax : ISqlCaseAsSyntax, ISqlSyntaxEnd
-    {
-    }
-}
+﻿namespace Siqqle.Syntax;
+
+public interface ISqlCaseElseSyntax : ISqlCaseAsSyntax, ISqlSyntaxEnd { }

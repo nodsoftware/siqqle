@@ -1,6 +1,3 @@
-namespace Siqqle.Syntax
-{
-    public interface ISqlSelectJoinOnSyntax : ISqlSelectFromSyntax
-    {
-    }
-}
+namespace Siqqle.Syntax;
+
+public interface ISqlSelectJoinOnSyntax : ISqlSelectFromSyntax { }

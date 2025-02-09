@@ -1,13 +1,8 @@
 using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
-{
-    public interface ISqlSyntaxEnd
-    {
-    }
+namespace Siqqle.Syntax;
 
-    public interface ISqlSyntaxEnd<out TStatement> : ISqlSyntaxEnd
-        where TStatement : SqlStatement
-    {
-    }
-}
+public interface ISqlSyntaxEnd { }
+
+public interface ISqlSyntaxEnd<out TStatement> : ISqlSyntaxEnd
+    where TStatement : SqlStatement { }

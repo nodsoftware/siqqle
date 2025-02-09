@@ -1,8 +1,7 @@
-﻿namespace Siqqle.Expressions.Builders
+﻿namespace Siqqle.Expressions.Builders;
+
+public interface ISqlValueBuilder<out TValue>
+    where TValue : SqlValue
 {
-    public interface ISqlValueBuilder<out TValue>
-        where TValue : SqlValue
-    {
-        TValue Build();
-    }    
+    TValue Build();
 }

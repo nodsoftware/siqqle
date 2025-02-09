@@ -2,26 +2,21 @@
 using System.Linq;
 using Siqqle.Syntax;
 
-namespace Siqqle.Expressions.Builders
+namespace Siqqle.Expressions.Builders;
+
+internal class SqlInsertIntoBuilder(SqlInsertBuilder builder)
+    : ISqlInsertIntoSyntax,
+        ISqlInsertValuesSyntax,
+        IHasSqlStatementBuilder<SqlInsertBuilder, SqlInsert>
 {
-    internal class SqlInsertIntoBuilder : ISqlInsertIntoSyntax, ISqlInsertValuesSyntax, IHasSqlStatementBuilder<SqlInsertBuilder, SqlInsert>
+    public SqlInsertBuilder Builder { get; } = builder;
+
+    public ISqlInsertValuesSyntax Values(params SqlValue[] values)
     {
-        public SqlInsertIntoBuilder(SqlInsertBuilder builder)
-        {
-            Builder = builder;
-        }
+        if (values == null || values.Length == 0)
+            throw new ArgumentNullException(nameof(values));
 
-        public SqlInsertBuilder Builder
-        {
-            get;
-        }
-
-        public ISqlInsertValuesSyntax Values(params SqlValue[] values)
-        {
-            if (values == null || !values.Any()) throw new ArgumentNullException(nameof(values));
-
-            Builder.Statement.Values.Add(values);
-            return this;
-        }
+        Builder.Statement.Values.Add(values);
+        return this;
     }
 }

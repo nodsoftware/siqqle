@@ -1,6 +1,3 @@
-namespace Siqqle.Syntax
-{
-    public interface ISqlSyntax
-    {
-    }
-}
+namespace Siqqle.Syntax;
+
+public interface ISqlSyntax { }

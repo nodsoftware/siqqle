@@ -1,9 +1,8 @@
 ﻿using Siqqle.Expressions;
 
-namespace Siqqle.Syntax
+namespace Siqqle.Syntax;
+
+public interface ISqlCaseValueWhenSyntax
 {
-    public interface ISqlCaseValueWhenSyntax
-    {
-        ISqlCaseValueThenSyntax Then(SqlValue value);
-    }
+    ISqlCaseValueThenSyntax Then(SqlValue value);
 }

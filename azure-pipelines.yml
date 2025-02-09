@@ -4,14 +4,14 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 trigger:
-- master
+  - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: "windows-latest"
 
 variables:
-  solution: '**/*.sln'
-  buildConfiguration: 'Release'
+  solution: "**/*.sln"
+  buildConfiguration: "Release"
 
 jobs:
   - job: Build
@@ -22,51 +22,51 @@ jobs:
       - task: DotNetCoreCLI@2
         displayName: Restoring Nuget packages
         inputs:
-          command: 'restore'
-          projects: '$(solution)'
+          command: "restore"
+          projects: "$(solution)"
 
       - task: PowerShell@2
         displayName: Generating version number
         inputs:
-          filePath: '$(Build.SourcesDirectory)/build/version.ps1'
-          workingDirectory: '$(Build.SourcesDirectory)'
-      
+          filePath: "$(Build.SourcesDirectory)/build/Update-Version.ps1"
+          workingDirectory: "$(Build.SourcesDirectory)"
+
       - task: DotNetCoreCLI@2
         displayName: Building solution
         inputs:
-          command: 'build'
-          projects: '$(solution)'
+          command: "build"
+          projects: "$(solution)"
           arguments: '-c $(buildConfiguration) -p:PackageVersion="$(PackageVersion)" -p:AssemblyVersion="$(AssemblyVersion)" -p:FileVersion="$(FileVersion)" -p:ProductVersion="$(ProductVersion)" -p:Product="$(ProductName)"'
 
       - task: CopyFiles@2
         displayName: Preparing binaries
         inputs:
-          SourceFolder: '$(Build.BinariesDirectory)'
-          Contents: '**'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          SourceFolder: "$(Build.BinariesDirectory)"
+          Contents: "**"
+          TargetFolder: "$(Build.ArtifactStagingDirectory)"
 
       - task: PublishBuildArtifacts@1
         displayName: Publishing binaries
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'Binaries'
-          publishLocation: 'Container'
+          PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+          ArtifactName: "Binaries"
+          publishLocation: "Container"
 
       - task: CopyFiles@2
         displayName: Preparing packages
         inputs:
-          SourceFolder: '$(Build.SourcesDirectory)'
-          Contents: '**/bin/$(buildConfiguration)/**/*.nupkg'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          SourceFolder: "$(Build.SourcesDirectory)"
+          Contents: "**/bin/$(buildConfiguration)/**/*.nupkg"
+          TargetFolder: "$(Build.ArtifactStagingDirectory)"
           CleanTargetFolder: true
           flattenFolders: true
 
       - task: PublishBuildArtifacts@1
         displayName: Publishing packages
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'Packages'
-          publishLocation: 'Container'
+          PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+          ArtifactName: "Packages"
+          publishLocation: "Container"
 
   - job: Test
     dependsOn: Build
@@ -74,15 +74,15 @@ jobs:
       - task: DotNetCoreCLI@2
         displayName: Running unit tests
         inputs:
-          command: 'test'
-          projects: '**/*Tests.csproj'
+          command: "test"
+          projects: "**/*Tests.csproj"
           arguments: '-c $(buildConfiguration) --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true'
 
       - task: PublishCodeCoverageResults@1
-        displayName: Publishing code coverage results  
-        inputs:  
-          codeCoverageTool: Cobertura  
-          summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+        displayName: Publishing code coverage results
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: "$(Agent.TempDirectory)/**/coverage.cobertura.xml"
 
   - job: Publish
     dependsOn: Test
@@ -90,14 +90,14 @@ jobs:
       - task: DownloadPipelineArtifact@2
         displayName: Downloading packages
         inputs:
-          buildType: 'current'
-          artifactName: 'Packages'
-          targetPath: '$(Pipeline.Workspace)'
-      
+          buildType: "current"
+          artifactName: "Packages"
+          targetPath: "$(Pipeline.Workspace)"
+
       - task: DotNetCoreCLI@2
         displayName: Publishing packages to feed
         inputs:
-          command: 'push'
-          packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg'
-          nuGetFeedType: 'internal'
-          publishVstsFeed: '3217e703-6082-4eae-98ab-928df738a396/220f50b0-b82e-4725-bb50-845ac1838fe3'
+          command: "push"
+          packagesToPush: "$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg"
+          nuGetFeedType: "internal"
+          publishVstsFeed: "3217e703-6082-4eae-98ab-928df738a396/220f50b0-b82e-4725-bb50-845ac1838fe3"

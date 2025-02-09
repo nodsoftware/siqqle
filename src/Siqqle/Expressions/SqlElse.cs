@@ -1,18 +1,8 @@
-namespace Siqqle.Expressions
+namespace Siqqle.Expressions;
+
+public class SqlElse(SqlValue value) : SqlClause
 {
-    public class SqlElse : SqlClause
-    {
-        public SqlElse(SqlValue value)
-        {
-            Value = value;
-        }
+    public SqlValue Value { get; } = value;
 
-        public SqlValue Value
-        {
-            get;
-        }
-
-        public override SqlExpressionType ExpressionType
-            => SqlExpressionType.Else;
-    }
+    public override SqlExpressionType ExpressionType => SqlExpressionType.Else;
 }
