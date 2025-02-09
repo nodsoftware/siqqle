@@ -62,12 +62,7 @@ jobs:
         inputs:
           command: "test"
           projects: "**/*Tests.csproj"
-          arguments: '-c $(buildConfiguration) --collect "XPlat Code coverage" --results-directory "$(Build.StagingDirectory)/tests"'
-
-      - task: PublishCodeCoverageResults@2
-        displayName: Publishing code coverage results
-        inputs:
-          summaryFileLocation: "$(Build.StagingDirectory)/tests/**/coverage.cobertura.xml"
+          arguments: '-c $(buildConfiguration) --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true'
 
   - job: Publish
     dependsOn: Test
