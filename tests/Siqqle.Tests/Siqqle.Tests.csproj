@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Siqqle\Siqqle.csproj" />
+    <ProjectReference Include="..\..\src\Siqqle.Dialects.SqlServer\Siqqle.Dialects.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -65,17 +65,17 @@ public class SqlConstantTests
     [Fact]
     public void Equals_WithNullArgument_ReturnsFalse()
     {
-        SqlConstant first = new SqlConstant(5);
+        SqlConstant first = new(5);
 
         Assert.False(first.Equals((object)null));
-        Assert.False(first.Equals((SqlConstant)null));
+        Assert.False(first.Equals(null));
     }
 
     [Fact]
     public void Equals_WithNullValueAndNullArgument_ReturnsTrue()
     {
-        SqlConstant first = new SqlConstant(null);
-        SqlConstant second = new SqlConstant(null);
+        SqlConstant first = new(null);
+        SqlConstant second = new(null);
 
         Assert.True(first.Equals(second));
     }
@@ -83,7 +83,7 @@ public class SqlConstantTests
     [Fact]
     public void Equals_WithArgumentOfDifferentType_ReturnsFalse()
     {
-        SqlConstant first = new SqlConstant(5);
+        SqlConstant first = new(5);
         string second = "The rain in Spain falls mainly on the plain.";
 
         Assert.False(first.Equals(second));
@@ -92,7 +92,7 @@ public class SqlConstantTests
     [Fact]
     public void Equals_WithNullValueAndNonNullArgument_ReturnsFalse()
     {
-        SqlConstant first = new SqlConstant(null);
+        SqlConstant first = new(null);
         SqlValue second = "The rain in Spain falls mainly on the plain.";
 
         Assert.False(first.Equals(second));

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using Siqqle.Dialects;
 using Siqqle.Expressions;
+using Siqqle.Expressions.Visitors;
 
 namespace Siqqle.Text;
 
@@ -296,12 +298,12 @@ public class SqlWriter : IDisposable
 
         for (int index = 0; index < identifier.Segments.Length; index++)
         {
-            Action<string> write = (string value) => Write(value);
+            Action<string> write = Write;
             var segment = identifier.Segments[index];
             if (index > 0)
             {
                 WriteRaw(".");
-                write = (string value) => WriteRaw(value);
+                write = WriteRaw;
             }
 
             if (index == identifier.Segments.Length - 1 && segment == "*")
@@ -319,6 +321,16 @@ public class SqlWriter : IDisposable
     {
         EnsureNotDisposed();
         Dialect.WriteLimit(this, offset, count);
+    }
+
+    internal void WriteCall(
+        ISqlVisitor visitor,
+        string procedureName,
+        IEnumerable<SqlValue> arguments
+    )
+    {
+        EnsureNotDisposed();
+        Dialect.WriteCall(this, visitor, procedureName, [.. arguments]);
     }
 
     /// <summary>
@@ -511,6 +523,22 @@ public class SqlWriter : IDisposable
         if (string.IsNullOrWhiteSpace(parameterName))
             throw new ArgumentNullException(nameof(parameterName));
         Write(Dialect.FormatParameterName(parameterName));
+    }
+
+    /// <summary>
+    /// Writes a comma to the output stream.
+    /// </summary>
+    public void WriteComma()
+    {
+        WriteRaw(",");
+    }
+
+    /// <summary>
+    /// Writes a semicolon to the output stream.
+    /// </summary>
+    public void WriteDelimiter()
+    {
+        WriteRaw(";");
     }
 
     /// <summary>

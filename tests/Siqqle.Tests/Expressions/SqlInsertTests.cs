@@ -57,7 +57,7 @@ public class SqlInsertTests
     {
         var insert = Sql.Insert().Into("User");
 
-        Assert.Throws<ArgumentNullException>(() => insert.Values((SqlValue[])null));
+        Assert.Throws<ArgumentNullException>(() => insert.Values(null));
     }
 
     [Fact]

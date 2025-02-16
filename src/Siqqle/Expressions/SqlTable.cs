@@ -81,12 +81,12 @@ public class SqlTable : SqlTableExpression
         SqlIdentifier identifier;
         if (table.Alias != null)
         {
-            identifier = new SqlIdentifier(new[] { table.Alias, columnName });
+            identifier = new SqlIdentifier([table.Alias, columnName]);
         }
         else
         {
             var segments = table.TableName.Segments;
-            identifier = new SqlIdentifier(segments.Concat(new[] { columnName }).ToArray());
+            identifier = new SqlIdentifier(segments.Concat([columnName]).ToArray());
         }
         return new SqlColumn(identifier, null);
     }

@@ -34,7 +34,7 @@ public partial class SqlUpdate : SqlStatement
     /// <summary>
     /// Gets the values assigned by this <see cref="SqlUpdate"/>.
     /// </summary>
-    public SqlSet Set => _set = (_set ?? new SqlSet());
+    public SqlSet Set => _set ??= [];
 
     /// <summary>
     /// Gets the predicate determining which rows are updated by this SQL UPDATE statement.

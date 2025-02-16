@@ -35,7 +35,7 @@ public class SqlDataTypeNameTests
         Assert.Equal(expected, keyword.Name);
     }
 
-    private static readonly SqlDataTypeName self = new SqlDataTypeName("FOOBAR");
+    private static readonly SqlDataTypeName self = new("FOOBAR");
 
     [Theory]
     [MemberData(nameof(GetEqualityComparisonData), false)]
@@ -67,7 +67,7 @@ public class SqlDataTypeNameTests
         {
             yield return new object[] { "FOOBAR", false };
         }
-        yield return new object[] { (SqlDataTypeName)null, false };
+        yield return new object[] { null, false };
         yield return new object[] { new SqlDataTypeName("NONE"), false };
         yield return new object[] { new SqlDataTypeName("FOOBAR"), true };
         yield return new object[] { self, true };

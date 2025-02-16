@@ -154,12 +154,29 @@ public enum SqlExpressionType
     /// Represents a SQL CAST expression.
     /// </summary>
     Cast,
+
+    /// <summary>
+    /// Represents a SQL CASE expression.
+    /// </summary>
     Case,
+
+    /// <summary>
+    /// Represents a SQL WHEN clause.
+    /// </summary>
     When,
+
+    /// <summary>
+    /// Represents a SQL ELSE clause.
+    /// </summary>
     Else,
 
     /// <summary>
     /// Represents a batch of SQL statements.
     /// </summary>
     Batch,
+
+    /// <summary>
+    /// Represents a SQL CALL statement.
+    /// </summary>
+    Call,
 }

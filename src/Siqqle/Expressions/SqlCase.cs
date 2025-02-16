@@ -13,7 +13,7 @@ public class SqlCase : SqlValue
         Value = value;
     }
 
-    public IReadOnlyCollection<SqlWhen> When => _when ?? (_when = new List<SqlWhen>());
+    public IReadOnlyCollection<SqlWhen> When => _when ?? (_when = []);
 
     public SqlValue Value { get; }
 
@@ -27,7 +27,7 @@ public class SqlCase : SqlValue
     {
         if (_when == null)
         {
-            _when = new List<SqlWhen>();
+            _when = [];
         }
         _when.Add(when);
     }

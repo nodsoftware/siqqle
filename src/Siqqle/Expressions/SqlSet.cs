@@ -17,7 +17,7 @@ public class SqlSet : SqlClause, IReadOnlyCollection<SqlAssign>
     /// </summary>
     public SqlSet()
     {
-        _assignExpressions = new List<SqlAssign>();
+        _assignExpressions = [];
     }
 
     /// <summary>

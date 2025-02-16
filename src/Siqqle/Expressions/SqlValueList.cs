@@ -18,7 +18,7 @@ public class SqlValueList : SqlValue
     /// </param>
     internal SqlValueList(IEnumerable<SqlValue> values)
     {
-        _values = new List<SqlValue>(values ?? Enumerable.Empty<SqlValue>());
+        _values = [.. values ?? Enumerable.Empty<SqlValue>()];
     }
 
     /// <summary>

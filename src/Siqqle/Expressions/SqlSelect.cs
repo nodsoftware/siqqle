@@ -50,7 +50,7 @@ public class SqlSelect : SqlStatement
     /// <summary>
     /// Gets the collection of sorting clauses determining the result ordering of this SQL SELECT statement.
     /// </summary>
-    public SqlOrderBy OrderBy => _orderBy ?? (_orderBy = new SqlOrderBy());
+    public SqlOrderBy OrderBy => _orderBy ?? (_orderBy = []);
 
     /// <summary>
     /// Gets the fetching offset and count of this SQL SELECT statement.

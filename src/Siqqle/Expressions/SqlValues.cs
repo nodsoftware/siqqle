@@ -17,7 +17,7 @@ public class SqlValues : SqlClause, IReadOnlyCollection<IEnumerable<SqlValue>>
     /// </summary>
     public SqlValues()
     {
-        _values = new List<IEnumerable<SqlValue>>();
+        _values = [];
     }
 
     /// <summary>

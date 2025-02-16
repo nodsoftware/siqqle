@@ -16,7 +16,7 @@ internal class SqlIdentifierParser
             );
 
         var tokens = new List<string>();
-        StringBuilder currentToken = new StringBuilder();
+        StringBuilder currentToken = new();
         bool isQuoted = false;
         bool isDelimited = false;
         for (int currentIndex = 0; currentIndex < identifier.Length; currentIndex++)

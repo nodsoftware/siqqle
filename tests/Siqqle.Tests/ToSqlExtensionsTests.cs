@@ -1,4 +1,6 @@
 ﻿using System;
+using Siqqle.Dialects;
+using Siqqle.Dialects.SqlServer;
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
 using Xunit;
@@ -191,9 +193,9 @@ public partial class ToSqlExtensionsTests
     [Fact]
     public void ToSql_WithSqlSelectWithInnerJoin_ReturnsSql()
     {
-        SqlTable order = new SqlTable("Order", "o");
-        SqlTable orderItem = new SqlTable("OrderItem", "oi");
-        SqlColumn itemTotal = new SqlColumn("oi.Total", "ItemTotal");
+        SqlTable order = new("Order", "o");
+        SqlTable orderItem = new("OrderItem", "oi");
+        SqlColumn itemTotal = new("oi.Total", "ItemTotal");
 
         const string expected =
             "SELECT [o].[Id], [o].[CreatedOn], [oi].[ProductId], [oi].[ProductName], [oi].[Quantity], [oi].[UnitPrice], [oi].[Total] AS [ItemTotal] FROM [Order] [o] INNER JOIN [OrderItem] [oi] ON [o].[Id] = [oi].[OrderId]";
@@ -218,9 +220,9 @@ public partial class ToSqlExtensionsTests
     [Fact]
     public void ToSql_WithSqlSelectStarWithInnerJoin_ReturnsSql()
     {
-        SqlTable order = new SqlTable("Order", "o");
-        SqlTable orderItem = new SqlTable("OrderItem", "oi");
-        SqlColumn itemTotal = new SqlColumn("oi.Total", "ItemTotal");
+        SqlTable order = new("Order", "o");
+        SqlTable orderItem = new("OrderItem", "oi");
+        SqlColumn itemTotal = new("oi.Total", "ItemTotal");
 
         const string expected =
             "SELECT [o].[Id], [o].[CreatedOn], [o].*, [oi].[ProductId], [oi].[ProductName], [oi].[Quantity], [oi].[UnitPrice], [oi].[Total] AS [ItemTotal], [oi].* FROM [Order] [o] INNER JOIN [OrderItem] [oi] ON [o].[Id] = [oi].[OrderId]";
@@ -247,8 +249,8 @@ public partial class ToSqlExtensionsTests
     [Fact]
     public void ToSql_WithSqlSelectWithRightJoin_ReturnsSql()
     {
-        SqlTable order = new SqlTable("Order", "o");
-        SqlTable employee = new SqlTable("Employee", "e");
+        SqlTable order = new("Order", "o");
+        SqlTable employee = new("Employee", "e");
 
         const string expected =
             "SELECT [o].[Id], [e].[Name] FROM [Order] [o] RIGHT JOIN [Employee] [e] ON [o].[EmployeeId] = [e].[Id]";
@@ -265,7 +267,7 @@ public partial class ToSqlExtensionsTests
     [Fact]
     public void ToSql_WithSqlSelectWithMultipleSortExpressions_ReturnsSql()
     {
-        SqlTable people = new SqlTable("People", "p");
+        SqlTable people = new("People", "p");
 
         const string expected =
             "SELECT [p].[Id], [p].[FirstName], [p].[LastName] FROM [People] [p] ORDER BY [p].[LastName], [p].[FirstName], [p].[CreatedOn] DESC";
@@ -283,7 +285,7 @@ public partial class ToSqlExtensionsTests
     [Fact]
     public void ToSql_WithSqlSelectWithLimit_ReturnsSql()
     {
-        SqlTable people = new SqlTable("People", "p");
+        SqlTable people = new("People", "p");
 
         const string expected =
             "SELECT [p].[Id], [p].[FirstName], [p].[LastName] FROM [People] [p] ORDER BY [p].[LastName], [p].[FirstName], [p].[CreatedOn] DESC OFFSET 42 ROWS FETCH FIRST 25 ROWS ONLY";
@@ -302,7 +304,7 @@ public partial class ToSqlExtensionsTests
     [Fact]
     public void ToSql_WithSqlSelectWithLimitWithCountOnly_ReturnsSql()
     {
-        SqlTable people = new SqlTable("People", "p");
+        SqlTable people = new("People", "p");
 
         const string expected =
             "SELECT [p].[Id], [p].[FirstName], [p].[LastName] FROM [People] [p] ORDER BY [p].[LastName], [p].[FirstName], [p].[CreatedOn] DESC FETCH FIRST 25 ROWS ONLY";
@@ -321,7 +323,7 @@ public partial class ToSqlExtensionsTests
     [Fact]
     public void ToSql_WithSqlSelectWithWhereClause_ReturnsSql()
     {
-        SqlTable people = new SqlTable("People", "p");
+        SqlTable people = new("People", "p");
 
         const string expected =
             "SELECT [p].[Id], [p].[FirstName], [p].[LastName] FROM [People] [p] WHERE ([p].[Age] > 18) AND ([p].[Age] < 40) ORDER BY [p].[LastName], [p].[FirstName], [p].[CreatedOn] DESC";
@@ -656,6 +658,32 @@ public partial class ToSqlExtensionsTests
         var actual = Sql.Batch(
                 Sql.Insert().Into("User", "Name").Values(new SqlParameter("UserName", 5)),
                 Sql.Select(new SqlFunction("SCOPE_IDENTITY"))
+            )
+            .ToSql();
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void ToSql_WithSqlCall_UsingSqlServerDialect_ReturnsSql()
+    {
+        const string expected = "EXEC [sp_GetData] @param1, @param2;";
+        var actual = Sql.Call(
+                "sp_GetData",
+                [new SqlParameter("param1", "test1"), new SqlParameter("param2", 3)]
+            )
+            .ToSql(new SqlServerDialect());
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void ToSql_WithSqlCall_ReturnsSql()
+    {
+        const string expected = "CALL [sp_GetData] (@param1, @param2)";
+        var actual = Sql.Call(
+                "sp_GetData",
+                [new SqlParameter("param1", "test1"), new SqlParameter("param2", 3)]
             )
             .ToSql();
 

@@ -19,7 +19,7 @@ public class SqlGroupBy : SqlClause, IReadOnlyCollection<SqlColumn>
     public SqlGroupBy(SqlColumn column)
     {
         ArgumentNullException.ThrowIfNull(column);
-        _columns = new List<SqlColumn> { column };
+        _columns = [column];
     }
 
     /// <summary>

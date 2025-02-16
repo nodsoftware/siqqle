@@ -28,7 +28,7 @@ public class SqlInsert : SqlStatement
     /// <summary>
     /// Gets the collection of values to be inserted by this <see cref="SqlInsert"/>.
     /// </summary>
-    public SqlValues Values => _values = (_values ?? new SqlValues());
+    public SqlValues Values => _values ??= [];
 
     /// <summary>
     /// Returns the expression type of this expression.

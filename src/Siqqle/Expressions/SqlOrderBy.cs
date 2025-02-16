@@ -17,7 +17,7 @@ public class SqlOrderBy : SqlClause, IReadOnlyCollection<SqlSort>
     /// </summary>
     public SqlOrderBy()
     {
-        _sortExpressions = new List<SqlSort>();
+        _sortExpressions = [];
     }
 
     /// <summary>

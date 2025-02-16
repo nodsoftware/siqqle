@@ -54,6 +54,10 @@ public abstract class SqlVisitor : ISqlVisitor
                 Visit((SqlDelete)expression);
                 break;
 
+            case SqlExpressionType.Call:
+                Visit((SqlCall)expression);
+                break;
+
             case SqlExpressionType.Else:
                 Visit((SqlElse)expression);
                 break;
@@ -567,4 +571,12 @@ public abstract class SqlVisitor : ISqlVisitor
     /// The expression to visit.
     /// </param>
     public virtual void Visit(SqlInto expression) { }
+
+    /// <summary>
+    /// Visits the specified <see cref="SqlCall"/>.
+    /// </summary>
+    /// <param name="expression">
+    /// The expression to visit.
+    /// </param>
+    public virtual void Visit(SqlCall expression) { }
 }

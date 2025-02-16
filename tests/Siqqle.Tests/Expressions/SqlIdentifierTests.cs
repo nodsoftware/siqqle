@@ -26,7 +26,7 @@ public class SqlIdentifierTests
     [Fact]
     public void ExpressionType_ReturnsSqlIdentifier()
     {
-        var identifier = new SqlIdentifier(new[] { "Blog", "dbo", "Users" });
+        var identifier = new SqlIdentifier(["Blog", "dbo", "Users"]);
 
         Assert.Equal(SqlExpressionType.Identifier, identifier.ExpressionType);
     }
@@ -34,7 +34,7 @@ public class SqlIdentifierTests
     [Fact]
     public void Ctor_WithSegments_SetsSegmentsProperty()
     {
-        var identifier = new SqlIdentifier(new[] { "Blog", "dbo", "Users" });
+        var identifier = new SqlIdentifier(["Blog", "dbo", "Users"]);
 
         Assert.NotNull(identifier.Segments);
         Assert.Equal(3, identifier.Segments.Length);
@@ -137,17 +137,17 @@ public class SqlIdentifierTests
     [Fact]
     public void Equals_WithNullArgument_ReturnsFalse()
     {
-        SqlIdentifier first = new SqlIdentifier("a.ab");
+        SqlIdentifier first = new("a.ab");
 
         Assert.False(first.Equals((object)null));
-        Assert.False(first.Equals((SqlIdentifier)null));
+        Assert.False(first.Equals(null));
     }
 
     [Fact]
     public void Equals_WithDifferentArgument_ReturnsFalse()
     {
-        SqlIdentifier first = new SqlIdentifier("a.ab");
-        SqlIdentifier second = new SqlIdentifier("b.ab");
+        SqlIdentifier first = new("a.ab");
+        SqlIdentifier second = new("b.ab");
 
         Assert.False(first.Equals(second));
         Assert.False(first.Equals((object)second));
@@ -166,7 +166,7 @@ public class SqlIdentifierTests
     [Fact]
     public void Equals_WithArgumentOfDifferentType_ReturnsFalse()
     {
-        SqlIdentifier first = new SqlIdentifier("a.ab");
+        SqlIdentifier first = new("a.ab");
         string second = "The rain in Spain falls mainly on the plain.";
 
         Assert.False(first.Equals(second));

@@ -7,8 +7,8 @@ public class SqlTests
     [Fact]
     public void Union_WithRealLifeQuery_ReturnsQuery()
     {
-        SqlTable suppliers = new SqlTable("Supplier", "s");
-        SqlTable customers = new SqlTable("Customer", "c");
+        SqlTable suppliers = new("Supplier", "s");
+        SqlTable customers = new("Customer", "c");
         var actual = Sql.Union(
                 Sql.Select(suppliers + "City").From(suppliers),
                 Sql.Select(customers + "City").From(customers)
@@ -23,8 +23,8 @@ public class SqlTests
     [Fact]
     public void Select_WithRealLifeQuery_ReturnsQuery()
     {
-        SqlTable users = new SqlTable("User", "u");
-        SqlTable profiles = new SqlTable("Profile", "p");
+        SqlTable users = new("User", "u");
+        SqlTable profiles = new("Profile", "p");
         var actual = Sql.Select(
                 users + "Id",
                 users + "Name",
@@ -47,7 +47,7 @@ public class SqlTests
     [Fact]
     public void Select_WithGroupByWithRealLifeQuery_ReturnsQuery()
     {
-        SqlTable profiles = new SqlTable("Profile", "p");
+        SqlTable profiles = new("Profile", "p");
         var actual = Sql.Select(profiles + "Age", SqlAggregate.Count(profiles + "Id", "Count"))
             .From(profiles)
             .GroupBy(profiles + "Age")

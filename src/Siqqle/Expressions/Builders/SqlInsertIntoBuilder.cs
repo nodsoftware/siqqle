@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Siqqle.Syntax;
 
 namespace Siqqle.Expressions.Builders;

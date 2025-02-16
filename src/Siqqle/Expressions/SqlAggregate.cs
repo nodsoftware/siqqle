@@ -20,7 +20,7 @@ public static class SqlAggregate
     /// </returns>
     public static SqlFunction Count(SqlColumn column, string alias = null)
     {
-        return new SqlFunction("COUNT", new[] { column }, alias);
+        return new SqlFunction("COUNT", [column], alias);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public static class SqlAggregate
     /// </returns>
     public static SqlFunction Sum(SqlColumn column, string alias = null)
     {
-        return new SqlFunction("SUM", new[] { column }, alias);
+        return new SqlFunction("SUM", [column], alias);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public static class SqlAggregate
     /// </returns>
     public static SqlFunction Average(SqlColumn column, string alias = null)
     {
-        return new SqlFunction("AVG", new[] { column }, alias);
+        return new SqlFunction("AVG", [column], alias);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public static class SqlAggregate
     /// </returns>
     public static SqlFunction Max(SqlColumn column, string alias = null)
     {
-        return new SqlFunction("MAX", new[] { column }, alias);
+        return new SqlFunction("MAX", [column], alias);
     }
 
     /// <summary>
@@ -92,6 +92,6 @@ public static class SqlAggregate
     /// </returns>
     public static SqlFunction Min(SqlColumn column, string alias = null)
     {
-        return new SqlFunction("MIN", new[] { column }, alias);
+        return new SqlFunction("MIN", [column], alias);
     }
 }

@@ -345,4 +345,9 @@ public class SqlWriterVisitor(SqlWriter writer) : SqlVisitor
     {
         Writer.WriteKeyword(SqlKeywords.Insert);
     }
+
+    public override void Visit(SqlCall expression)
+    {
+        Writer.WriteCall(this, expression.ProcedureName, expression.Arguments);
+    }
 }

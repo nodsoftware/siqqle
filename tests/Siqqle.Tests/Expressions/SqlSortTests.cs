@@ -15,7 +15,7 @@ public class SqlSortTests
     public void Ctor_WithColumn_SetsPropertyValues()
     {
         SqlColumn column = "dbo.Users.CreatedOn";
-        SqlSort sort = new SqlSort(column, SqlSortOrder.Descending);
+        SqlSort sort = new(column, SqlSortOrder.Descending);
 
         Assert.NotNull(sort.Column);
         Assert.Same(column, sort.Column);

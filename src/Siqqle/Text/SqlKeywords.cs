@@ -194,4 +194,9 @@ public static class SqlKeywords
     /// Represents the SQL IS NOT NULL keyword.
     /// </summary>
     public static readonly SqlKeyword IsNotNull = "IS NOT NULL";
+
+    /// <summary>
+    /// Represents the SQL CALL keyword.
+    /// </summary>
+    public static readonly SqlKeyword Call = "CALL";
 }

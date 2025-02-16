@@ -8,107 +8,106 @@ internal class SqlWriterStateManager
 {
     // This table holds the valid state transitions in the state machine. The key of the dictionary is the starting state and the value
     // of the dictionary represents the list of valid next states.
-    private static readonly Dictionary<SqlWriterState, SqlWriterState[]> _transitions =
-        new Dictionary<SqlWriterState, SqlWriterState[]>
+    private static readonly Dictionary<SqlWriterState, SqlWriterState[]> _transitions = new()
+    {
         {
+            SqlWriterState.Start,
+            new[]
             {
-                SqlWriterState.Start,
-                new[]
-                {
-                    SqlWriterState.StartSelect,
-                    SqlWriterState.StartUpdate,
-                    SqlWriterState.StartInsert,
-                    SqlWriterState.StartDelete,
-                }
-            },
-            { SqlWriterState.StartSelect, new[] { SqlWriterState.Select } },
-            { SqlWriterState.Select, new[] { SqlWriterState.StartFrom, SqlWriterState.EndSelect } },
-            { SqlWriterState.StartFrom, new[] { SqlWriterState.From } },
+                SqlWriterState.StartSelect,
+                SqlWriterState.StartUpdate,
+                SqlWriterState.StartInsert,
+                SqlWriterState.StartDelete,
+            }
+        },
+        { SqlWriterState.StartSelect, new[] { SqlWriterState.Select } },
+        { SqlWriterState.Select, new[] { SqlWriterState.StartFrom, SqlWriterState.EndSelect } },
+        { SqlWriterState.StartFrom, new[] { SqlWriterState.From } },
+        {
+            SqlWriterState.From,
+            new[]
             {
-                SqlWriterState.From,
-                new[]
-                {
-                    SqlWriterState.StartJoin,
-                    SqlWriterState.StartWhere,
-                    SqlWriterState.StartOrderBy,
-                    SqlWriterState.EndSelect,
-                }
-            },
-            { SqlWriterState.StartJoin, new[] { SqlWriterState.Join } },
+                SqlWriterState.StartJoin,
+                SqlWriterState.StartWhere,
+                SqlWriterState.StartOrderBy,
+                SqlWriterState.EndSelect,
+            }
+        },
+        { SqlWriterState.StartJoin, new[] { SqlWriterState.Join } },
+        {
+            SqlWriterState.Join,
+            new[]
             {
-                SqlWriterState.Join,
-                new[]
-                {
-                    SqlWriterState.StartOn,
-                    SqlWriterState.StartWhere,
-                    SqlWriterState.StartOrderBy,
-                    SqlWriterState.EndSelect,
-                }
-            },
-            { SqlWriterState.StartOn, new[] { SqlWriterState.StartExpression } },
-            {
-                SqlWriterState.On,
-                new[]
-                {
-                    SqlWriterState.StartExpression,
-                    SqlWriterState.StartWhere,
-                    SqlWriterState.StartOrderBy,
-                    SqlWriterState.EndSelect,
-                }
-            },
-            { SqlWriterState.StartWhere, new[] { SqlWriterState.StartExpression } },
+                SqlWriterState.StartOn,
+                SqlWriterState.StartWhere,
+                SqlWriterState.StartOrderBy,
+                SqlWriterState.EndSelect,
+            }
+        },
+        { SqlWriterState.StartOn, new[] { SqlWriterState.StartExpression } },
+        {
+            SqlWriterState.On,
+            new[]
             {
                 SqlWriterState.StartExpression,
-                new[] { SqlWriterState.Expression, SqlWriterState.StartValues }
-            },
-            {
-                SqlWriterState.Expression,
-                new[]
-                {
-                    SqlWriterState.On,
-                    SqlWriterState.Where,
-                    SqlWriterState.StartExpression,
-                    SqlWriterState.StartOrderBy,
-                    SqlWriterState.StartList,
-                }
-            },
-            { SqlWriterState.StartList, new[] { SqlWriterState.List } },
-            { SqlWriterState.List, new[] { SqlWriterState.Expression } },
-            {
-                SqlWriterState.Where,
-                new[]
-                {
-                    SqlWriterState.StartExpression,
-                    SqlWriterState.StartOrderBy,
-                    SqlWriterState.EndSelect,
-                }
-            },
-            { SqlWriterState.StartOrderBy, new[] { SqlWriterState.OrderBy } },
-            { SqlWriterState.OrderBy, new[] { SqlWriterState.EndSelect } },
-            {
+                SqlWriterState.StartWhere,
+                SqlWriterState.StartOrderBy,
                 SqlWriterState.EndSelect,
-                new[]
-                {
-                    SqlWriterState.Union,
-                    SqlWriterState.StartSelect,
-                    SqlWriterState.StartUpdate,
-                    SqlWriterState.StartInsert,
-                    SqlWriterState.StartDelete,
-                }
-            },
-            { SqlWriterState.Union, new[] { SqlWriterState.StartSelect } },
-            { SqlWriterState.StartDelete, new[] { SqlWriterState.StartFrom } },
-            { SqlWriterState.StartInsert, new[] { SqlWriterState.StartInto } },
-            { SqlWriterState.Into, new[] { SqlWriterState.StartValues } },
-            { SqlWriterState.StartInto, new[] { SqlWriterState.Into, SqlWriterState.StartValues } },
-            { SqlWriterState.StartValues, new[] { SqlWriterState.Values } },
-            { SqlWriterState.Values, new[] { SqlWriterState.EndValues } },
-            { SqlWriterState.EndValues, new[] { SqlWriterState.StartValues } },
-            { SqlWriterState.StartUpdate, new[] { SqlWriterState.Update } },
-            { SqlWriterState.Update, new[] { SqlWriterState.StartSet } },
-            { SqlWriterState.StartSet, new[] { SqlWriterState.Set } },
-            { SqlWriterState.Set, new[] { SqlWriterState.Set, SqlWriterState.StartWhere } },
-        };
+            }
+        },
+        { SqlWriterState.StartWhere, new[] { SqlWriterState.StartExpression } },
+        {
+            SqlWriterState.StartExpression,
+            new[] { SqlWriterState.Expression, SqlWriterState.StartValues }
+        },
+        {
+            SqlWriterState.Expression,
+            new[]
+            {
+                SqlWriterState.On,
+                SqlWriterState.Where,
+                SqlWriterState.StartExpression,
+                SqlWriterState.StartOrderBy,
+                SqlWriterState.StartList,
+            }
+        },
+        { SqlWriterState.StartList, new[] { SqlWriterState.List } },
+        { SqlWriterState.List, new[] { SqlWriterState.Expression } },
+        {
+            SqlWriterState.Where,
+            new[]
+            {
+                SqlWriterState.StartExpression,
+                SqlWriterState.StartOrderBy,
+                SqlWriterState.EndSelect,
+            }
+        },
+        { SqlWriterState.StartOrderBy, new[] { SqlWriterState.OrderBy } },
+        { SqlWriterState.OrderBy, new[] { SqlWriterState.EndSelect } },
+        {
+            SqlWriterState.EndSelect,
+            new[]
+            {
+                SqlWriterState.Union,
+                SqlWriterState.StartSelect,
+                SqlWriterState.StartUpdate,
+                SqlWriterState.StartInsert,
+                SqlWriterState.StartDelete,
+            }
+        },
+        { SqlWriterState.Union, new[] { SqlWriterState.StartSelect } },
+        { SqlWriterState.StartDelete, new[] { SqlWriterState.StartFrom } },
+        { SqlWriterState.StartInsert, new[] { SqlWriterState.StartInto } },
+        { SqlWriterState.Into, new[] { SqlWriterState.StartValues } },
+        { SqlWriterState.StartInto, new[] { SqlWriterState.Into, SqlWriterState.StartValues } },
+        { SqlWriterState.StartValues, new[] { SqlWriterState.Values } },
+        { SqlWriterState.Values, new[] { SqlWriterState.EndValues } },
+        { SqlWriterState.EndValues, new[] { SqlWriterState.StartValues } },
+        { SqlWriterState.StartUpdate, new[] { SqlWriterState.Update } },
+        { SqlWriterState.Update, new[] { SqlWriterState.StartSet } },
+        { SqlWriterState.StartSet, new[] { SqlWriterState.Set } },
+        { SqlWriterState.Set, new[] { SqlWriterState.Set, SqlWriterState.StartWhere } },
+    };
 
     private readonly Stack<SqlWriterState> _states;
 
@@ -150,7 +149,7 @@ internal class SqlWriterStateManager
 
     public void RequestState(IDictionary<SqlWriterState, SqlWriterState> states)
     {
-        var state = _states.First(_ => states.ContainsKey(_));
+        var state = _states.First(states.ContainsKey);
         RequestState(states[state]);
     }
 

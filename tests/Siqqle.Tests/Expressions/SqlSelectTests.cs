@@ -340,7 +340,7 @@ public class SqlSelectTests
     [Fact]
     public void OrderBy_IsNotNullWhenFirstCalled()
     {
-        var select = new SqlSelect(new SqlColumn[] { "Id" });
+        var select = new SqlSelect(["Id"]);
         Assert.NotNull(select.OrderBy);
     }
 
@@ -473,7 +473,7 @@ public class SqlSelectTests
     {
         Assert.Throws<ArgumentNullException>(() =>
         {
-            Sql.Select("FirstName").From("User").GroupBy("FirstName").OrderBy((SqlSort)null).Go();
+            Sql.Select("FirstName").From("User").GroupBy("FirstName").OrderBy(null).Go();
         });
     }
 
@@ -539,7 +539,7 @@ public class SqlSelectTests
     [Fact]
     public void ExpressionType_ReturnsSelect()
     {
-        var query = new SqlSelect(new SqlColumn[] { "Id" });
+        var query = new SqlSelect(["Id"]);
 
         Assert.Equal(SqlExpressionType.Select, query.ExpressionType);
     }

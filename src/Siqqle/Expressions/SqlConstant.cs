@@ -17,7 +17,7 @@ public class SqlConstant(object value) : SqlValue, IEquatable<SqlConstant>
     /// <summary>
     /// Represents the NULL SQL constant.
     /// </summary>
-    public static readonly SqlConstant Null = new SqlConstant(null);
+    public static readonly SqlConstant Null = new(null);
 
     /// <summary>
     /// Returns the expression type of this expression.

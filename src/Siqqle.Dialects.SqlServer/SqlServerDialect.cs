@@ -1,4 +1,6 @@
-﻿using Siqqle.Text;
+﻿using Siqqle.Expressions;
+using Siqqle.Expressions.Visitors;
+using Siqqle.Text;
 
 namespace Siqqle.Dialects.SqlServer;
 
@@ -34,5 +36,46 @@ public class SqlServerDialect : SqlDialect
             offset = 0;
 
         base.WriteLimit(writer, offset, count);
+    }
+
+    /// <summary>
+    /// Writes the specified call to a stored procedure for the current SQL dialect.
+    /// </summary>
+    /// <param name="writer">
+    /// The <see cref="SqlWriter"/> to write to.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor"/> to use for visiting the arguments.
+    /// </param>
+    /// <param name="procedureName">
+    /// The name of the stored procedure to call.
+    /// </param>
+    /// <param name="arguments">
+    /// The arguments to pass to the stored procedure.
+    /// </param>
+    public override void WriteCall(
+        SqlWriter writer,
+        ISqlVisitor visitor,
+        string procedureName,
+        params SqlValue[] arguments
+    )
+    {
+        writer.WriteKeyword(SqlServerKeywords.Execute);
+        writer.WriteIdentifier(procedureName);
+
+        arguments?.Accept(visitor);
+
+        writer.WriteDelimiter();
+    }
+
+    /// <summary>
+    /// Provides <see cref="SqlKeyword"/> instances for well-known SQL keywords in the MySQL dialect.
+    /// </summary>
+    public static class SqlServerKeywords
+    {
+        /// <summary>
+        /// Represents the SQL Server EXEC keyword.
+        /// </summary>
+        public static readonly SqlKeyword Execute = "EXEC";
     }
 }

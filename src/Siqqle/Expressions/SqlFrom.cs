@@ -28,7 +28,7 @@ public class SqlFrom : SqlClause
     /// <summary>
     /// Gets the joins used by this <see cref="SqlFrom"/>.
     /// </summary>
-    public IReadOnlyCollection<SqlJoin> Joins => _joins ?? (_joins = new List<SqlJoin>());
+    public IReadOnlyCollection<SqlJoin> Joins => _joins ?? (_joins = []);
 
     /// <summary>
     /// Gets the expression type of this expression.
@@ -53,7 +53,7 @@ public class SqlFrom : SqlClause
     {
         if (_joins == null)
         {
-            _joins = new List<SqlJoin>();
+            _joins = [];
         }
         _joins.Add(join);
     }

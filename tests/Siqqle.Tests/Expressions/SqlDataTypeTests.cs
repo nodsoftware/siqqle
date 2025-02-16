@@ -276,7 +276,7 @@ public class SqlDataTypeTests
         {
             yield return new object[] { dataType, "FOOBAR", false };
         }
-        yield return new object[] { dataType, (SqlDataType)null, false };
+        yield return new object[] { dataType, null, false };
         yield return new object[] { dataType, new SqlDataType("NONE"), false };
         yield return new object[] { dataType, new SqlDataType("FOOBAR"), true };
         yield return new object[] { dataType, dataType, true };

@@ -88,6 +88,14 @@ public interface ISqlVisitor
     void Visit(SqlDelete expression);
 
     /// <summary>
+    /// Visits the specified <see cref="SqlCall"/>.
+    /// </summary>
+    /// <param name="expression">
+    /// The expression to visit.
+    /// </param>
+    void Visit(SqlCall expression);
+
+    /// <summary>
     /// Visits the specified <see cref="SqlLimit"/>.
     /// </summary>
     /// <param name="expression">

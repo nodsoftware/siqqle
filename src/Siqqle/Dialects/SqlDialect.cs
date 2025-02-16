@@ -1,4 +1,6 @@
-﻿using Siqqle.Text;
+﻿using Siqqle.Expressions;
+using Siqqle.Expressions.Visitors;
+using Siqqle.Text;
 
 namespace Siqqle.Dialects;
 
@@ -72,6 +74,45 @@ public class SqlDialect
     public virtual string FormatString(string value)
     {
         return $"'{value.Replace("'", "''")}'";
+    }
+
+    /// <summary>
+    /// Writes a call to the specified stored procedure with the specified arguments for the current SQL dialect. The default
+    /// implementation uses the <c>CALL <paramref name="procedureName"/> (<paramref name="arguments"/>)</c> syntax.
+    /// </summary>
+    /// <param name="writer">
+    /// The <see cref="SqlWriter"/> to write to.
+    /// </param>
+    /// <param name="visitor">
+    /// The <see cref="ISqlVisitor"/> to use for visiting the arguments.
+    /// </param>
+    /// <param name="procedureName">
+    /// The name of the stored procedure to call.
+    /// </param>
+    /// <param name="arguments">
+    /// The arguments to pass to the stored procedure.
+    /// </param>
+    /// <remarks>
+    /// The <paramref name="visitor"/> must be used to visit the arguments to ensure that they are written correctly.
+    /// Use the <see cref="SqlVisitorExtensions.Accept(System.Collections.Generic.IEnumerable{SqlValue}, ISqlVisitor)"/> method on the arguments to visit them. For example:
+    /// <code>
+    /// arguments.Accept(visitor);
+    /// </code>
+    /// </remarks>
+    public virtual void WriteCall(
+        SqlWriter writer,
+        ISqlVisitor visitor,
+        string procedureName,
+        params SqlValue[] arguments
+    )
+    {
+        writer.WriteKeyword(SqlKeywords.Call);
+        writer.WriteIdentifier(procedureName);
+        writer.WriteOpenParenthesis();
+
+        arguments.Accept(visitor);
+
+        writer.WriteCloseParenthesis();
     }
 
     /// <summary>
