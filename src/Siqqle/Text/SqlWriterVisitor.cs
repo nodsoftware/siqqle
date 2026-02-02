@@ -23,7 +23,7 @@ public class SqlWriterVisitor(SqlWriter writer) : SqlVisitor
 
     public override void Visit(SqlParameter expression)
     {
-        Writer.WriteParameter(expression.ParameterName);
+        Writer.WriteParameter(expression);
         ParameterVisited?.Invoke(expression);
     }
 

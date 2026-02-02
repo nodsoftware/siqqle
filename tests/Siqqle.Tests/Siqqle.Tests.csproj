@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="AutoFixture.AutoMoq" Version="4.18.1" />
     <PackageReference Include="Coverlet.Collector" Version="6.0.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
-    <PackageReference Include="Moq" Version="4.18.4" />
+    <!-- Override vulnerable Newtonsoft.Json 9.0.1 from Microsoft.TestPlatform.TestHost -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -18,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Siqqle\Siqqle.csproj" />
     <ProjectReference Include="..\..\src\Siqqle.Dialects.SqlServer\Siqqle.Dialects.SqlServer.csproj" />
+    <ProjectReference Include="..\..\src\Siqqle.Dialects.PostgreSql\Siqqle.Dialects.PostgreSql.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace Siqqle.Expressions.Tests;
@@ -68,7 +68,7 @@ public class SqlExpressionTests
     [Fact]
     public void Accept_WithNullVisitor_ThrowsArgumentNull()
     {
-        var expression = new Mock<SqlExpression> { CallBase = true }.Object;
+        var expression = Substitute.ForPartsOf<SqlExpression>();
         Assert.Throws<ArgumentNullException>(() => expression.Accept(null));
     }
 

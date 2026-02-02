@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AutoFixture;
-using AutoFixture.AutoMoq;
-using Moq;
-
+using NSubstitute;
 using Siqqle.Expressions.Builders;
 using Siqqle.Expressions.Visitors;
 using Xunit;
@@ -126,35 +123,35 @@ public class SqlUpdateTests
     [Fact]
     public void Accept_WithoutWhere_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Update("User").Set("Name", "Wouter").Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlUpdate>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlSet>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlAssign>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlWhere>()), Times.Never());
+        mock.Received(1).Visit(Arg.Any<SqlUpdate>());
+        mock.Received(1).Visit(Arg.Any<SqlSet>());
+        mock.Received(1).Visit(Arg.Any<SqlAssign>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlWhere>());
     }
 
     [Fact]
     public void Accept_WithWhere_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Update("User")
             .Set("Name", "Wouter")
             .Where(SqlExpression.Equal("Id", 5))
             .Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlUpdate>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlSet>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlAssign>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlWhere>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlUpdate>());
+        mock.Received(1).Visit(Arg.Any<SqlSet>());
+        mock.Received(1).Visit(Arg.Any<SqlAssign>());
+        mock.Received(1).Visit(Arg.Any<SqlWhere>());
     }
 }

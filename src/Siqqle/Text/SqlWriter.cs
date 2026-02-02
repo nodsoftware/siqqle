@@ -333,6 +333,12 @@ public class SqlWriter : IDisposable
         Dialect.WriteCall(this, visitor, procedureName, [.. arguments]);
     }
 
+    internal void WriteParameter(SqlParameter parameter)
+    {
+        EnsureNotDisposed();
+        Dialect.WriteParameter(this, parameter);
+    }
+
     /// <summary>
     /// Writes the specified operator to the output stream.
     /// </summary>

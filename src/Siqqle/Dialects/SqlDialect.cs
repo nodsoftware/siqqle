@@ -147,4 +147,19 @@ public class SqlDialect
             writer.WriteKeyword(SqlKeywords.Only);
         }
     }
+
+    /// <summary>
+    /// Writes a parameter with optional type casting for the current SQL dialect. The default
+    /// implementation writes the parameter name without any additional casting.
+    /// </summary>
+    /// <param name="writer">
+    /// The <see cref="SqlWriter"/> to write to.
+    /// </param>
+    /// <param name="parameter">
+    /// The <see cref="SqlParameter"/> to write.
+    /// </param>
+    public virtual void WriteParameter(SqlWriter writer, SqlParameter parameter)
+    {
+        writer.WriteParameter(parameter.ParameterName);
+    }
 }

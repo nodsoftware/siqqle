@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AutoFixture;
-using AutoFixture.AutoMoq;
-using Moq;
+using NSubstitute;
 using Siqqle.Expressions.Builders;
 using Siqqle.Expressions.Visitors;
 using Xunit;
@@ -123,32 +121,30 @@ public class SqlInsertTests
     [Fact]
     public void Accept_WithoutInto_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
 
         var query = new SqlInsert();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlInsert>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlInto>()), Times.Never());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlColumn>()), Times.Never());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlValues>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlInsert>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlInto>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlColumn>());
+        mock.Received(1).Visit(Arg.Any<SqlValues>());
     }
 
     [Fact]
     public void Accept_WithColumns_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
-
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
         var query = Sql.Insert().Into("User").Values(1).Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlInsert>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlInto>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlColumn>()), Times.Never());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlValues>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlInsert>());
+        mock.Received(1).Visit(Arg.Any<SqlInto>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlColumn>());
+        mock.Received(1).Visit(Arg.Any<SqlValues>());
     }
 }

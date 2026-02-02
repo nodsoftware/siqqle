@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AutoFixture;
-using AutoFixture.AutoMoq;
-using Moq;
+using NSubstitute;
 using Siqqle.Expressions.Builders;
 using Siqqle.Expressions.Visitors;
 using Xunit;
@@ -49,16 +47,16 @@ public class SqlUnionTests
     [Fact]
     public void Accept_WithWhere_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Union(
             Sql.Select("Name").From("Supplier").Go(),
             Sql.Select("Name").From("Customer").Go()
         );
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlUnion>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlUnion>());
     }
 }

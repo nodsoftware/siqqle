@@ -89,6 +89,53 @@ public class PostgreSqlDialect : SqlDialect
     }
 
     /// <summary>
+    /// Writes a parameter with optional type casting for PostgreSQL.
+    /// Supports provider-specific types via SqlParameter&lt;TDbType&gt; for precise PostgreSQL type specification.
+    /// </summary>
+    /// <param name="writer">The <see cref="SqlWriter"/> to write to.</param>
+    /// <param name="parameter">The <see cref="SqlParameter"/> to write.</param>
+    public override void WriteParameter(SqlWriter writer, SqlParameter parameter)
+    {
+        writer.WriteParameter(parameter.ParameterName);
+
+        // Check if this is a provider-specific typed parameter
+        var parameterType = parameter.GetType();
+        if (
+            parameterType.IsGenericType
+            && parameterType.GetGenericTypeDefinition() == typeof(SqlParameter<>)
+        )
+        {
+            // Get the ProviderDbType property value via reflection
+            var providerDbTypeProperty = parameterType.GetProperty("ProviderDbType");
+            if (providerDbTypeProperty != null)
+            {
+                var dbTypeValue = providerDbTypeProperty.GetValue(parameter);
+                if (dbTypeValue != null)
+                {
+                    // Use the enum's string representation as the PostgreSQL type name
+                    var typeName = dbTypeValue.ToString().ToLowerInvariant();
+                    writer.WriteRaw($"::{typeName}");
+                    return;
+                }
+            }
+        }
+
+        // Fall back to standard DbType mapping
+        if (parameter.DbType.HasValue)
+        {
+            switch (parameter.DbType.Value)
+            {
+                case System.Data.DbType.Guid:
+                    writer.WriteRaw("::uuid");
+                    break;
+                case System.Data.DbType.Xml:
+                    writer.WriteRaw("::xml");
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
     /// Provides <see cref="SqlKeyword"/> instances for well-known SQL keywords in the PostgreSQL dialect.
     /// </summary>
     public static class PostgreSqlKeywords

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using AutoFixture;
-using AutoFixture.AutoMoq;
-using Moq;
+using NSubstitute;
 using Siqqle.Expressions.Builders;
 using Siqqle.Expressions.Visitors;
 using Xunit;
@@ -43,8 +41,8 @@ public class SqlGroupByTests
     [Fact]
     public void Accept_WithHaving_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Select("Age")
             .From("User")
@@ -53,20 +51,20 @@ public class SqlGroupByTests
             .OrderBy("Age", SqlSortOrder.Descending)
             .Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlSelect>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlFrom>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlGroupBy>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlHaving>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlOrderBy>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlSelect>());
+        mock.Received(1).Visit(Arg.Any<SqlFrom>());
+        mock.Received(1).Visit(Arg.Any<SqlGroupBy>());
+        mock.Received(1).Visit(Arg.Any<SqlHaving>());
+        mock.Received(1).Visit(Arg.Any<SqlOrderBy>());
     }
 
     [Fact]
     public void Accept_WithoutHaving_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Select("Age")
             .From("User")
@@ -74,27 +72,27 @@ public class SqlGroupByTests
             .OrderBy("Age", SqlSortOrder.Descending)
             .Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlSelect>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlFrom>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlGroupBy>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlHaving>()), Times.Never());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlOrderBy>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlSelect>());
+        mock.Received(1).Visit(Arg.Any<SqlFrom>());
+        mock.Received(1).Visit(Arg.Any<SqlGroupBy>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlHaving>());
+        mock.Received(1).Visit(Arg.Any<SqlOrderBy>());
     }
 
     [Fact]
     public void Accept_WithCast_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Select(SqlExpression.Cast((SqlColumn)"Age", SqlDataType.BigInt()))
             .From("User")
             .Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlCast>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlCast>());
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoFixture;
-using AutoFixture.AutoMoq;
-using Moq;
+using NSubstitute;
 using Siqqle.Expressions.Builders;
 using Siqqle.Expressions.Visitors;
 using Xunit;
@@ -547,45 +545,45 @@ public class SqlSelectTests
     [Fact]
     public void Accept_WithoutWhere_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Select("Id", "Name").From("User").Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlSelect>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlFrom>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlTable>()), Times.Once());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlColumn>()), Times.Exactly(2));
-        mock.Verify(_ => _.Visit(It.IsAny<SqlWhere>()), Times.Never());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlJoin>()), Times.Never());
-        mock.Verify(_ => _.Visit(It.IsAny<SqlOrderBy>()), Times.Never());
+        mock.Received(1).Visit(Arg.Any<SqlSelect>());
+        mock.Received(1).Visit(Arg.Any<SqlFrom>());
+        mock.Received(1).Visit(Arg.Any<SqlTable>());
+        mock.Received(2).Visit(Arg.Any<SqlColumn>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlWhere>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlJoin>());
+        mock.DidNotReceive().Visit(Arg.Any<SqlOrderBy>());
     }
 
     [Fact]
     public void Accept_WithLimit_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(42, 10).Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlLimit>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlLimit>());
     }
 
     [Fact]
     public void Accept_WithLimitWithCountOnly_VisitsEverything()
     {
-        var fixture = new Fixture().Customize(new AutoMoqCustomization());
-        var mock = fixture.Freeze<Mock<SqlVisitor>>();
+        var mock = Substitute.ForPartsOf<SqlVisitor>();
+        mock.When(x => x.Visit(Arg.Any<SqlExpression>())).CallBase();
 
         var query = Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(10).Go();
 
-        query.Accept(mock.Object);
+        query.Accept(mock);
 
-        mock.Verify(_ => _.Visit(It.IsAny<SqlLimit>()), Times.Once());
+        mock.Received(1).Visit(Arg.Any<SqlLimit>());
     }
 }
