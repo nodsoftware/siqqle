@@ -1,12 +1,12 @@
 <Project>
   <!-- Define target frameworks. -->
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
   </PropertyGroup>
 
   <!-- Versioning and product name. -->
   <PropertyGroup>
-    <SemanticVersion>5.0.0</SemanticVersion>
+    <SemanticVersion>6.0.0</SemanticVersion>
 
     <PackageVersion Condition=" '$(PackageVersion)' == '' ">$(SemanticVersion)</PackageVersion>
     <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(SemanticVersion)</AssemblyVersion>
