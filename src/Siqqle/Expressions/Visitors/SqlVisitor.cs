@@ -30,6 +30,10 @@ public abstract class SqlVisitor : ISqlVisitor
                 Visit((SqlBinaryExpression)expression);
                 break;
 
+            case SqlExpressionType.Between:
+                Visit((SqlBetween)expression);
+                break;
+
             case SqlExpressionType.Case:
                 Visit((SqlCase)expression);
                 break;
@@ -210,6 +214,8 @@ public abstract class SqlVisitor : ISqlVisitor
     /// The expression to visit.
     /// </param>
     public virtual void Visit(SqlBinaryExpression expression) { }
+
+    public virtual void Visit(SqlBetween expression) { }
 
     /// <summary>
     /// Visits the specified <see cref="SqlCase"/>.

@@ -179,4 +179,9 @@ public enum SqlExpressionType
     /// Represents a SQL CALL statement.
     /// </summary>
     Call,
+
+    /// <summary>
+    /// Represents a SQL BETWEEN expression.
+    /// </summary>
+    Between,
 }

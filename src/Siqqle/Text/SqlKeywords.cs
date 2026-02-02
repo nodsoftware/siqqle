@@ -111,6 +111,11 @@ public static class SqlKeywords
     public static readonly SqlKeyword Like = "LIKE";
 
     /// <summary>
+    /// Represents the SQL BETWEEN keyword.
+    /// </summary>
+    public static readonly SqlKeyword Between = "BETWEEN";
+
+    /// <summary>
     /// Represents the SQL OR keyword.
     /// </summary>
     public static readonly SqlKeyword Or = "OR";

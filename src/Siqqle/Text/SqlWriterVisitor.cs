@@ -340,6 +340,15 @@ public class SqlWriterVisitor(SqlWriter writer) : SqlVisitor
             Writer.WriteCloseParenthesis();
     }
 
+    public override void Visit(SqlBetween expression)
+    {
+        expression.Column.Accept(this);
+        Writer.WriteKeyword(SqlKeywords.Between);
+        expression.Min.Accept(this);
+        Writer.WriteKeyword(SqlKeywords.And);
+        expression.Max.Accept(this);
+    }
+
     public override void Visit(SqlConstant expression)
     {
         Writer.WriteValue(expression.Value);

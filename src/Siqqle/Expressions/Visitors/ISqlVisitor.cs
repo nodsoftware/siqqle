@@ -39,6 +39,8 @@ public interface ISqlVisitor
     /// </param>
     void Visit(SqlBinaryExpression expression);
 
+    void Visit(SqlBetween expression);
+
     /// <summary>
     /// Visits the specified <see cref="SqlCase"/>.
     /// </summary>

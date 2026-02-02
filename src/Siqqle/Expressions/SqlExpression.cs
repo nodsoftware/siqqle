@@ -50,16 +50,16 @@ public abstract class SqlExpression : ISqlVisitable
     /// Creates a <see cref="SqlBinaryExpression"/> that represents a logical <b>AND</b> operation.
     /// </summary>
     /// <param name="left">
-    /// A <see cref="SqlBinaryExpression"/> to use as the left operand in the expression.
+    /// A <see cref="SqlExpression"/> to use as the left operand in the expression.
     /// </param>
     /// <param name="right">
-    /// A <see cref="SqlBinaryExpression"/> to use as the right operand in the expression.
+    /// A <see cref="SqlExpression"/> to use as the right operand in the expression.
     /// </param>
     /// <returns>
     /// A <see cref="SqlBinaryExpression"/> that represents a logical <b>AND</b> operation between
     /// the specified <paramref name="left"/> and <paramref name="right"/> operands.
     /// </returns>
-    public static SqlBinaryExpression And(SqlBinaryExpression left, SqlBinaryExpression right)
+    public static SqlBinaryExpression And(SqlExpression left, SqlExpression right)
     {
         return new SqlBinaryExpression(left, SqlBinaryOperator.And, right);
     }
@@ -68,16 +68,16 @@ public abstract class SqlExpression : ISqlVisitable
     /// Creates a <see cref="SqlBinaryExpression"/> that represents a logical <b>OR</b> operation.
     /// </summary>
     /// <param name="left">
-    /// A <see cref="SqlBinaryExpression"/> to use as the left operand in the expression.
+    /// A <see cref="SqlExpression"/> to use as the left operand in the expression.
     /// </param>
     /// <param name="right">
-    /// A <see cref="SqlBinaryExpression"/> to use as the right operand in the expression.
+    /// A <see cref="SqlExpression"/> to use as the right operand in the expression.
     /// </param>
     /// <returns>
     /// A <see cref="SqlBinaryExpression"/> that represents a logical <b>OR</b> operation between
     /// the specified <paramref name="left"/> and <paramref name="right"/> operands.
     /// </returns>
-    public static SqlBinaryExpression Or(SqlBinaryExpression left, SqlBinaryExpression right)
+    public static SqlBinaryExpression Or(SqlExpression left, SqlExpression right)
     {
         return new SqlBinaryExpression(left, SqlBinaryOperator.Or, right);
     }
@@ -329,6 +329,48 @@ public abstract class SqlExpression : ISqlVisitable
     public static SqlBinaryExpression In(SqlColumn column, SqlSubquery query)
     {
         return new SqlBinaryExpression(column, SqlBinaryOperator.In, query);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBetween"/> that represents a BETWEEN expression.
+    /// </summary>
+    /// <param name="column">
+    /// A <see cref="SqlColumn"/> to test.
+    /// </param>
+    /// <param name="min">
+    /// The minimum value in the range.
+    /// </param>
+    /// <param name="max">
+    /// The maximum value in the range.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlBetween"/> that represents a BETWEEN comparison testing whether
+    /// the value of the specified <paramref name="column"/> is between <paramref name="min"/> and <paramref name="max"/>.
+    /// </returns>
+    public static SqlBetween Between(SqlColumn column, SqlValue min, SqlValue max)
+    {
+        return new SqlBetween(column, min, max);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBetween"/> that represents a BETWEEN expression.
+    /// </summary>
+    /// <param name="function">
+    /// A <see cref="SqlFunction"/> to test (typically used in HAVING clauses).
+    /// </param>
+    /// <param name="min">
+    /// The minimum value in the range.
+    /// </param>
+    /// <param name="max">
+    /// The maximum value in the range.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlBetween"/> that represents a BETWEEN comparison testing whether
+    /// the result of the specified <paramref name="function"/> is between <paramref name="min"/> and <paramref name="max"/>.
+    /// </returns>
+    public static SqlBetween Between(SqlFunction function, SqlValue min, SqlValue max)
+    {
+        return new SqlBetween(function, min, max);
     }
 
     /// <summary>
