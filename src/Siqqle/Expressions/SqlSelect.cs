@@ -33,6 +33,11 @@ public class SqlSelect : SqlStatement
     public IEnumerable<SqlValue> Select { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether this SQL SELECT statement should return distinct rows only.
+    /// </summary>
+    public bool Distinct { get; internal set; }
+
+    /// <summary>
     /// Gets the table from which rows are selected by this SQL SELECT statement.
     /// </summary>
     public SqlFrom From { get; internal set; }

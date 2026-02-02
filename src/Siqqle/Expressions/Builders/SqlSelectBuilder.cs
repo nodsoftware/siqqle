@@ -14,6 +14,12 @@ public class SqlSelectBuilder : SqlStatementBuilder<SqlSelect>, ISqlSelectSyntax
         return Statement;
     }
 
+    public ISqlSelectSyntax Distinct()
+    {
+        Statement.Distinct = true;
+        return this;
+    }
+
     public ISqlSelectFromSyntax From(SqlTable table)
     {
         Statement.From = new SqlFrom(table);

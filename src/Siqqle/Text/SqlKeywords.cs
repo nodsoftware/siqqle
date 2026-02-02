@@ -11,6 +11,11 @@ public static class SqlKeywords
     public static readonly SqlKeyword Select = "SELECT";
 
     /// <summary>
+    /// Represents the SQL DISTINCT keyword.
+    /// </summary>
+    public static readonly SqlKeyword Distinct = "DISTINCT";
+
+    /// <summary>
     /// Represents the SQL FROM keyword.
     /// </summary>
     public static readonly SqlKeyword From = "FROM";

@@ -30,6 +30,10 @@ public class SqlWriterVisitor(SqlWriter writer) : SqlVisitor
     public override void Visit(SqlSelect expression)
     {
         Writer.WriteKeyword(SqlKeywords.Select);
+        if (expression.Distinct)
+        {
+            Writer.WriteKeyword(SqlKeywords.Distinct);
+        }
     }
 
     public override void Visit(SqlDataType expression)

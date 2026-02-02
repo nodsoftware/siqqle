@@ -5,6 +5,14 @@ namespace Siqqle.Syntax;
 public interface ISqlSelectSyntax : ISqlSyntaxEnd<SqlSelect>
 {
     /// <summary>
+    /// Specifies that the SQL SELECT statement should return only distinct (unique) rows.
+    /// </summary>
+    /// <returns>
+    /// The current SQL SELECT builder for method chaining.
+    /// </returns>
+    ISqlSelectSyntax Distinct();
+
+    /// <summary>
     /// Sets the table from which rows are selected by this SQL SELECT statement.
     /// </summary>
     /// <param name="table">
