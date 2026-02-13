@@ -349,6 +349,17 @@ public class SqlWriterVisitor(SqlWriter writer) : SqlVisitor
         expression.Max.Accept(this);
     }
 
+    public override void Visit(SqlExists expression)
+    {
+        if (expression.IsNegated)
+        {
+            Writer.WriteKeyword(SqlKeywords.Not);
+        }
+
+        Writer.WriteKeyword(SqlKeywords.Exists);
+        expression.Subquery.Accept(this);
+    }
+
     public override void Visit(SqlConstant expression)
     {
         Writer.WriteValue(expression.Value);

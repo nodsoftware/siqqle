@@ -34,6 +34,10 @@ public abstract class SqlVisitor : ISqlVisitor
                 Visit((SqlBetween)expression);
                 break;
 
+            case SqlExpressionType.Exists:
+                Visit((SqlExists)expression);
+                break;
+
             case SqlExpressionType.Case:
                 Visit((SqlCase)expression);
                 break;
@@ -182,6 +186,14 @@ public abstract class SqlVisitor : ISqlVisitor
     /// The expression to visit.
     /// </param>
     public virtual void Visit(SqlBatch expression) { }
+
+    /// <summary>
+    /// Visits the specified <see cref="SqlExists"/>.
+    /// </summary>
+    /// <param name="expression">
+    /// The expression to visit.
+    /// </param>
+    public virtual void Visit(SqlExists expression) { }
 
     /// <summary>
     /// Visits the specified <see cref="SqlSet"/>.

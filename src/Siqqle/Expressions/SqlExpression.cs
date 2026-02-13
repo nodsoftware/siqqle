@@ -374,6 +374,36 @@ public abstract class SqlExpression : ISqlVisitable
     }
 
     /// <summary>
+    /// Creates a <see cref="SqlExists"/> that represents an EXISTS expression.
+    /// </summary>
+    /// <param name="subquery">
+    /// The subquery to test for existence.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlExists"/> that represents an EXISTS expression testing whether
+    /// the specified <paramref name="subquery"/> returns any rows.
+    /// </returns>
+    public static SqlExists Exists(SqlSubquery subquery)
+    {
+        return new SqlExists(subquery, isNegated: false);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlExists"/> that represents a NOT EXISTS expression.
+    /// </summary>
+    /// <param name="subquery">
+    /// The subquery to test for non-existence.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlExists"/> that represents a NOT EXISTS expression testing whether
+    /// the specified <paramref name="subquery"/> returns no rows.
+    /// </returns>
+    public static SqlExists NotExists(SqlSubquery subquery)
+    {
+        return new SqlExists(subquery, isNegated: true);
+    }
+
+    /// <summary>
     /// Gets the expression type of this expression.
     /// </summary>
     public abstract SqlExpressionType ExpressionType { get; }

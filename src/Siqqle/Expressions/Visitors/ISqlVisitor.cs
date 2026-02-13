@@ -90,6 +90,14 @@ public interface ISqlVisitor
     void Visit(SqlDelete expression);
 
     /// <summary>
+    /// Visits the specified <see cref="SqlExists"/>.
+    /// </summary>
+    /// <param name="expression">
+    /// The expression to visit.
+    /// </param>
+    void Visit(SqlExists expression);
+
+    /// <summary>
     /// Visits the specified <see cref="SqlCall"/>.
     /// </summary>
     /// <param name="expression">

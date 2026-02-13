@@ -116,6 +116,16 @@ public static class SqlKeywords
     public static readonly SqlKeyword Between = "BETWEEN";
 
     /// <summary>
+    /// Represents the SQL EXISTS keyword.
+    /// </summary>
+    public static readonly SqlKeyword Exists = "EXISTS";
+
+    /// <summary>
+    /// Represents the SQL NOT keyword.
+    /// </summary>
+    public static readonly SqlKeyword Not = "NOT";
+
+    /// <summary>
     /// Represents the SQL OR keyword.
     /// </summary>
     public static readonly SqlKeyword Or = "OR";

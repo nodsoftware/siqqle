@@ -184,4 +184,9 @@ public enum SqlExpressionType
     /// Represents a SQL BETWEEN expression.
     /// </summary>
     Between,
+
+    /// <summary>
+    /// Represents a SQL EXISTS expression.
+    /// </summary>
+    Exists,
 }
