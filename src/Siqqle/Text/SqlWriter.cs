@@ -420,6 +420,11 @@ public class SqlWriter : IDisposable
                 WriteKeyword(SqlKeywords.In);
                 break;
 
+            case SqlBinaryOperator.NotIn:
+                WriteKeyword(SqlKeywords.Not);
+                WriteKeyword(SqlKeywords.In);
+                break;
+
             default:
                 throw new InvalidEnumArgumentException(
                     nameof(@operator),

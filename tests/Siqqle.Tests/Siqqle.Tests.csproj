@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\src\Siqqle\Siqqle.csproj" />
     <ProjectReference Include="..\..\src\Siqqle.Dialects.SqlServer\Siqqle.Dialects.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\Siqqle.Dialects.PostgreSql\Siqqle.Dialects.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\src\Siqqle.Dialects.MySql\Siqqle.Dialects.MySql.csproj" />
   </ItemGroup>
 
 </Project>

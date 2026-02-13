@@ -332,6 +332,51 @@ public abstract class SqlExpression : ISqlVisitable
     }
 
     /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a "not in" comparison.
+    /// </summary>
+    /// <param name="column">
+    /// A <see cref="SqlColumn"/> to use as the left operand in the expression.
+    /// </param>
+    /// <param name="values">
+    /// An array of <see cref="SqlValue"/> objects to use as the right operand in the expression.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlBinaryExpression"/> that represents a "not in" comparison between
+    /// the value of the specified <paramref name="column"/> and the specified collection of
+    /// <paramref name="values"/>.
+    /// </returns>
+    /// <remarks>
+    /// If you pass <see langword="null"/> for the <paramref name="values"/> argument, it
+    /// will be automatically converted to an empty collection.
+    /// </remarks>
+    public static SqlBinaryExpression NotIn(SqlColumn column, params SqlValue[] values)
+    {
+        return new SqlBinaryExpression(
+            column,
+            SqlBinaryOperator.NotIn,
+            new SqlValueList(values ?? Enumerable.Empty<SqlValue>())
+        );
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a "not in" comparison.
+    /// </summary>
+    /// <param name="column">
+    /// A <see cref="SqlColumn"/> to use as the left operand in the expression.
+    /// </param>
+    /// <param name="query">
+    /// A <see cref="SqlSubquery"/> to use as the right operand in the expression.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlBinaryExpression"/> that represents a "not in" comparison between
+    /// the value of the specified <paramref name="column"/> and the specified <paramref name="query"/>.
+    /// </returns>
+    public static SqlBinaryExpression NotIn(SqlColumn column, SqlSubquery query)
+    {
+        return new SqlBinaryExpression(column, SqlBinaryOperator.NotIn, query);
+    }
+
+    /// <summary>
     /// Creates a <see cref="SqlBetween"/> that represents a BETWEEN expression.
     /// </summary>
     /// <param name="column">

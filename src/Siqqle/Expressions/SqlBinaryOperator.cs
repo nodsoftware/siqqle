@@ -54,4 +54,9 @@ public enum SqlBinaryOperator
     /// Represents the "in" comparison operator (<c>IN</c>).
     /// </summary>
     In,
+
+    /// <summary>
+    /// Represents the "not in" comparison operator (<c>NOT IN</c>).
+    /// </summary>
+    NotIn,
 }
