@@ -287,6 +287,32 @@ public abstract class SqlExpression : ISqlVisitable
     }
 
     /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a "not like" comparison.
+    /// </summary>
+    /// <param name="column">
+    /// A <see cref="SqlColumn"/> to use as the left operand in the expression.
+    /// </param>
+    /// <param name="value">
+    /// A <see cref="SqlValue"/> to use as the right operand in the expression.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlBinaryExpression"/> that represents a "not like" comparison between
+    /// the value of the specified <paramref name="column"/> and the specified <paramref name="value"/>.
+    /// </returns>
+    /// <remarks>
+    /// If you pass <see langword="null"/> for the <paramref name="value"/> argument, it
+    /// will be automatically converted to <see cref="SqlConstant.Null"/>.
+    /// </remarks>
+    public static SqlBinaryExpression NotLike(SqlColumn column, SqlValue value)
+    {
+        return new SqlBinaryExpression(
+            column,
+            SqlBinaryOperator.NotLike,
+            value ?? SqlConstant.Null
+        );
+    }
+
+    /// <summary>
     /// Creates a <see cref="SqlBinaryExpression"/> that represents an "in" comparison.
     /// </summary>
     /// <param name="column">

@@ -51,6 +51,11 @@ public enum SqlBinaryOperator
     Like,
 
     /// <summary>
+    /// Represents the "not like" comparison operator (<c>NOT LIKE</c>).
+    /// </summary>
+    NotLike,
+
+    /// <summary>
     /// Represents the "in" comparison operator (<c>IN</c>).
     /// </summary>
     In,

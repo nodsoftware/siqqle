@@ -408,6 +408,11 @@ public class SqlWriter : IDisposable
                 WriteKeyword(SqlKeywords.Like);
                 break;
 
+            case SqlBinaryOperator.NotLike:
+                WriteKeyword(SqlKeywords.Not);
+                WriteKeyword(SqlKeywords.Like);
+                break;
+
             case SqlBinaryOperator.NotEqual:
                 Write("<>");
                 break;
