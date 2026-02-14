@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using Siqqle.Expressions;
@@ -7,10 +7,10 @@ using Siqqle.Syntax;
 
 namespace Siqqle.Dapper;
 
-public static class ExecuteReaderExtensions
+public static class ExecuteReaderAsyncExtensions
 {
     /// <summary>
-    /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+    /// Execute parameterized SQL asynchronously and return a <see cref="Task{IDataReader}"/>.
     /// </summary>
     /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
@@ -19,22 +19,7 @@ public static class ExecuteReaderExtensions
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-    /// <remarks>
-    /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-    /// or <see cref="T:DataSet"/>.
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// <![CDATA[
-    /// DataTable table = new DataTable("MyTable");
-    /// using (var reader = ExecuteReader(cnn, sql, param))
-    /// {
-    ///     table.Load(reader);
-    /// }
-    /// ]]>
-    /// </code>
-    /// </example>
-    public static IDataReader ExecuteReader(
+    public static Task<IDataReader> ExecuteReaderAsync(
         this IDbConnection cnn,
         ISqlSyntaxEnd<SqlUnion> sql,
         object param = null,
@@ -43,11 +28,11 @@ public static class ExecuteReaderExtensions
         CommandType? commandType = null
     )
     {
-        return cnn.ExecuteReader(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.ExecuteReaderAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
     }
 
     /// <summary>
-    /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+    /// Execute parameterized SQL asynchronously and return a <see cref="Task{IDataReader}"/>.
     /// </summary>
     /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
@@ -56,22 +41,7 @@ public static class ExecuteReaderExtensions
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-    /// <remarks>
-    /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-    /// or <see cref="T:DataSet"/>.
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// <![CDATA[
-    /// DataTable table = new DataTable("MyTable");
-    /// using (var reader = ExecuteReader(cnn, sql, param))
-    /// {
-    ///     table.Load(reader);
-    /// }
-    /// ]]>
-    /// </code>
-    /// </example>
-    public static IDataReader ExecuteReader(
+    public static Task<IDataReader> ExecuteReaderAsync(
         this IDbConnection cnn,
         ISqlSyntaxEnd<SqlBatch> sql,
         object param = null,
@@ -80,11 +50,11 @@ public static class ExecuteReaderExtensions
         CommandType? commandType = null
     )
     {
-        return cnn.ExecuteReader(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.ExecuteReaderAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
     }
 
     /// <summary>
-    /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+    /// Execute parameterized SQL asynchronously and return a <see cref="Task{IDataReader}"/>.
     /// </summary>
     /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
@@ -93,22 +63,7 @@ public static class ExecuteReaderExtensions
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-    /// <remarks>
-    /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-    /// or <see cref="T:DataSet"/>.
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// <![CDATA[
-    /// DataTable table = new DataTable("MyTable");
-    /// using (var reader = ExecuteReader(cnn, sql, param))
-    /// {
-    ///     table.Load(reader);
-    /// }
-    /// ]]>
-    /// </code>
-    /// </example>
-    public static IDataReader ExecuteReader(
+    public static Task<IDataReader> ExecuteReaderAsync(
         this IDbConnection cnn,
         SqlUnion sql,
         object param = null,
@@ -118,11 +73,17 @@ public static class ExecuteReaderExtensions
     )
     {
         (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
-        return cnn.ExecuteReader(commandText, parameters, transaction, commandTimeout, commandType);
+        return cnn.ExecuteReaderAsync(
+            commandText,
+            parameters,
+            transaction,
+            commandTimeout,
+            commandType
+        );
     }
 
     /// <summary>
-    /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+    /// Execute parameterized SQL asynchronously and return a <see cref="Task{IDataReader}"/>.
     /// </summary>
     /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
@@ -131,22 +92,7 @@ public static class ExecuteReaderExtensions
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-    /// <remarks>
-    /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-    /// or <see cref="T:DataSet"/>.
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// <![CDATA[
-    /// DataTable table = new DataTable("MyTable");
-    /// using (var reader = ExecuteReader(cnn, sql, param))
-    /// {
-    ///     table.Load(reader);
-    /// }
-    /// ]]>
-    /// </code>
-    /// </example>
-    public static IDataReader ExecuteReader(
+    public static Task<IDataReader> ExecuteReaderAsync(
         this IDbConnection cnn,
         SqlBatch sql,
         object param = null,
@@ -156,11 +102,17 @@ public static class ExecuteReaderExtensions
     )
     {
         (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
-        return cnn.ExecuteReader(commandText, parameters, transaction, commandTimeout, commandType);
+        return cnn.ExecuteReaderAsync(
+            commandText,
+            parameters,
+            transaction,
+            commandTimeout,
+            commandType
+        );
     }
 
     /// <summary>
-    /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+    /// Execute parameterized SQL asynchronously and return a <see cref="Task{IDataReader}"/>.
     /// </summary>
     /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
@@ -169,22 +121,7 @@ public static class ExecuteReaderExtensions
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-    /// <remarks>
-    /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-    /// or <see cref="T:DataSet"/>.
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// <![CDATA[
-    /// DataTable table = new DataTable("MyTable");
-    /// using (var reader = ExecuteReader(cnn, sql, param))
-    /// {
-    ///     table.Load(reader);
-    /// }
-    /// ]]>
-    /// </code>
-    /// </example>
-    public static IDataReader ExecuteReader(
+    public static Task<IDataReader> ExecuteReaderAsync(
         this IDbConnection cnn,
         ISqlSyntaxEnd<SqlSelect> sql,
         object param = null,
@@ -193,11 +130,11 @@ public static class ExecuteReaderExtensions
         CommandType? commandType = null
     )
     {
-        return cnn.ExecuteReader(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.ExecuteReaderAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
     }
 
     /// <summary>
-    /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+    /// Execute parameterized SQL asynchronously and return a <see cref="Task{IDataReader}"/>.
     /// </summary>
     /// <param name="cnn">The connection to execute on.</param>
     /// <param name="sql">The SQL to execute.</param>
@@ -206,22 +143,7 @@ public static class ExecuteReaderExtensions
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
     /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-    /// <remarks>
-    /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-    /// or <see cref="T:DataSet"/>.
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// <![CDATA[
-    /// DataTable table = new DataTable("MyTable");
-    /// using (var reader = ExecuteReader(cnn, sql, param))
-    /// {
-    ///     table.Load(reader);
-    /// }
-    /// ]]>
-    /// </code>
-    /// </example>
-    public static IDataReader ExecuteReader(
+    public static Task<IDataReader> ExecuteReaderAsync(
         this IDbConnection cnn,
         SqlSelect sql,
         object param = null,
@@ -231,6 +153,12 @@ public static class ExecuteReaderExtensions
     )
     {
         (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
-        return cnn.ExecuteReader(commandText, parameters, transaction, commandTimeout, commandType);
+        return cnn.ExecuteReaderAsync(
+            commandText,
+            parameters,
+            transaction,
+            commandTimeout,
+            commandType
+        );
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using Siqqle.Expressions;
@@ -7,10 +7,10 @@ using Siqqle.Syntax;
 
 namespace Siqqle.Dapper;
 
-public static class QueryFirstExtensions
+public static class QuerySingleAsyncExtensions
 {
     /// <summary>
-    /// Return a dynamic object with properties matching the columns.
+    /// Return a dynamic object with properties matching the columns asynchronously.
     /// </summary>
     /// <param name="cnn">The connection to query on.</param>
     /// <param name="sql">The SQL to execute for the query.</param>
@@ -19,7 +19,7 @@ public static class QueryFirstExtensions
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
     /// <remarks>Note: the row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
-    public static dynamic QueryFirst(
+    public static Task<dynamic> QuerySingleAsync(
         this IDbConnection cnn,
         ISqlSyntaxEnd<SqlSelect> sql,
         object param = null,
@@ -28,11 +28,11 @@ public static class QueryFirstExtensions
         CommandType? commandType = null
     )
     {
-        return cnn.QueryFirst(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.QuerySingleAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
     }
 
     /// <summary>
-    /// Return a dynamic object with properties matching the columns.
+    /// Return a dynamic object with properties matching the columns asynchronously.
     /// </summary>
     /// <param name="cnn">The connection to query on.</param>
     /// <param name="sql">The SQL to execute for the query.</param>
@@ -41,7 +41,7 @@ public static class QueryFirstExtensions
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
     /// <remarks>Note: the row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
-    public static dynamic QueryFirst(
+    public static Task<dynamic> QuerySingleAsync(
         this IDbConnection cnn,
         SqlSelect sql,
         object param = null,
@@ -51,52 +51,7 @@ public static class QueryFirstExtensions
     )
     {
         (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
-        return cnn.QueryFirst(commandText, parameters, transaction, commandTimeout, commandType);
-    }
-
-    /// <summary>
-    /// Return a dynamic object with properties matching the columns.
-    /// </summary>
-    /// <param name="cnn">The connection to query on.</param>
-    /// <param name="sql">The SQL to execute for the query.</param>
-    /// <param name="param">The parameters to pass, if any.</param>
-    /// <param name="transaction">The transaction to use, if any.</param>
-    /// <param name="commandTimeout">The command timeout (in seconds).</param>
-    /// <param name="commandType">The type of command to execute.</param>
-    /// <remarks>Note: the row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
-    public static dynamic QueryFirstOrDefault(
-        this IDbConnection cnn,
-        ISqlSyntaxEnd<SqlSelect> sql,
-        object param = null,
-        IDbTransaction transaction = null,
-        int? commandTimeout = null,
-        CommandType? commandType = null
-    )
-    {
-        return cnn.QueryFirstOrDefault(sql?.Go(), param, transaction, commandTimeout, commandType);
-    }
-
-    /// <summary>
-    /// Return a dynamic object with properties matching the columns.
-    /// </summary>
-    /// <param name="cnn">The connection to query on.</param>
-    /// <param name="sql">The SQL to execute for the query.</param>
-    /// <param name="param">The parameters to pass, if any.</param>
-    /// <param name="transaction">The transaction to use, if any.</param>
-    /// <param name="commandTimeout">The command timeout (in seconds).</param>
-    /// <param name="commandType">The type of command to execute.</param>
-    /// <remarks>Note: the row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
-    public static dynamic QueryFirstOrDefault(
-        this IDbConnection cnn,
-        SqlSelect sql,
-        object param = null,
-        IDbTransaction transaction = null,
-        int? commandTimeout = null,
-        CommandType? commandType = null
-    )
-    {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
-        return cnn.QueryFirstOrDefault(
+        return cnn.QuerySingleAsync(
             commandText,
             parameters,
             transaction,
@@ -106,20 +61,16 @@ public static class QueryFirstExtensions
     }
 
     /// <summary>
-    /// Executes a single-row query, returning the data typed as <typeparamref name="T"/>.
+    /// Return a dynamic object with properties matching the columns asynchronously.
     /// </summary>
-    /// <typeparam name="T">The type of result to return.</typeparam>
     /// <param name="cnn">The connection to query on.</param>
     /// <param name="sql">The SQL to execute for the query.</param>
     /// <param name="param">The parameters to pass, if any.</param>
     /// <param name="transaction">The transaction to use, if any.</param>
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
-    /// <returns>
-    /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-    /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-    /// </returns>
-    public static T QueryFirst<T>(
+    /// <remarks>Note: the row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
+    public static Task<dynamic> QuerySingleOrDefaultAsync(
         this IDbConnection cnn,
         ISqlSyntaxEnd<SqlSelect> sql,
         object param = null,
@@ -128,60 +79,7 @@ public static class QueryFirstExtensions
         CommandType? commandType = null
     )
     {
-        return cnn.QueryFirst<T>(sql?.Go(), param, transaction, commandTimeout, commandType);
-    }
-
-    /// <summary>
-    /// Executes a single-row query, returning the data typed as <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T">The type of result to return.</typeparam>
-    /// <param name="cnn">The connection to query on.</param>
-    /// <param name="sql">The SQL to execute for the query.</param>
-    /// <param name="param">The parameters to pass, if any.</param>
-    /// <param name="transaction">The transaction to use, if any.</param>
-    /// <param name="commandTimeout">The command timeout (in seconds).</param>
-    /// <param name="commandType">The type of command to execute.</param>
-    /// <returns>
-    /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-    /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-    /// </returns>
-    public static T QueryFirst<T>(
-        this IDbConnection cnn,
-        SqlSelect sql,
-        object param = null,
-        IDbTransaction transaction = null,
-        int? commandTimeout = null,
-        CommandType? commandType = null
-    )
-    {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
-        return cnn.QueryFirst<T>(commandText, parameters, transaction, commandTimeout, commandType);
-    }
-
-    /// <summary>
-    /// Executes a single-row query, returning the data typed as <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T">The type of result to return.</typeparam>
-    /// <param name="cnn">The connection to query on.</param>
-    /// <param name="sql">The SQL to execute for the query.</param>
-    /// <param name="param">The parameters to pass, if any.</param>
-    /// <param name="transaction">The transaction to use, if any.</param>
-    /// <param name="commandTimeout">The command timeout (in seconds).</param>
-    /// <param name="commandType">The type of command to execute.</param>
-    /// <returns>
-    /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-    /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-    /// </returns>
-    public static T QueryFirstOrDefault<T>(
-        this IDbConnection cnn,
-        ISqlSyntaxEnd<SqlSelect> sql,
-        object param = null,
-        IDbTransaction transaction = null,
-        int? commandTimeout = null,
-        CommandType? commandType = null
-    )
-    {
-        return cnn.QueryFirstOrDefault<T>(
+        return cnn.QuerySingleOrDefaultAsync(
             sql?.Go(),
             param,
             transaction,
@@ -191,7 +89,36 @@ public static class QueryFirstExtensions
     }
 
     /// <summary>
-    /// Executes a single-row query, returning the data typed as <typeparamref name="T"/>.
+    /// Return a dynamic object with properties matching the columns asynchronously.
+    /// </summary>
+    /// <param name="cnn">The connection to query on.</param>
+    /// <param name="sql">The SQL to execute for the query.</param>
+    /// <param name="param">The parameters to pass, if any.</param>
+    /// <param name="transaction">The transaction to use, if any.</param>
+    /// <param name="commandTimeout">The command timeout (in seconds).</param>
+    /// <param name="commandType">The type of command to execute.</param>
+    /// <remarks>Note: the row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
+    public static Task<dynamic> QuerySingleOrDefaultAsync(
+        this IDbConnection cnn,
+        SqlSelect sql,
+        object param = null,
+        IDbTransaction transaction = null,
+        int? commandTimeout = null,
+        CommandType? commandType = null
+    )
+    {
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        return cnn.QuerySingleOrDefaultAsync(
+            commandText,
+            parameters,
+            transaction,
+            commandTimeout,
+            commandType
+        );
+    }
+
+    /// <summary>
+    /// Executes a single-row query asynchronously, returning the data typed as <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">The type of result to return.</typeparam>
     /// <param name="cnn">The connection to query on.</param>
@@ -204,7 +131,33 @@ public static class QueryFirstExtensions
     /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
     /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
     /// </returns>
-    public static T QueryFirstOrDefault<T>(
+    public static Task<T> QuerySingleAsync<T>(
+        this IDbConnection cnn,
+        ISqlSyntaxEnd<SqlSelect> sql,
+        object param = null,
+        IDbTransaction transaction = null,
+        int? commandTimeout = null,
+        CommandType? commandType = null
+    )
+    {
+        return cnn.QuerySingleAsync<T>(sql?.Go(), param, transaction, commandTimeout, commandType);
+    }
+
+    /// <summary>
+    /// Executes a single-row query asynchronously, returning the data typed as <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of result to return.</typeparam>
+    /// <param name="cnn">The connection to query on.</param>
+    /// <param name="sql">The SQL to execute for the query.</param>
+    /// <param name="param">The parameters to pass, if any.</param>
+    /// <param name="transaction">The transaction to use, if any.</param>
+    /// <param name="commandTimeout">The command timeout (in seconds).</param>
+    /// <param name="commandType">The type of command to execute.</param>
+    /// <returns>
+    /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
+    /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
+    /// </returns>
+    public static Task<T> QuerySingleAsync<T>(
         this IDbConnection cnn,
         SqlSelect sql,
         object param = null,
@@ -214,7 +167,72 @@ public static class QueryFirstExtensions
     )
     {
         (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
-        return cnn.QueryFirstOrDefault<T>(
+        return cnn.QuerySingleAsync<T>(
+            commandText,
+            parameters,
+            transaction,
+            commandTimeout,
+            commandType
+        );
+    }
+
+    /// <summary>
+    /// Executes a single-row query asynchronously, returning the data typed as <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of result to return.</typeparam>
+    /// <param name="cnn">The connection to query on.</param>
+    /// <param name="sql">The SQL to execute for the query.</param>
+    /// <param name="param">The parameters to pass, if any.</param>
+    /// <param name="transaction">The transaction to use, if any.</param>
+    /// <param name="commandTimeout">The command timeout (in seconds).</param>
+    /// <param name="commandType">The type of command to execute.</param>
+    /// <returns>
+    /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
+    /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
+    /// </returns>
+    public static Task<T> QuerySingleOrDefaultAsync<T>(
+        this IDbConnection cnn,
+        ISqlSyntaxEnd<SqlSelect> sql,
+        object param = null,
+        IDbTransaction transaction = null,
+        int? commandTimeout = null,
+        CommandType? commandType = null
+    )
+    {
+        return cnn.QuerySingleOrDefaultAsync<T>(
+            sql?.Go(),
+            param,
+            transaction,
+            commandTimeout,
+            commandType
+        );
+    }
+
+    /// <summary>
+    /// Executes a single-row query asynchronously, returning the data typed as <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of result to return.</typeparam>
+    /// <param name="cnn">The connection to query on.</param>
+    /// <param name="sql">The SQL to execute for the query.</param>
+    /// <param name="param">The parameters to pass, if any.</param>
+    /// <param name="transaction">The transaction to use, if any.</param>
+    /// <param name="commandTimeout">The command timeout (in seconds).</param>
+    /// <param name="commandType">The type of command to execute.</param>
+    /// <returns>
+    /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
+    /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
+    /// </returns>
+    public static Task<T> QuerySingleOrDefaultAsync<T>(
+        this IDbConnection cnn,
+        SqlSelect sql,
+        object param = null,
+        IDbTransaction transaction = null,
+        int? commandTimeout = null,
+        CommandType? commandType = null
+    )
+    {
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        return cnn.QuerySingleOrDefaultAsync<T>(
             commandText,
             parameters,
             transaction,
