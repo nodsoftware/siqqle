@@ -12,7 +12,7 @@ public class SqlDeleteTests
     [Fact]
     public void Ctor_DoesNotThrow()
     {
-        new SqlDelete();
+        _ = new SqlDelete();
     }
 
     [Fact]

@@ -12,7 +12,7 @@ public class SqlInsertTests
     [Fact]
     public void Ctor_DoesNotThrow()
     {
-        new SqlInsert();
+        _ = new SqlInsert();
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public class SqlInsertTests
             .Go();
 
         Assert.NotNull(insert.Values);
-        Assert.Equal(3, insert.Values.Count());
+        Assert.Equal(3, insert.Values.Count);
         Assert.Equal(2, insert.Values.First().Count());
         Assert.Equal(2, insert.Values.Skip(1).First().Count());
         Assert.Equal(2, insert.Values.Last().Count());

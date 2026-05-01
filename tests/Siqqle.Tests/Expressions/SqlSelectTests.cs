@@ -234,7 +234,7 @@ public class SqlSelectTests
             .On(addressesPredicate)
             .Go();
 
-        Assert.Equal(2, select.From.Joins.Count());
+        Assert.Equal(2, select.From.Joins.Count);
         var join = select.From.Joins.First();
         Assert.Same(profiles, join.Table);
         Assert.NotNull(join.On);
