@@ -1,4 +1,6 @@
-﻿using Siqqle.Text;
+﻿using Siqqle.Expressions;
+using Siqqle.Expressions.Visitors;
+using Siqqle.Text;
 
 namespace Siqqle.Dialects.MySql;
 
@@ -84,8 +86,7 @@ public class MySqlDialect : SqlDialect
     )
     {
         writer.Write("CONCAT");
-        writer.WriteRaw("(");
-        writer.ClearPendingSpace();
+        writer.WriteOpenParenthesis();
         left.Accept(visitor);
         writer.WriteComma();
         right.Accept(visitor);
