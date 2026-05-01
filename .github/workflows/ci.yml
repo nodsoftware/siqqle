@@ -36,11 +36,11 @@ jobs:
         run: ./build/Update-Version.ps1
 
       - name: Restore
-        run: dotnet restore src/Siqqle.sln
+        run: dotnet restore Siqqle.slnx
 
       - name: Build
         run: >
-          dotnet build src/Siqqle.sln
+          dotnet build Siqqle.slnx
           --no-restore
           -c ${{ env.BUILD_CONFIGURATION }}
           -p:PackageVersion="${{ env.PackageVersion }}"
@@ -50,7 +50,7 @@ jobs:
 
       - name: Test
         run: >
-          dotnet test src/Siqqle.sln
+          dotnet test Siqqle.slnx
           --no-build
           -c ${{ env.BUILD_CONFIGURATION }}
           --collect "XPlat Code Coverage"
@@ -66,7 +66,7 @@ jobs:
       - name: Pack
         if: github.ref_type == 'tag'
         run: >
-          dotnet pack src/Siqqle.sln
+          dotnet pack Siqqle.slnx
           --no-build
           -c ${{ env.BUILD_CONFIGURATION }}
           -p:PackageVersion="${{ env.PackageVersion }}"
