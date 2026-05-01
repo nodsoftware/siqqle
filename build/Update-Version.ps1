@@ -6,83 +6,80 @@ if (-not $src)
     $src = Resolve-Path "$src/../"
 }
 
-# Parse version from Directory.Build.props if not provided via environment variables
-if (-not $env:MAJORVERSION -or -not $env:MINORVERSION -or -not $env:PATCHVERSION)
+# Always parse version from Directory.Build.props to ensure we have the latest version
+Write-Host "Parsing version from Directory.Build.props..."
+Write-Host "Source directory: $src"
+
+$buildPropsPath = Join-Path $src 'Directory.Build.props'
+Write-Host "Reading from: $buildPropsPath"
+
+if (-not (Test-Path $buildPropsPath))
 {
-    Write-Host "Parsing version from Directory.Build.props..."
-    Write-Host "Source directory: $src"
+    Write-Error "Directory.Build.props not found at $buildPropsPath"
+    exit 1
+}
+
+try
+{
+    [xml]$xml = Get-Content $buildPropsPath
     
-    $buildPropsPath = Join-Path $src 'Directory.Build.props'
-    Write-Host "Reading from: $buildPropsPath"
-    
-    if (-not (Test-Path $buildPropsPath))
+    # Find the PropertyGroup element that contains SemanticVersion
+    $propertyGroupWithVersion = $null
+    foreach ($pg in $xml.Project.PropertyGroup)
     {
-        Write-Error "Directory.Build.props not found at $buildPropsPath"
+        if ($pg.SemanticVersion)
+        {
+            $propertyGroupWithVersion = $pg
+            break
+        }
+    }
+    
+    if (-not $propertyGroupWithVersion)
+    {
+        Write-Error "PropertyGroup with SemanticVersion not found in Directory.Build.props"
         exit 1
     }
     
-    try
+    $semanticVersion = $propertyGroupWithVersion.SemanticVersion.Trim()
+    $prereleaseLabel = $propertyGroupWithVersion.PreReleaseLabel.Trim()
+    
+    if (-not $semanticVersion)
     {
-        [xml]$xml = Get-Content $buildPropsPath
-        
-        # Find the PropertyGroup element that contains SemanticVersion
-        $propertyGroupWithVersion = $null
-        foreach ($pg in $xml.Project.PropertyGroup)
-        {
-            if ($pg.SemanticVersion)
-            {
-                $propertyGroupWithVersion = $pg
-                break
-            }
-        }
-        
-        if (-not $propertyGroupWithVersion)
-        {
-            Write-Error "PropertyGroup with SemanticVersion not found in Directory.Build.props"
-            exit 1
-        }
-        
-        $semanticVersion = $propertyGroupWithVersion.SemanticVersion.Trim()
-        $prereleaseLabel = $propertyGroupWithVersion.PreReleaseLabel.Trim()
-        
-        if (-not $semanticVersion)
-        {
-            Write-Error "SemanticVersion not found in Directory.Build.props"
-            exit 1
-        }
-        
-        $versionParts = $semanticVersion.Split('.')
-        if ($versionParts.Count -ne 3)
-        {
-            Write-Error "Invalid semantic version format: $semanticVersion (expected X.Y.Z)"
-            exit 1
-        }
-        
-        $env:MAJORVERSION = $versionParts[0]
-        $env:MINORVERSION = $versionParts[1]
-        $env:PATCHVERSION = $versionParts[2]
-        
-        if ($prereleaseLabel)
-        {
-            $env:PRERELEASELABEL = $prereleaseLabel
-        }
-        else
-        {
-            $env:PRERELEASELABEL = ""
-        }
-        
-        Write-Host "Parsed version from Directory.Build.props: $semanticVersion"
-        Write-Host "Parsed MAJORVERSION: $($env:MAJORVERSION), MINORVERSION: $($env:MINORVERSION), PATCHVERSION: $($env:PATCHVERSION)"
-        if ($env:PRERELEASELABEL)
-        {
-            Write-Host "Parsed PreReleaseLabel: $env:PRERELEASELABEL"
-        }
-    }
-    catch
-    {
-        Write-Error "Failed to parse Directory.Build.props: $_"
+        Write-Error "SemanticVersion not found in Directory.Build.props"
         exit 1
     }
+    
+    $versionParts = $semanticVersion.Split('.')
+    if ($versionParts.Count -ne 3)
+    {
+        Write-Error "Invalid semantic version format: $semanticVersion (expected X.Y.Z)"
+        exit 1
+    }
+    
+    $env:MAJORVERSION = $versionParts[0]
+    $env:MINORVERSION = $versionParts[1]
+    $env:PATCHVERSION = $versionParts[2]
+    
+    if ($prereleaseLabel)
+    {
+        $env:PRERELEASELABEL = $prereleaseLabel
+    }
+    else
+    {
+        $env:PRERELEASELABEL = ""
+    }
+    
+    Write-Host "Parsed version from Directory.Build.props: $semanticVersion"
+    Write-Host "Parsed MAJORVERSION: $($env:MAJORVERSION), MINORVERSION: $($env:MINORVERSION), PATCHVERSION: $($env:PATCHVERSION)"
+    if ($env:PRERELEASELABEL)
+    {
+        Write-Host "Parsed PreReleaseLabel: $env:PRERELEASELABEL"
+    }
+}
+catch
+{
+    Write-Error "Failed to parse Directory.Build.props: $_"
+    exit 1
 }
 
 # The source directory was already resolved above
