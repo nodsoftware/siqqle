@@ -1,20 +1,4 @@
 <Project>
-  <!-- Define target frameworks. -->
-  <PropertyGroup>
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-  </PropertyGroup>
-
-  <!-- Versioning and product name. -->
-  <PropertyGroup>
-    <SemanticVersion>6.0.0</SemanticVersion>
-
-    <PackageVersion Condition=" '$(PackageVersion)' == '' ">$(SemanticVersion)</PackageVersion>
-    <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(SemanticVersion)</AssemblyVersion>
-    <FileVersion Condition=" '$(FileVersion)' == '' ">$(SemanticVersion)</FileVersion>
-    <Product Condition=" '$(Product)' == '' ">$(AssemblyName) $(SemanticVersion)</Product>
-    <ProductVersion Condition=" '$(ProductVersion)' == '' ">$(SemanticVersion)</ProductVersion>
-  </PropertyGroup>
-
   <!-- Define Debug and Release configurations. -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,23 +31,5 @@
   <PropertyGroup>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-
-  <!-- Globally treat warnings as errors. -->
-  <PropertyGroup>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>$(TreatWarningsAsErrors)</WarningsAsErrors>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-
-  <!-- Enable analyzers. -->
-  <PropertyGroup>
-    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
-    <AnalysisMode>Default</AnalysisMode>
-  </PropertyGroup>
-
-  <!-- Set the default language version to the latest stable version. -->
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 </Project>
