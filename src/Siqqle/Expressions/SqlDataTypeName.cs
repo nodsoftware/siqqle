@@ -90,4 +90,18 @@ public class SqlDataTypeName : IEquatable<SqlDataTypeName>
     {
         return Name.GetHashCode();
     }
+
+    public static bool operator ==(SqlDataTypeName left, SqlDataTypeName right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+        if (left is null || right is null)
+            return false;
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(SqlDataTypeName left, SqlDataTypeName right)
+    {
+        return !(left == right);
+    }
 }
