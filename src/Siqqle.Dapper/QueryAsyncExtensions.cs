@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
@@ -19,6 +20,7 @@ public static class QueryAsyncExtensions
     /// <param name="transaction">The transaction to use, if any.</param>
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <remarks>Note: each row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
     public static Task<IEnumerable<dynamic>> QueryAsync(
         this IDbConnection cnn,
@@ -26,10 +28,11 @@ public static class QueryAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        return cnn.QueryAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.QueryAsync(sql?.Go(), param, transaction, commandTimeout, commandType, dialect);
     }
 
     /// <summary>
@@ -41,6 +44,7 @@ public static class QueryAsyncExtensions
     /// <param name="transaction">The transaction to use, if any.</param>
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <remarks>Note: each row can be accessed via "dynamic", or by casting to an IDictionary&lt;string,object&gt;</remarks>
     public static Task<IEnumerable<dynamic>> QueryAsync(
         this IDbConnection cnn,
@@ -48,10 +52,11 @@ public static class QueryAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.QueryAsync(commandText, parameters, transaction, commandTimeout, commandType);
     }
 
@@ -65,6 +70,7 @@ public static class QueryAsyncExtensions
     /// <param name="transaction">The transaction to use, if any.</param>
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>
     /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
     /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
@@ -75,10 +81,11 @@ public static class QueryAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        return cnn.QueryAsync<T>(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.QueryAsync<T>(sql?.Go(), param, transaction, commandTimeout, commandType, dialect);
     }
 
     /// <summary>
@@ -91,6 +98,7 @@ public static class QueryAsyncExtensions
     /// <param name="transaction">The transaction to use, if any.</param>
     /// <param name="commandTimeout">The command timeout (in seconds).</param>
     /// <param name="commandType">The type of command to execute.</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>
     /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
     /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
@@ -101,10 +109,11 @@ public static class QueryAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.QueryAsync<T>(commandText, parameters, transaction, commandTimeout, commandType);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
@@ -26,6 +27,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TReturn>(
         this IDbConnection cnn,
@@ -36,7 +38,8 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.Query(
@@ -47,7 +50,8 @@ public static class QueryMultiMapExtensions
             buffered,
             splitOn,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -67,6 +71,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TReturn>(
         this IDbConnection cnn,
@@ -77,10 +82,11 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.Query(
             commandText,
             map,
@@ -110,6 +116,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(
         this IDbConnection cnn,
@@ -120,7 +127,8 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.Query(
@@ -131,7 +139,8 @@ public static class QueryMultiMapExtensions
             buffered,
             splitOn,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -152,6 +161,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(
         this IDbConnection cnn,
@@ -162,10 +172,11 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.Query(
             commandText,
             map,
@@ -196,6 +207,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(
         this IDbConnection cnn,
@@ -206,7 +218,8 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.Query(
@@ -217,7 +230,8 @@ public static class QueryMultiMapExtensions
             buffered,
             splitOn,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -239,6 +253,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(
         this IDbConnection cnn,
@@ -249,10 +264,11 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.Query(
             commandText,
             map,
@@ -284,6 +300,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(
         this IDbConnection cnn,
@@ -294,7 +311,8 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.Query(
@@ -305,7 +323,8 @@ public static class QueryMultiMapExtensions
             buffered,
             splitOn,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -328,6 +347,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(
         this IDbConnection cnn,
@@ -338,10 +358,11 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.Query(
             commandText,
             map,
@@ -374,6 +395,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<
         TFirst,
@@ -392,7 +414,8 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.Query(
@@ -403,7 +426,8 @@ public static class QueryMultiMapExtensions
             buffered,
             splitOn,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -427,6 +451,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<
         TFirst,
@@ -445,10 +470,11 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.Query(
             commandText,
             map,
@@ -482,6 +508,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<
         TFirst,
@@ -501,7 +528,8 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.Query(
@@ -512,7 +540,8 @@ public static class QueryMultiMapExtensions
             buffered,
             splitOn,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -537,6 +566,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<
         TFirst,
@@ -556,10 +586,11 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.Query(
             commandText,
             map,
@@ -587,6 +618,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TReturn>(
         this IDbConnection cnn,
@@ -598,7 +630,8 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.Query(
@@ -610,7 +643,8 @@ public static class QueryMultiMapExtensions
             buffered,
             splitOn,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -629,6 +663,7 @@ public static class QueryMultiMapExtensions
     /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>An enumerable of <typeparamref name="TReturn"/>.</returns>
     public static IEnumerable<TReturn> Query<TReturn>(
         this IDbConnection cnn,
@@ -640,10 +675,11 @@ public static class QueryMultiMapExtensions
         bool buffered = true,
         string splitOn = "Id",
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.Query(
             commandText,
             types,

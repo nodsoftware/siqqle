@@ -1,6 +1,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
@@ -18,6 +19,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell selected as <see cref="object"/>.</returns>
     public static Task<object> ExecuteScalarAsync(
         this IDbConnection cnn,
@@ -25,10 +27,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        return cnn.ExecuteScalarAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.ExecuteScalarAsync(sql?.Go(), param, transaction, commandTimeout, commandType, dialect);
     }
 
     /// <summary>
@@ -40,6 +43,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell selected as <see cref="object"/>.</returns>
     public static Task<object> ExecuteScalarAsync(
         this IDbConnection cnn,
@@ -47,10 +51,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteScalarAsync(
             commandText,
             parameters,
@@ -69,6 +74,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell selected as <see cref="object"/>.</returns>
     public static Task<object> ExecuteScalarAsync(
         this IDbConnection cnn,
@@ -76,10 +82,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        return cnn.ExecuteScalarAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.ExecuteScalarAsync(sql?.Go(), param, transaction, commandTimeout, commandType, dialect);
     }
 
     /// <summary>
@@ -91,6 +98,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell selected as <see cref="object"/>.</returns>
     public static Task<object> ExecuteScalarAsync(
         this IDbConnection cnn,
@@ -98,10 +106,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        return cnn.ExecuteScalarAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.ExecuteScalarAsync(sql?.Go(), param, transaction, commandTimeout, commandType, dialect);
     }
 
     /// <summary>
@@ -113,6 +122,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell selected as <see cref="object"/>.</returns>
     public static Task<object> ExecuteScalarAsync(
         this IDbConnection cnn,
@@ -120,10 +130,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteScalarAsync(
             commandText,
             parameters,
@@ -142,6 +153,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell selected as <see cref="object"/>.</returns>
     public static Task<object> ExecuteScalarAsync(
         this IDbConnection cnn,
@@ -149,10 +161,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteScalarAsync(
             commandText,
             parameters,
@@ -172,6 +185,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
     public static Task<T> ExecuteScalarAsync<T>(
         this IDbConnection cnn,
@@ -179,7 +193,8 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.ExecuteScalarAsync<T>(
@@ -187,7 +202,8 @@ public static class ExecuteScalarAsyncExtensions
             param,
             transaction,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -201,6 +217,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
     public static Task<T> ExecuteScalarAsync<T>(
         this IDbConnection cnn,
@@ -208,10 +225,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteScalarAsync<T>(
             commandText,
             parameters,
@@ -231,6 +249,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
     public static Task<T> ExecuteScalarAsync<T>(
         this IDbConnection cnn,
@@ -238,7 +257,8 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.ExecuteScalarAsync<T>(
@@ -246,7 +266,8 @@ public static class ExecuteScalarAsyncExtensions
             param,
             transaction,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -260,6 +281,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
     public static Task<T> ExecuteScalarAsync<T>(
         this IDbConnection cnn,
@@ -267,7 +289,8 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
         return cnn.ExecuteScalarAsync<T>(
@@ -275,7 +298,8 @@ public static class ExecuteScalarAsyncExtensions
             param,
             transaction,
             commandTimeout,
-            commandType
+            commandType,
+            dialect
         );
     }
 
@@ -289,6 +313,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
     public static Task<T> ExecuteScalarAsync<T>(
         this IDbConnection cnn,
@@ -296,10 +321,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteScalarAsync<T>(
             commandText,
             parameters,
@@ -319,6 +345,7 @@ public static class ExecuteScalarAsyncExtensions
     /// <param name="transaction">The transaction to use for this command.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
     public static Task<T> ExecuteScalarAsync<T>(
         this IDbConnection cnn,
@@ -326,10 +353,11 @@ public static class ExecuteScalarAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteScalarAsync<T>(
             commandText,
             parameters,

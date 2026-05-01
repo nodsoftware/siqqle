@@ -1,6 +1,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
@@ -19,17 +20,19 @@ public static class QueryMultipleAsyncExtensions
     /// <param name="transaction">The transaction to use for this query.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     public static Task<GridReader> QueryMultipleAsync<TStatement>(
         this IDbConnection cnn,
         ISqlSyntaxEnd<TStatement> sql,
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
         where TStatement : SqlStatement
     {
-        return cnn.QueryMultipleAsync(sql?.Go(), param, transaction, commandTimeout, commandType);
+        return cnn.QueryMultipleAsync(sql?.Go(), param, transaction, commandTimeout, commandType, dialect);
     }
 
     /// <summary>
@@ -41,17 +44,19 @@ public static class QueryMultipleAsyncExtensions
     /// <param name="transaction">The transaction to use for this query.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     public static Task<GridReader> QueryMultipleAsync<TStatement>(
         this IDbConnection cnn,
         TStatement sql,
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
         where TStatement : SqlStatement
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.QueryMultipleAsync(
             commandText,
             parameters,

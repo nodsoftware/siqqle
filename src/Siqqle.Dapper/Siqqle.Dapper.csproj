@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="Dapper.StrongName" Version="2.1.66" />
+    <PackageReference Include="Dapper.StrongName" Version="2.1.72" />
   </ItemGroup>
 
   <ItemGroup>

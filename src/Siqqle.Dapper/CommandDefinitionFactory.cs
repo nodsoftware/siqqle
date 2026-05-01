@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Threading;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 using Siqqle.Syntax;
 
@@ -15,11 +16,12 @@ internal class CommandDefinitionFactory
         int? commandTimeout = null,
         CommandType? commandType = null,
         CommandFlags flags = CommandFlags.Buffered,
+        SqlDialect dialect = null,
         CancellationToken cancellationToken = default
     )
         where TStatement : SqlStatement
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return new CommandDefinition(
             commandText,
             parameters,
@@ -38,11 +40,12 @@ internal class CommandDefinitionFactory
         int? commandTimeout = null,
         CommandType? commandType = null,
         CommandFlags flags = CommandFlags.Buffered,
+        SqlDialect dialect = null,
         CancellationToken cancellationToken = default
     )
         where TStatement : SqlStatement
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return new CommandDefinition(
             commandText,
             parameters,

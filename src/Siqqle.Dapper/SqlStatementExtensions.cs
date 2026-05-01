@@ -1,6 +1,7 @@
 using System.Data;
 using System.Threading;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 
 namespace Siqqle.Dapper;
@@ -14,6 +15,7 @@ public static class SqlStatementExtensions
         int? commandTimeout = null,
         CommandType? commandType = null,
         CommandFlags commandFlags = CommandFlags.Buffered,
+        SqlDialect dialect = null,
         CancellationToken cancellationToken = default
     )
         where TStatement : SqlStatement
@@ -25,6 +27,7 @@ public static class SqlStatementExtensions
             commandTimeout,
             commandType,
             commandFlags,
+            dialect,
             cancellationToken
         );
     }

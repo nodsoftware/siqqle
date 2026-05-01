@@ -1,6 +1,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 using Siqqle.Syntax;
 
@@ -17,6 +18,7 @@ public static class ExecuteAsyncExtensions
     /// <param name="transaction">The transaction to use for this query.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The number of rows affected.</returns>
     public static Task<int> ExecuteAsync<TStatement>(
         this IDbConnection cnn,
@@ -24,11 +26,12 @@ public static class ExecuteAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
         where TStatement : SqlStatement
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteAsync(commandText, parameters, transaction, commandTimeout, commandType);
     }
 
@@ -41,6 +44,7 @@ public static class ExecuteAsyncExtensions
     /// <param name="transaction">The transaction to use for this query.</param>
     /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
     /// <param name="commandType">Is it a stored proc or a batch?</param>
+    /// <param name="dialect">The SQL dialect to use. When <c>null</c>, uses the default dialect.</param>
     /// <returns>The number of rows affected.</returns>
     public static Task<int> ExecuteAsync<TStatement>(
         this IDbConnection cnn,
@@ -48,11 +52,12 @@ public static class ExecuteAsyncExtensions
         object param = null,
         IDbTransaction transaction = null,
         int? commandTimeout = null,
-        CommandType? commandType = null
+        CommandType? commandType = null,
+        SqlDialect dialect = null
     )
         where TStatement : SqlStatement
     {
-        (var commandText, var parameters) = CommandTextFactory.Create(sql, param);
+        (var commandText, var parameters) = CommandTextFactory.Create(sql, param, dialect);
         return cnn.ExecuteAsync(commandText, parameters, transaction, commandTimeout, commandType);
     }
 }

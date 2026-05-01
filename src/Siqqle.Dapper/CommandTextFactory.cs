@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Dapper;
+using Siqqle.Dialects;
 using Siqqle.Expressions;
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
@@ -11,18 +12,23 @@ internal static class CommandTextFactory
 {
     public static (string, object) Create<TStatement>(
         ISqlSyntaxEnd<TStatement> sql,
-        object param = null
+        object param = null,
+        SqlDialect dialect = null
     )
         where TStatement : SqlStatement
     {
-        return Create(sql?.Go(), param);
+        return Create(sql?.Go(), param, dialect);
     }
 
-    public static (string, object) Create<TStatement>(TStatement sql, object param = null)
+    public static (string, object) Create<TStatement>(
+        TStatement sql,
+        object param = null,
+        SqlDialect dialect = null
+    )
         where TStatement : SqlStatement
     {
         var parameters = new DynamicParameters(param);
-        var commandText = sql.ToSql(parameter =>
+        var commandText = sql.ToSql(dialect, parameter =>
         {
             var value = parameter.Value;
             var dbType = parameter.DbType;
