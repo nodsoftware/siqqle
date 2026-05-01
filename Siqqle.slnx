@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Siqqle.Dapper/Siqqle.Dapper.csproj" />
+    <Project Path="src/Siqqle.Dialects.MySql/Siqqle.Dialects.MySql.csproj" />
+    <Project Path="src/Siqqle.Dialects.PostgreSql/Siqqle.Dialects.PostgreSql.csproj" />
+    <Project Path="src/Siqqle.Dialects.SQLite/Siqqle.Dialects.SQLite.csproj" />
+    <Project Path="src/Siqqle.Dialects.SqlServer/Siqqle.Dialects.SqlServer.csproj" />
+    <Project Path="src/Siqqle/Siqqle.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Siqqle.Tests/Siqqle.Tests.csproj" />
+  </Folder>
+</Solution>
