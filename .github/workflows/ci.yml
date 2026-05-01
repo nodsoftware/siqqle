@@ -33,11 +33,6 @@ jobs:
       - name: Generate version number
         id: version
         shell: pwsh
-        env:
-          MAJORVERSION: '6'
-          MINORVERSION: '0'
-          PATCHVERSION: '0'
-          PRERELEASELABEL: ${{ github.ref_type == 'tag' && '' || 'preview' }}
         run: ./build/Update-Version.ps1
 
       - name: Restore

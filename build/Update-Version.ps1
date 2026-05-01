@@ -1,28 +1,70 @@
-if(-not $env:MAJORVERSION)
+# Parse version from Directory.Build.props if not provided via environment variables
+if (-not $env:MAJORVERSION -or -not $env:MINORVERSION -or -not $env:PATCHVERSION)
 {
-    Write-Host "You must set the following environment variables to test this script interactively:"
-    Write-Host '$env:MAJORVERSION = 4'
-    Write-Host '$env:MINORVERSION = 0'
-    Write-Host '$env:PATCHVERSION = 1'
-	Write-Host
-	Write-Host "Optionally you can set a pre-release label too:"
-    Write-Host '$env:PRERELEASELABEL = "alpha"'
-	Write-Host
-	Write-Error "Required environment variables not found."
-    exit 1
+    Write-Host "Parsing version from Directory.Build.props..."
+    
+    # Use provided source directory or resolve from script location
+    $src = $env:BUILD_SOURCESDIRECTORY
+    if (-not $src)
+    {
+        $src = Split-Path -Parent $PSCommandPath
+        $src = Resolve-Path "$src/../"
+    }
+    
+    $buildPropsPath = Join-Path $src 'Directory.Build.props'
+    
+    if (-not (Test-Path $buildPropsPath))
+    {
+        Write-Error "Directory.Build.props not found at $buildPropsPath"
+        exit 1
+    }
+    
+    try
+    {
+        [xml]$xml = Get-Content $buildPropsPath
+        $semanticVersion = $xml.Project.PropertyGroup.SemanticVersion | Where-Object { $_ } | Select-Object -First 1
+        $prereleaseLabel = $xml.Project.PropertyGroup.PreReleaseLabel | Where-Object { $_ } | Select-Object -First 1
+        
+        if (-not $semanticVersion)
+        {
+            Write-Error "SemanticVersion not found in Directory.Build.props"
+            exit 1
+        }
+        
+        $versionParts = $semanticVersion.Split('.')
+        if ($versionParts.Count -ne 3)
+        {
+            Write-Error "Invalid semantic version format: $semanticVersion (expected X.Y.Z)"
+            exit 1
+        }
+        
+        $env:MAJORVERSION = $versionParts[0]
+        $env:MINORVERSION = $versionParts[1]
+        $env:PATCHVERSION = $versionParts[2]
+        
+        if ($prereleaseLabel)
+        {
+            $env:PRERELEASELABEL = $prereleaseLabel
+        }
+        else
+        {
+            $env:PRERELEASELABEL = ""
+        }
+        
+        Write-Host "Parsed version: $($env:MAJORVERSION).$($env:MINORVERSION).$($env:PATCHVERSION)"
+        if ($env:PRERELEASELABEL)
+        {
+            Write-Host "Prerelease label: $env:PRERELEASELABEL"
+        }
+    }
+    catch
+    {
+        Write-Error "Failed to parse Directory.Build.props: $_"
+        exit 1
+    }
 }
 
-function Get-ScriptDirectory 
-{
-	Split-Path -Parent $PSCommandPath
-}
-
-$src = $env:BUILD_SOURCESDIRECTORY
-if (-not $src)
-{
-	$src = Get-ScriptDirectory
-	$src = Resolve-Path "$src/../"
-}
+# The source directory was already resolved above
 
 function Get-YearsSince($now, $then)
 {
@@ -38,7 +80,11 @@ function Get-YearsSince($now, $then)
 function Get-FileVersion($major, $minor, $path)
 {
     $utcNow = [System.DateTimeOffset]::UtcNow
-    $utcThen = (Get-ItemPropertyValue -Name CreationTime -Path $path).ToUniversalTime()
+    
+    # Use LastWriteTime for better cross-platform compatibility
+    # (CreationTime is unreliable on Linux)
+    $fileInfo = Get-Item -Path $path
+    $utcThen = $fileInfo.LastWriteTimeUtc
 
     $build = (((Get-YearsSince $utcNow $utcThen) % 7) * 10000) + [System.Int32]::Parse($utcNow.ToString("MMdd"))
     $revision = [System.Int32]::Parse($utcNow.ToString("HHmm"))
@@ -47,14 +93,21 @@ function Get-FileVersion($major, $minor, $path)
 }
 
 # Get current commit hash.
-$commitId = git rev-parse --short HEAD
+$commitId = & git rev-parse --short HEAD 2>$null
+if ($LASTEXITCODE -ne 0)
+{
+    Write-Warning "Failed to get git commit hash, using 'unknown'"
+    $commitId = "unknown"
+}
+
 $majorVersion = $env:MAJORVERSION
 $minorVersion = $env:MINORVERSION
 $patchVersion = $env:PATCHVERSION
 $prereleaseLabel = $env:PRERELEASELABEL
 
-# Auto-generate version numbers.
-$generatedVersion = Get-FileVersion $majorVersion $minorVersion (Join-Path $src 'src/Siqqle.sln')
+# Auto-generate version numbers using Directory.Build.props as reference file
+$refFile = Join-Path $src 'Directory.Build.props'
+$generatedVersion = Get-FileVersion $majorVersion $minorVersion $refFile
 
 $packageVersion = "$majorVersion.$minorVersion.$patchVersion"
 if (-not $prereleaseLabel -eq "")
