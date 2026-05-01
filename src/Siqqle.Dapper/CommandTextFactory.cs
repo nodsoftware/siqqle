@@ -34,11 +34,7 @@ internal static class CommandTextFactory
                 dbType ??= DbType.Date;
             }
 
-            parameters.Add(
-                parameter.ParameterName,
-                value: value,
-                dbType: dbType
-            );
+            parameters.Add(parameter.ParameterName, value: value, dbType: dbType);
         });
         return (commandText, parameters);
     }

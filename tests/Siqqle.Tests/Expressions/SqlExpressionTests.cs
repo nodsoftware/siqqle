@@ -81,8 +81,8 @@ public class SqlExpressionTests
     [Fact]
     public void And_WithNullRightOperand_ThrowsArgumentNull()
     {
-        Assert.Throws<ArgumentNullException>(
-            () => SqlExpression.And(SqlExpression.Equal("Id", 5), null)
+        Assert.Throws<ArgumentNullException>(() =>
+            SqlExpression.And(SqlExpression.Equal("Id", 5), null)
         );
     }
 
@@ -116,8 +116,8 @@ public class SqlExpressionTests
     [Fact]
     public void Or_WithNullRightOperand_ThrowsArgumentNull()
     {
-        Assert.Throws<ArgumentNullException>(
-            () => SqlExpression.Or(SqlExpression.Equal("Id", 5), null)
+        Assert.Throws<ArgumentNullException>(() =>
+            SqlExpression.Or(SqlExpression.Equal("Id", 5), null)
         );
     }
 

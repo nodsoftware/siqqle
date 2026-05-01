@@ -22,7 +22,7 @@ public class SqlConstant(object value) : SqlValue, IEquatable<SqlConstant>
     /// <summary>
     /// Returns the expression type of this expression.
     /// </summary>
-    public override sealed SqlExpressionType ExpressionType => SqlExpressionType.Constant;
+    public sealed override SqlExpressionType ExpressionType => SqlExpressionType.Constant;
 
     /// <summary>
     /// The value of this <see cref="SqlConstant"/>.

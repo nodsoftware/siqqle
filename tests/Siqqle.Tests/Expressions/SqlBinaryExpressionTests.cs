@@ -8,16 +8,16 @@ public class SqlBinaryExpressionTests
     [Fact]
     public void Ctor_WithNullLeftOperand_ThrowsArgumentNull()
     {
-        Assert.Throws<ArgumentNullException>(
-            () => new SqlBinaryExpression(null, SqlBinaryOperator.Equal, (SqlConstant)5)
+        Assert.Throws<ArgumentNullException>(() =>
+            new SqlBinaryExpression(null, SqlBinaryOperator.Equal, (SqlConstant)5)
         );
     }
 
     [Fact]
     public void Ctor_WithNullRightOperand_ThrowsArgumentNull()
     {
-        Assert.Throws<ArgumentNullException>(
-            () => new SqlBinaryExpression((SqlConstant)5, SqlBinaryOperator.Equal, null)
+        Assert.Throws<ArgumentNullException>(() =>
+            new SqlBinaryExpression((SqlConstant)5, SqlBinaryOperator.Equal, null)
         );
     }
 

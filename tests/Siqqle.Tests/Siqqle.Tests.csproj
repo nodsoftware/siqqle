@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
     <PackageReference Include="Coverlet.Collector" Version="6.0.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,5 +21,4 @@
     <ProjectReference Include="..\..\src\Siqqle.Dialects.PostgreSql\Siqqle.Dialects.PostgreSql.csproj" />
     <ProjectReference Include="..\..\src\Siqqle.Dialects.MySql\Siqqle.Dialects.MySql.csproj" />
   </ItemGroup>
-
 </Project>

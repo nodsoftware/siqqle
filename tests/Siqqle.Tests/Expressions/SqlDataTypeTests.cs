@@ -211,8 +211,8 @@ public class SqlDataTypeTests
         }
         else
         {
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(
-                () => SqlDataType.Decimal(precision, scale)
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() =>
+                SqlDataType.Decimal(precision, scale)
             );
             Assert.Equal(nameof(scale), ex.ParamName);
             Assert.Equal(scale, ex.ActualValue);

@@ -37,7 +37,9 @@
     <Version>$(PackageVersion)</Version>
     <Authors>Wouter Demuynck</Authors>
     <Description>Siqqle is a library eliminating the need for magic SQL strings in your code.</Description>
-    <Copyright Condition=" '$(Copyright)' == '' ">Copyright © 2012-$([System.DateTime]::Now.ToString(yyyy)) $(Authors)</Copyright>
+    <Copyright Condition=" '$(Copyright)' == '' "
+      >Copyright © 2012-$([System.DateTime]::Now.ToString(yyyy)) $(Authors)</Copyright
+    >
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/WouterDemuynck/siqqle</PackageProjectUrl>
     <RepositoryUrl>https://github.com/WouterDemuynck/siqqle</RepositoryUrl>

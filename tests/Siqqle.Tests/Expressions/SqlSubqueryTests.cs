@@ -1,8 +1,6 @@
 ﻿using System;
-
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
-
 using Xunit;
 
 namespace Siqqle.Expressions.Tests;
@@ -13,8 +11,8 @@ public class SqlSubqueryTests
     public void Ctor_WithNullQuery_ThrowsArgumentNull()
     {
         Assert.Throws<ArgumentNullException>(() => new SqlSubquery((SqlSelect)null, null));
-        Assert.Throws<ArgumentNullException>(
-            () => new SqlSubquery((ISqlSyntaxEnd<SqlSelect>)null, null)
+        Assert.Throws<ArgumentNullException>(() =>
+            new SqlSubquery((ISqlSyntaxEnd<SqlSelect>)null, null)
         );
         Assert.Throws<ArgumentNullException>(() => new SqlSubquery(null));
     }
