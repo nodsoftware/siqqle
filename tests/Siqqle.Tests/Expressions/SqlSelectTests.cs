@@ -106,8 +106,8 @@ public class SqlSelectTests
         var profiles = new SqlTable("dbo.Profiles", "p");
         var select = Sql.Select("Id", "Name").From(users);
 
-        Assert.Throws<ArgumentNullException>(() =>
-            select.Join(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
+        Assert.Throws<ArgumentNullException>(
+            () => select.Join(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
         );
     }
 
@@ -136,8 +136,8 @@ public class SqlSelectTests
         var profiles = new SqlTable("dbo.Profiles", "p");
         var select = Sql.Select("Id", "Name").From(users);
 
-        Assert.Throws<ArgumentNullException>(() =>
-            select.InnerJoin(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
+        Assert.Throws<ArgumentNullException>(
+            () => select.InnerJoin(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
         );
     }
 
@@ -163,8 +163,8 @@ public class SqlSelectTests
         var profiles = new SqlTable("dbo.Profiles", "p");
         var select = Sql.Select("Id", "Name").From(users);
 
-        Assert.Throws<ArgumentNullException>(() =>
-            select.LeftJoin(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
+        Assert.Throws<ArgumentNullException>(
+            () => select.LeftJoin(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
         );
     }
 
@@ -192,8 +192,8 @@ public class SqlSelectTests
         var profiles = new SqlTable("dbo.Profiles", "p");
         var select = Sql.Select("Id", "Name").From(users);
 
-        Assert.Throws<ArgumentNullException>(() =>
-            select.RightJoin(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
+        Assert.Throws<ArgumentNullException>(
+            () => select.RightJoin(null).On(SqlExpression.Equal(users + "Id", profiles + "UserId"))
         );
     }
 
@@ -345,20 +345,20 @@ public class SqlSelectTests
     [Fact]
     public void Limit_WithNegativeOffset_ThrowsArgument()
     {
-        Assert.Throws<ArgumentException>(() =>
-            Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(-1, 10)
+        Assert.Throws<ArgumentException>(
+            () => Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(-1, 10)
         );
     }
 
     [Fact]
     public void Limit_WithCountLessThanOne_ThrowsArgument()
     {
-        Assert.Throws<ArgumentException>(() =>
-            Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(0, 0)
+        Assert.Throws<ArgumentException>(
+            () => Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(0, 0)
         );
 
-        Assert.Throws<ArgumentException>(() =>
-            Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(0)
+        Assert.Throws<ArgumentException>(
+            () => Sql.Select("Id", "Name").From("User").OrderBy("Name").Limit(0)
         );
     }
 
@@ -384,8 +384,9 @@ public class SqlSelectTests
     [Fact]
     public void GroupBy_Limit_WithNegativeOffset_ThrowsArgument()
     {
-        Assert.Throws<ArgumentException>(() =>
-            Sql.Select("Id", "Name").From("User").GroupBy("Realm").OrderBy("Name").Limit(-1, 1)
+        Assert.Throws<ArgumentException>(
+            () =>
+                Sql.Select("Id", "Name").From("User").GroupBy("Realm").OrderBy("Name").Limit(-1, 1)
         );
     }
 
