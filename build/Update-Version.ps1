@@ -40,8 +40,8 @@ try
         exit 1
     }
     
-    $semanticVersion = $propertyGroupWithVersion.SemanticVersion.Trim()
-    $prereleaseLabel = $propertyGroupWithVersion.PreReleaseLabel.Trim()
+    $semanticVersion = ([string]$propertyGroupWithVersion.SemanticVersion).Trim()
+    $prereleaseLabel = ([string]$propertyGroupWithVersion.PreReleaseLabel).Trim()
     
     if (-not $semanticVersion)
     {
