@@ -6,9 +6,9 @@
 
   <!-- Versioning and product name. -->
   <PropertyGroup>
-    <SemanticVersion>6.0.0</SemanticVersion>
+    <SemanticVersion>6.1.0</SemanticVersion>
     <!-- Leave empty for release versions, or set to a prerelease label like 'alpha', 'beta', 'rc' for prerelease builds -->
-    <PreReleaseLabel Condition=" '$(PreReleaseLabel)' == '' "></PreReleaseLabel>
+    <PreReleaseLabel Condition=" '$(PreReleaseLabel)' == '' ">alpha</PreReleaseLabel>
 
     <PackageVersion Condition=" '$(PackageVersion)' == '' ">$(SemanticVersion)</PackageVersion>
     <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(SemanticVersion)</AssemblyVersion>
