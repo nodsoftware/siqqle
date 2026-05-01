@@ -237,6 +237,114 @@ public class SqlDataTypeTests
         Assert.Equal(scale, dataType.Scale);
     }
 
+    [Fact]
+    public void Date_ReturnsDateDataType()
+    {
+        var dataType = SqlDataType.Date();
+        Assert.NotNull(dataType);
+        Assert.Equal(SqlDataTypeNames.Date, dataType.Name);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(1)]
+    [InlineData(7)]
+    public void Time_ReturnsTimeDataTypeWithPrecision(int? precision)
+    {
+        var dataType = SqlDataType.Time(precision);
+        Assert.NotNull(dataType);
+        Assert.Equal(SqlDataTypeNames.Time, dataType.Name);
+        Assert.Equal(precision, dataType.Precision);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(int.MinValue)]
+    public void Time_WithInvalidPrecision_ThrowsArgumentOutOfRange(int precision)
+    {
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() => SqlDataType.Time(precision));
+        Assert.Equal(nameof(precision), ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(1)]
+    [InlineData(6)]
+    public void DateTime_ReturnsDateTimeDataTypeWithPrecision(int? precision)
+    {
+        var dataType = SqlDataType.DateTime(precision);
+        Assert.NotNull(dataType);
+        Assert.Equal(SqlDataTypeNames.DateTime, dataType.Name);
+        Assert.Equal(precision, dataType.Precision);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(int.MinValue)]
+    public void DateTime_WithInvalidPrecision_ThrowsArgumentOutOfRange(int precision)
+    {
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() => SqlDataType.DateTime(precision));
+        Assert.Equal(nameof(precision), ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(1)]
+    [InlineData(7)]
+    public void DateTime2_ReturnsDateTime2DataTypeWithPrecision(int? precision)
+    {
+        var dataType = SqlDataType.DateTime2(precision);
+        Assert.NotNull(dataType);
+        Assert.Equal(SqlDataTypeNames.DateTime2, dataType.Name);
+        Assert.Equal(precision, dataType.Precision);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(int.MinValue)]
+    public void DateTime2_WithInvalidPrecision_ThrowsArgumentOutOfRange(int precision)
+    {
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            SqlDataType.DateTime2(precision)
+        );
+        Assert.Equal(nameof(precision), ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(1)]
+    [InlineData(7)]
+    public void DateTimeOffset_ReturnsDateTimeOffsetDataTypeWithPrecision(int? precision)
+    {
+        var dataType = SqlDataType.DateTimeOffset(precision);
+        Assert.NotNull(dataType);
+        Assert.Equal(SqlDataTypeNames.DateTimeOffset, dataType.Name);
+        Assert.Equal(precision, dataType.Precision);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(int.MinValue)]
+    public void DateTimeOffset_WithInvalidPrecision_ThrowsArgumentOutOfRange(int precision)
+    {
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            SqlDataType.DateTimeOffset(precision)
+        );
+        Assert.Equal(nameof(precision), ex.ParamName);
+    }
+
+    [Fact]
+    public void SmallDateTime_ReturnsSmallDateTimeDataType()
+    {
+        var dataType = SqlDataType.SmallDateTime();
+        Assert.NotNull(dataType);
+        Assert.Equal(SqlDataTypeNames.SmallDateTime, dataType.Name);
+    }
+
     [Theory]
     [MemberData(nameof(EqualsData), false)]
     public void Equals_WithObject_ReturnsCorrectly(

@@ -290,4 +290,84 @@ public class PostgreSqlDialectTests
         Assert.Contains("SELECT", query);
         Assert.Contains("FROM \"Users\"", query);
     }
+
+    [Theory]
+    [InlineData("DATE", "DATE")]
+    [InlineData("TIME", "TIME")]
+    [InlineData("DATETIME", "TIMESTAMP")]
+    [InlineData("DATETIME2", "TIMESTAMP")]
+    [InlineData("SMALLDATETIME", "TIMESTAMP")]
+    [InlineData("DATETIMEOFFSET", "TIMESTAMPTZ")]
+    [InlineData("INT", "INT")]
+    [InlineData("VARCHAR", "VARCHAR")]
+    public void GetDataTypeName_ReturnsMappedTypeName(string input, string expected)
+    {
+        var dialect = new PostgreSqlDialect();
+        var result = dialect.GetDataTypeName(new SqlDataTypeName(input));
+        Assert.Equal(expected, result.Name);
+    }
+
+    [Fact]
+    public void ToSql_CastWithDateTime_EmitsTimestamp()
+    {
+        var dialect = new PostgreSqlDialect();
+        var sql = Sql.Select(SqlExpression.Cast((SqlColumn)"CreatedAt", SqlDataType.DateTime()))
+            .From("Orders")
+            .ToSql(dialect);
+        Assert.Equal("SELECT CAST(\"CreatedAt\" AS TIMESTAMP) FROM \"Orders\"", sql);
+    }
+
+    [Fact]
+    public void ToSql_CastWithDateTime2_EmitsTimestamp()
+    {
+        var dialect = new PostgreSqlDialect();
+        var sql = Sql.Select(SqlExpression.Cast((SqlColumn)"CreatedAt", SqlDataType.DateTime2(3)))
+            .From("Orders")
+            .ToSql(dialect);
+        Assert.Equal("SELECT CAST(\"CreatedAt\" AS TIMESTAMP(3)) FROM \"Orders\"", sql);
+    }
+
+    [Fact]
+    public void ToSql_CastWithDateTimeOffset_EmitsTimestampTz()
+    {
+        var dialect = new PostgreSqlDialect();
+        var sql = Sql.Select(
+                SqlExpression.Cast((SqlColumn)"CreatedAt", SqlDataType.DateTimeOffset())
+            )
+            .From("Orders")
+            .ToSql(dialect);
+        Assert.Equal("SELECT CAST(\"CreatedAt\" AS TIMESTAMPTZ) FROM \"Orders\"", sql);
+    }
+
+    [Fact]
+    public void ToSql_CastWithSmallDateTime_EmitsTimestamp()
+    {
+        var dialect = new PostgreSqlDialect();
+        var sql = Sql.Select(
+                SqlExpression.Cast((SqlColumn)"CreatedAt", SqlDataType.SmallDateTime())
+            )
+            .From("Orders")
+            .ToSql(dialect);
+        Assert.Equal("SELECT CAST(\"CreatedAt\" AS TIMESTAMP) FROM \"Orders\"", sql);
+    }
+
+    [Fact]
+    public void ToSql_CastWithDate_EmitsDate()
+    {
+        var dialect = new PostgreSqlDialect();
+        var sql = Sql.Select(SqlExpression.Cast((SqlColumn)"BirthDate", SqlDataType.Date()))
+            .From("Persons")
+            .ToSql(dialect);
+        Assert.Equal("SELECT CAST(\"BirthDate\" AS DATE) FROM \"Persons\"", sql);
+    }
+
+    [Fact]
+    public void ToSql_CastWithTime_EmitsTime()
+    {
+        var dialect = new PostgreSqlDialect();
+        var sql = Sql.Select(SqlExpression.Cast((SqlColumn)"StartTime", SqlDataType.Time(3)))
+            .From("Events")
+            .ToSql(dialect);
+        Assert.Equal("SELECT CAST(\"StartTime\" AS TIME(3)) FROM \"Events\"", sql);
+    }
 }

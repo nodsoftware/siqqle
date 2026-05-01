@@ -255,4 +255,18 @@ public class SqlDialect
     {
         writer.WriteParameter(parameter.ParameterName);
     }
+
+    /// <summary>
+    /// Returns the dialect-specific <see cref="SqlDataTypeName"/> to use when rendering the
+    /// specified <paramref name="name"/>. The default implementation returns <paramref name="name"/>
+    /// unchanged. Dialects can override this to translate standard names to dialect-specific
+    /// equivalents (e.g., <c>DATETIMEOFFSET</c> → <c>TIMESTAMPTZ</c> in PostgreSQL).
+    /// </summary>
+    /// <param name="name">
+    /// The <see cref="SqlDataTypeName"/> to resolve.
+    /// </param>
+    /// <returns>
+    /// The <see cref="SqlDataTypeName"/> to use for this dialect.
+    /// </returns>
+    public virtual SqlDataTypeName GetDataTypeName(SqlDataTypeName name) => name;
 }

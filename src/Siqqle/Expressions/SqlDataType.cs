@@ -160,6 +160,91 @@ public class SqlDataType : SqlExpression
     }
 
     /// <summary>
+    /// Returns a <see cref="SqlDataType"/> instance representing the <see cref="SqlDataTypeNames.Date"/> data type.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="SqlDataType"/> instance representing the <see cref="SqlDataTypeNames.Date"/> data type.
+    /// </returns>
+    public static SqlDataType Date()
+    {
+        return new SqlDataType(SqlDataTypeNames.Date);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.Time"/> data type
+    /// with an optional fractional seconds <paramref name="precision"/>.
+    /// </summary>
+    /// <param name="precision">
+    /// The fractional seconds precision (0–7). If <see langword="null"/>, no precision is emitted.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.Time"/> data type.
+    /// </returns>
+    public static SqlPrecisionDataType Time(int? precision = null)
+    {
+        return new SqlPrecisionDataType(SqlDataTypeNames.Time, precision);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.DateTime"/> data type
+    /// with an optional fractional seconds <paramref name="precision"/>.
+    /// </summary>
+    /// <param name="precision">
+    /// The fractional seconds precision. If <see langword="null"/>, no precision is emitted.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.DateTime"/> data type.
+    /// </returns>
+    public static SqlPrecisionDataType DateTime(int? precision = null)
+    {
+        return new SqlPrecisionDataType(SqlDataTypeNames.DateTime, precision);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.DateTime2"/> data type
+    /// with an optional fractional seconds <paramref name="precision"/> (0–7).
+    /// Dialects that do not support DATETIME2 natively translate it to an equivalent type.
+    /// </summary>
+    /// <param name="precision">
+    /// The fractional seconds precision (0–7). If <see langword="null"/>, no precision is emitted.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.DateTime2"/> data type.
+    /// </returns>
+    public static SqlPrecisionDataType DateTime2(int? precision = null)
+    {
+        return new SqlPrecisionDataType(SqlDataTypeNames.DateTime2, precision);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.DateTimeOffset"/> data type
+    /// with an optional fractional seconds <paramref name="precision"/> (0–7).
+    /// Dialects that do not support DATETIMEOFFSET natively translate it to an equivalent type.
+    /// </summary>
+    /// <param name="precision">
+    /// The fractional seconds precision (0–7). If <see langword="null"/>, no precision is emitted.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlPrecisionDataType"/> instance representing the <see cref="SqlDataTypeNames.DateTimeOffset"/> data type.
+    /// </returns>
+    public static SqlPrecisionDataType DateTimeOffset(int? precision = null)
+    {
+        return new SqlPrecisionDataType(SqlDataTypeNames.DateTimeOffset, precision);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="SqlDataType"/> instance representing the <see cref="SqlDataTypeNames.SmallDateTime"/> data type.
+    /// Dialects that do not support SMALLDATETIME natively translate it to an equivalent type.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="SqlDataType"/> instance representing the <see cref="SqlDataTypeNames.SmallDateTime"/> data type.
+    /// </returns>
+    public static SqlDataType SmallDateTime()
+    {
+        return new SqlDataType(SqlDataTypeNames.SmallDateTime);
+    }
+
+    /// <summary>
     /// Gets the name of the data type.
     /// </summary>
     public SqlDataTypeName Name { get; }

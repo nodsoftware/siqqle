@@ -94,6 +94,25 @@ public class MySqlDialect : SqlDialect
     }
 
     /// <summary>
+    /// Returns the MySQL-specific <see cref="SqlDataTypeName"/> for the specified <paramref name="name"/>.
+    /// Maps SQL Server-specific date/time types to their MySQL equivalents:
+    /// <list type="bullet">
+    ///   <item><description><c>DATETIME2</c>, <c>DATETIMEOFFSET</c>, <c>SMALLDATETIME</c> → <c>DATETIME</c></description></item>
+    /// </list>
+    /// </summary>
+    /// <param name="name">The <see cref="SqlDataTypeName"/> to resolve.</param>
+    /// <returns>The MySQL-equivalent <see cref="SqlDataTypeName"/>.</returns>
+    public override SqlDataTypeName GetDataTypeName(SqlDataTypeName name)
+    {
+        if (name == SqlDataTypeNames.DateTime2
+            || name == SqlDataTypeNames.DateTimeOffset
+            || name == SqlDataTypeNames.SmallDateTime)
+            return SqlDataTypeNames.DateTime;
+
+        return base.GetDataTypeName(name);
+    }
+
+    /// <summary>
     /// Provides <see cref="SqlKeyword"/> instances for well-known SQL keywords in the MySQL dialect.
     /// </summary>
     public static class MySqlKeywords

@@ -231,10 +231,11 @@ public class SqlWriter : IDisposable
     public void WriteDataType(SqlDataType dataType)
     {
         EnsureNotDisposed();
+        var resolvedName = Dialect.GetDataTypeName(dataType.Name);
         Write(
             Settings.WriteDataTypesInLowerCase
-                ? dataType.Name.Name.ToLowerInvariant()
-                : dataType.Name.Name.ToUpperInvariant()
+                ? resolvedName.Name.ToLowerInvariant()
+                : resolvedName.Name.ToUpperInvariant()
         );
 
         // Write the data type parameters.
