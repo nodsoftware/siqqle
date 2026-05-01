@@ -41,7 +41,7 @@ string sql = query.ToSql();
 
 ## Documentation
 
-For detailed documentation, visit the [documentation site](https://siqqle.github.io).
+For detailed documentation, visit the [documentation site](https://nodsoftware.github.io/siqqle/).
 
 ## License
 
