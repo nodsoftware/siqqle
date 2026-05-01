@@ -1,15 +1,15 @@
+# Use provided source directory or resolve from script location
+$src = $env:BUILD_SOURCESDIRECTORY
+if (-not $src)
+{
+    $src = Split-Path -Parent $PSCommandPath
+    $src = Resolve-Path "$src/../"
+}
+
 # Parse version from Directory.Build.props if not provided via environment variables
 if (-not $env:MAJORVERSION -or -not $env:MINORVERSION -or -not $env:PATCHVERSION)
 {
     Write-Host "Parsing version from Directory.Build.props..."
-    
-    # Use provided source directory or resolve from script location
-    $src = $env:BUILD_SOURCESDIRECTORY
-    if (-not $src)
-    {
-        $src = Split-Path -Parent $PSCommandPath
-        $src = Resolve-Path "$src/../"
-    }
     
     $buildPropsPath = Join-Path $src 'Directory.Build.props'
     
