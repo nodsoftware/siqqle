@@ -27,8 +27,8 @@
       >Copyright © 2012-$([System.DateTime]::Now.ToString(yyyy)) $(Authors)</Copyright
     >
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/WouterDemuynck/siqqle</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/WouterDemuynck/siqqle</RepositoryUrl>
+    <PackageProjectUrl>https://nodsoftware.github.io/siqqle/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nodsoftware/siqqle</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>sql orm micro-orm database</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
