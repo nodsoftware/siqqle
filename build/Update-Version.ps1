@@ -185,10 +185,21 @@ Write-Host "Assembly File Version: $assemblyFileVersion"
 Write-Host "Product Name: $productName"
 Write-Host "Product Version: $productVersion"
 
-# Publish variables to VSTS.
-Write-Host "##vso[task.setvariable variable=PackageVersion;]$packageVersion"
-Write-Host "##vso[task.setvariable variable=AssemblyVersion;]$assemblyVersion"
-Write-Host "##vso[task.setvariable variable=FileVersion;]$assemblyFileVersion"
-Write-Host "##vso[task.setvariable variable=ProductName;]$productName"
-Write-Host "##vso[task.setvariable variable=ProductVersion;]$productVersion"
-Write-Host "##vso[task.setvariable variable=CommitId;]$commitId"
+function Set-BuildVariable($name, $value)
+{
+    # Azure DevOps
+    Write-Host "##vso[task.setvariable variable=$name;]$value"
+
+    # GitHub Actions
+    if ($env:GITHUB_ENV)
+    {
+        Add-Content -Path $env:GITHUB_ENV -Value "$name=$value"
+    }
+}
+
+Set-BuildVariable "PackageVersion" $packageVersion
+Set-BuildVariable "AssemblyVersion" $assemblyVersion
+Set-BuildVariable "FileVersion" $assemblyFileVersion
+Set-BuildVariable "ProductName" $productName
+Set-BuildVariable "ProductVersion" $productVersion
+Set-BuildVariable "CommitId" $commitId

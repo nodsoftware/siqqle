@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -31,8 +31,19 @@
     <RepositoryUrl>https://github.com/WouterDemuynck/siqqle</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>sql orm micro-orm database</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild Condition=" '$(CI)' == 'true' ">true</ContinuousIntegrationBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
 
   <!-- Assembly signing. -->
   <PropertyGroup>
