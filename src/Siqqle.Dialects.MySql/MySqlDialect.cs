@@ -69,6 +69,30 @@ public class MySqlDialect : SqlDialect
     }
 
     /// <summary>
+    /// Writes a string concatenation expression for MySQL.
+    /// MySQL uses the <c>CONCAT(left, right)</c> function for string concatenation.
+    /// </summary>
+    /// <param name="writer">The <see cref="SqlWriter"/> to write to.</param>
+    /// <param name="visitor">The <see cref="ISqlVisitor"/> used to visit operands.</param>
+    /// <param name="left">The left operand.</param>
+    /// <param name="right">The right operand.</param>
+    public override void WriteConcatenation(
+        SqlWriter writer,
+        ISqlVisitor visitor,
+        SqlExpression left,
+        SqlExpression right
+    )
+    {
+        writer.Write("CONCAT");
+        writer.WriteRaw("(");
+        writer.ClearPendingSpace();
+        left.Accept(visitor);
+        writer.WriteComma();
+        right.Accept(visitor);
+        writer.WriteCloseParenthesis();
+    }
+
+    /// <summary>
     /// Provides <see cref="SqlKeyword"/> instances for well-known SQL keywords in the MySQL dialect.
     /// </summary>
     public static class MySqlKeywords

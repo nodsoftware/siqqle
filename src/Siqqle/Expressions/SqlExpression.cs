@@ -135,6 +135,25 @@ public abstract class SqlExpression : ISqlVisitable
     }
 
     /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents an equality comparison
+    /// between two <see cref="SqlFunction"/> expressions.
+    /// </summary>
+    /// <param name="left">
+    /// A <see cref="SqlFunction"/> to use as the left operand in the expression.
+    /// </param>
+    /// <param name="right">
+    /// A <see cref="SqlFunction"/> to use as the right operand in the expression.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlBinaryExpression"/> that represents an equality comparison between
+    /// the specified <paramref name="left"/> and <paramref name="right"/> functions.
+    /// </returns>
+    public static SqlBinaryExpression Equal(SqlFunction left, SqlFunction right)
+    {
+        return new SqlBinaryExpression(left, SqlBinaryOperator.Equal, right);
+    }
+
+    /// <summary>
     /// Creates a <see cref="SqlBinaryExpression"/> that represents an inequality comparison.
     /// </summary>
     /// <param name="column">
@@ -472,6 +491,76 @@ public abstract class SqlExpression : ISqlVisitable
     public static SqlExists NotExists(SqlSubquery subquery)
     {
         return new SqlExists(subquery, isNegated: true);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents an addition (<c>+</c>) arithmetic operation.
+    /// </summary>
+    /// <param name="left">A <see cref="SqlValue"/> to use as the left operand.</param>
+    /// <param name="right">A <see cref="SqlValue"/> to use as the right operand.</param>
+    /// <returns>A <see cref="SqlBinaryExpression"/> that represents <c>left + right</c>.</returns>
+    public static SqlBinaryExpression Add(SqlValue left, SqlValue right)
+    {
+        return new SqlBinaryExpression(left, SqlBinaryOperator.Add, right);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a subtraction (<c>-</c>) arithmetic operation.
+    /// </summary>
+    /// <param name="left">A <see cref="SqlValue"/> to use as the left operand.</param>
+    /// <param name="right">A <see cref="SqlValue"/> to use as the right operand.</param>
+    /// <returns>A <see cref="SqlBinaryExpression"/> that represents <c>left - right</c>.</returns>
+    public static SqlBinaryExpression Subtract(SqlValue left, SqlValue right)
+    {
+        return new SqlBinaryExpression(left, SqlBinaryOperator.Subtract, right);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a multiplication (<c>*</c>) arithmetic operation.
+    /// </summary>
+    /// <param name="left">A <see cref="SqlValue"/> to use as the left operand.</param>
+    /// <param name="right">A <see cref="SqlValue"/> to use as the right operand.</param>
+    /// <returns>A <see cref="SqlBinaryExpression"/> that represents <c>left * right</c>.</returns>
+    public static SqlBinaryExpression Multiply(SqlValue left, SqlValue right)
+    {
+        return new SqlBinaryExpression(left, SqlBinaryOperator.Multiply, right);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a division (<c>/</c>) arithmetic operation.
+    /// </summary>
+    /// <param name="left">A <see cref="SqlValue"/> to use as the left operand.</param>
+    /// <param name="right">A <see cref="SqlValue"/> to use as the right operand.</param>
+    /// <returns>A <see cref="SqlBinaryExpression"/> that represents <c>left / right</c>.</returns>
+    public static SqlBinaryExpression Divide(SqlValue left, SqlValue right)
+    {
+        return new SqlBinaryExpression(left, SqlBinaryOperator.Divide, right);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a modulo (<c>%</c>) arithmetic operation.
+    /// </summary>
+    /// <param name="left">A <see cref="SqlValue"/> to use as the left operand.</param>
+    /// <param name="right">A <see cref="SqlValue"/> to use as the right operand.</param>
+    /// <returns>A <see cref="SqlBinaryExpression"/> that represents <c>left % right</c>.</returns>
+    public static SqlBinaryExpression Modulo(SqlValue left, SqlValue right)
+    {
+        return new SqlBinaryExpression(left, SqlBinaryOperator.Modulo, right);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlBinaryExpression"/> that represents a string concatenation operation.
+    /// </summary>
+    /// <param name="left">A <see cref="SqlValue"/> to use as the left operand.</param>
+    /// <param name="right">A <see cref="SqlValue"/> to use as the right operand.</param>
+    /// <returns>
+    /// A <see cref="SqlBinaryExpression"/> with operator <see cref="SqlBinaryOperator.Concat"/>.
+    /// The rendered SQL is dialect-specific: <c>||</c> (standard SQL / PostgreSQL),
+    /// <c>+</c> (SQL Server), or <c>CONCAT(left, right)</c> (MySQL).
+    /// </returns>
+    public static SqlBinaryExpression Concat(SqlValue left, SqlValue right)
+    {
+        return new SqlBinaryExpression(left, SqlBinaryOperator.Concat, right);
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using Siqqle.Expressions;
+﻿using System.ComponentModel;
+using Siqqle.Expressions;
 using Siqqle.Expressions.Visitors;
 using Siqqle.Text;
 

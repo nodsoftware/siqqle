@@ -322,6 +322,14 @@ public class SqlWriterVisitor(SqlWriter writer) : SqlVisitor
 
     public override void Visit(SqlBinaryExpression expression)
     {
+        // String concatenation has dialect-specific rendering (||, +, CONCAT)
+        // and cannot go through the standard left / operator / right pattern.
+        if (expression.Operator == SqlBinaryOperator.Concat)
+        {
+            Writer.WriteConcatenation(this, expression.Left, expression.Right);
+            return;
+        }
+
         bool useParentheses =
             expression.Operator == SqlBinaryOperator.And
             || expression.Operator == SqlBinaryOperator.Or;

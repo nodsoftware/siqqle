@@ -64,4 +64,39 @@ public enum SqlBinaryOperator
     /// Represents the "not in" comparison operator (<c>NOT IN</c>).
     /// </summary>
     NotIn,
+
+    /// <summary>
+    /// Represents the addition arithmetic operator (<c>+</c>).
+    /// </summary>
+    Add,
+
+    /// <summary>
+    /// Represents the subtraction arithmetic operator (<c>-</c>).
+    /// </summary>
+    Subtract,
+
+    /// <summary>
+    /// Represents the multiplication arithmetic operator (<c>*</c>).
+    /// </summary>
+    Multiply,
+
+    /// <summary>
+    /// Represents the division arithmetic operator (<c>/</c>).
+    /// </summary>
+    Divide,
+
+    /// <summary>
+    /// Represents the modulo arithmetic operator (<c>%</c>).
+    /// </summary>
+    Modulo,
+
+    /// <summary>
+    /// Represents the string concatenation operator.
+    /// </summary>
+    /// <remarks>
+    /// The rendered SQL is dialect-specific: <c>||</c> (standard SQL / PostgreSQL),
+    /// <c>+</c> (SQL Server), or <c>CONCAT(left, right)</c> (MySQL).
+    /// Use this operator for string concatenation. For numeric addition, use <see cref="Add"/>.
+    /// </remarks>
+    Concat,
 }

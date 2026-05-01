@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -38,10 +38,10 @@
     <Authors>Wouter Demuynck</Authors>
     <Description>Siqqle is a library eliminating the need for magic SQL strings in your code.</Description>
     <Copyright Condition=" '$(Copyright)' == '' ">Copyright © 2012-$([System.DateTime]::Now.ToString(yyyy)) $(Authors)</Copyright>
-    <!--<PackageLicenseUrl>https://raw.githubusercontent.com/WouterDemuynck/popsql/master/LICENSE.md</PackageLicenseUrl>
-    <PackageIconUrl>https://raw.github.com/WouterDemuynck/popsql/master/res/logo.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/WouterDemuynck/popsql</PackageProjectUrl>
-    <RepositoryUrl></RepositoryUrl>-->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/WouterDemuynck/siqqle</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/WouterDemuynck/siqqle</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <PackageTags>sql orm micro-orm database</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>

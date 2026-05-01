@@ -69,6 +69,26 @@ public class SqlServerDialect : SqlDialect
     }
 
     /// <summary>
+    /// Writes a string concatenation expression for SQL Server.
+    /// SQL Server uses the <c>+</c> operator for string concatenation.
+    /// </summary>
+    /// <param name="writer">The <see cref="SqlWriter"/> to write to.</param>
+    /// <param name="visitor">The <see cref="ISqlVisitor"/> used to visit operands.</param>
+    /// <param name="left">The left operand.</param>
+    /// <param name="right">The right operand.</param>
+    public override void WriteConcatenation(
+        SqlWriter writer,
+        ISqlVisitor visitor,
+        SqlExpression left,
+        SqlExpression right
+    )
+    {
+        left.Accept(visitor);
+        writer.Write("+");
+        right.Accept(visitor);
+    }
+
+    /// <summary>
     /// Provides <see cref="SqlKeyword"/> instances for well-known SQL keywords in the MySQL dialect.
     /// </summary>
     public static class SqlServerKeywords

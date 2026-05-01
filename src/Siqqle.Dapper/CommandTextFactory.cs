@@ -1,4 +1,6 @@
-﻿using Dapper;
+﻿using System;
+using System.Data;
+using Dapper;
 using Siqqle.Expressions;
 using Siqqle.Expressions.Builders;
 using Siqqle.Syntax;
@@ -22,10 +24,20 @@ internal static class CommandTextFactory
         var parameters = new DynamicParameters(param);
         var commandText = sql.ToSql(parameter =>
         {
+            var value = parameter.Value;
+            var dbType = parameter.DbType;
+
+            // Dapper does not natively support DateOnly; convert to DateTime with DbType.Date
+            if (value is DateOnly dateOnly)
+            {
+                value = dateOnly.ToDateTime(TimeOnly.MinValue);
+                dbType ??= DbType.Date;
+            }
+
             parameters.Add(
                 parameter.ParameterName,
-                value: parameter.Value,
-                dbType: parameter.DbType
+                value: value,
+                dbType: dbType
             );
         });
         return (commandText, parameters);

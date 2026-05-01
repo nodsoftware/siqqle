@@ -1,4 +1,5 @@
-﻿using Siqqle.Expressions;
+﻿using System;
+using Siqqle.Expressions;
 using Siqqle.Expressions.Visitors;
 using Siqqle.Text;
 
@@ -23,12 +24,37 @@ public class SqlDialect
     public static SqlDialect Default { get; }
 
     /// <summary>
-    /// Gets or sets the currently used <see cref="SqlDialect"/>.
+    /// Gets the currently used <see cref="SqlDialect"/>.
     /// </summary>
+    /// <remarks>
+    /// Defaults to <see cref="Default"/>. Can be changed process-wide by calling <see cref="UseDialect"/>.
+    /// In concurrent applications, prefer passing the dialect explicitly to
+    /// <c>ToSql(SqlDialect)</c> overloads or using the <c>Siqqle.Extensions.DependencyInjection</c> package.
+    /// </remarks>
     public static SqlDialect Current
     {
         get { return _current; }
-        set { _current = value ?? Default; }
+        private set { _current = value ?? Default; }
+    }
+
+    /// <summary>
+    /// Sets the process-wide default <see cref="SqlDialect"/>.
+    /// </summary>
+    /// <param name="dialect">
+    /// The <see cref="SqlDialect"/> to use as the process-wide default.
+    /// Pass <see langword="null"/> to restore <see cref="Default"/>.
+    /// </param>
+    /// <remarks>
+    /// This method is not thread-safe and should only be called once at application startup before
+    /// any queries are executed. In concurrent applications, prefer passing the dialect explicitly to
+    /// <c>ToSql(SqlDialect)</c> overloads or using the <c>Siqqle.Extensions.DependencyInjection</c> package.
+    /// </remarks>
+    [Obsolete(
+        "Setting a global process-level dialect is not thread-safe in concurrent applications. Pass the dialect explicitly to ToSql() overloads or use the Siqqle.Extensions.DependencyInjection package instead."
+    )]
+    public static void UseDialect(SqlDialect dialect)
+    {
+        Current = dialect;
     }
 
     /// <summary>
@@ -146,6 +172,73 @@ public class SqlDialect
             writer.WriteKeyword(SqlKeywords.Rows);
             writer.WriteKeyword(SqlKeywords.Only);
         }
+    }
+
+    /// <summary>
+    /// Writes the specified arithmetic operator to the output stream. The default implementation
+    /// writes the standard SQL arithmetic symbols (<c>+</c>, <c>-</c>, <c>*</c>, <c>/</c>, <c>%</c>).
+    /// </summary>
+    /// <param name="writer">The <see cref="SqlWriter"/> to write to.</param>
+    /// <param name="operator">The <see cref="SqlBinaryOperator"/> to write.</param>
+    /// <remarks>
+    /// Override this method in a dialect subclass to customize arithmetic operator rendering.
+    /// A common case is string concatenation: SQL Server uses <c>+</c>, PostgreSQL uses <c>||</c>,
+    /// and MySQL requires <c>CONCAT()</c>.
+    /// </remarks>
+    /// <exception cref="System.ComponentModel.InvalidEnumArgumentException">
+    /// Thrown when <paramref name="operator"/> is not a recognized arithmetic operator.
+    /// </exception>
+    public virtual void WriteArithmeticOperator(SqlWriter writer, SqlBinaryOperator @operator)
+    {
+        switch (@operator)
+        {
+            case SqlBinaryOperator.Add:
+                writer.Write("+");
+                break;
+            case SqlBinaryOperator.Subtract:
+                writer.Write("-");
+                break;
+            case SqlBinaryOperator.Multiply:
+                writer.Write("*");
+                break;
+            case SqlBinaryOperator.Divide:
+                writer.Write("/");
+                break;
+            case SqlBinaryOperator.Modulo:
+                writer.Write("%");
+                break;
+            default:
+                throw new System.ComponentModel.InvalidEnumArgumentException(
+                    nameof(@operator),
+                    (int)@operator,
+                    typeof(SqlBinaryOperator)
+                );
+        }
+    }
+
+    /// <summary>
+    /// Writes a string concatenation expression for the current SQL dialect.
+    /// The default implementation emits <c>left || right</c> (standard SQL / PostgreSQL).
+    /// </summary>
+    /// <param name="writer">The <see cref="SqlWriter"/> to write to.</param>
+    /// <param name="visitor">The <see cref="ISqlVisitor"/> used to visit operands.</param>
+    /// <param name="left">The left operand.</param>
+    /// <param name="right">The right operand.</param>
+    /// <remarks>
+    /// Override in dialect subclasses to produce dialect-specific concatenation:
+    /// SQL Server emits <c>left + right</c>; MySQL emits <c>CONCAT(left, right)</c>.
+    /// </remarks>
+    public virtual void WriteConcatenation(
+        SqlWriter writer,
+        ISqlVisitor visitor,
+        SqlExpression left,
+        SqlExpression right
+    )
+    {
+        left.Accept(visitor);
+        writer.Write("|");
+        writer.WriteRaw("|");
+        right.Accept(visitor);
     }
 
     /// <summary>

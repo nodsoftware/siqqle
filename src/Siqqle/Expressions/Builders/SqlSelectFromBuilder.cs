@@ -59,7 +59,17 @@ internal class SqlSelectFromBuilder(SqlSelectBuilder builder)
 
     public ISqlSelectWhereSyntax Where(SqlExpression predicate)
     {
-        Builder.Statement.Where = new SqlWhere(predicate);
+        if (Builder.Statement.Where is null)
+        {
+            Builder.Statement.Where = new SqlWhere(predicate);
+        }
+        else
+        {
+            Builder.Statement.Where = new SqlWhere(
+                SqlExpression.And(Builder.Statement.Where.Predicate, predicate)
+            );
+        }
+
         return this;
     }
 }

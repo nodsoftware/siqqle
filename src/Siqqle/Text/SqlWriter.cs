@@ -323,6 +323,12 @@ public class SqlWriter : IDisposable
         Dialect.WriteLimit(this, offset, count);
     }
 
+    internal void WriteConcatenation(ISqlVisitor visitor, SqlExpression left, SqlExpression right)
+    {
+        EnsureNotDisposed();
+        Dialect.WriteConcatenation(this, visitor, left, right);
+    }
+
     internal void WriteCall(
         ISqlVisitor visitor,
         string procedureName,
@@ -428,6 +434,14 @@ public class SqlWriter : IDisposable
             case SqlBinaryOperator.NotIn:
                 WriteKeyword(SqlKeywords.Not);
                 WriteKeyword(SqlKeywords.In);
+                break;
+
+            case SqlBinaryOperator.Add:
+            case SqlBinaryOperator.Subtract:
+            case SqlBinaryOperator.Multiply:
+            case SqlBinaryOperator.Divide:
+            case SqlBinaryOperator.Modulo:
+                Dialect.WriteArithmeticOperator(this, @operator);
                 break;
 
             default:

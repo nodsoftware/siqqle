@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    tags:    [ 'v*' ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # needed for git history in Update-Version.ps1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+
+      - name: Generate version number
+        id: version
+        shell: pwsh
+        env:
+          MAJORVERSION: '6'
+          MINORVERSION: '0'
+          PATCHVERSION: '0'
+          PRERELEASELABEL: ${{ github.ref_type == 'tag' && '' || 'preview' }}
+        run: ./build/Update-Version.ps1
+
+      - name: Restore
+        run: dotnet restore src/Siqqle.sln
+
+      - name: Build
+        run: >
+          dotnet build src/Siqqle.sln
+          --no-restore
+          -c ${{ env.BUILD_CONFIGURATION }}
+          -p:PackageVersion="${{ env.PackageVersion }}"
+          -p:AssemblyVersion="${{ env.AssemblyVersion }}"
+          -p:FileVersion="${{ env.FileVersion }}"
+          -p:ProductVersion="${{ env.ProductVersion }}"
+
+      - name: Test
+        run: >
+          dotnet test src/Siqqle.sln
+          --no-build
+          -c ${{ env.BUILD_CONFIGURATION }}
+          --collect "XPlat Code Coverage"
+          --results-directory ./coverage
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/**/coverage.cobertura.xml
+
+      - name: Pack
+        if: github.ref_type == 'tag'
+        run: >
+          dotnet pack src/Siqqle.sln
+          --no-build
+          -c ${{ env.BUILD_CONFIGURATION }}
+          -p:PackageVersion="${{ env.PackageVersion }}"
+          --output ./packages
+
+      - name: Upload packages
+        if: github.ref_type == 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: packages/*.nupkg
+
+  publish:
+    name: Publish to NuGet
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref_type == 'tag'
+    environment: nuget
+
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: packages
+          path: packages
+
+      - name: Push to NuGet.org
+        run: >
+          dotnet nuget push packages/*.nupkg
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
