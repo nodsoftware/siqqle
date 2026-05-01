@@ -10,8 +10,10 @@ if (-not $src)
 if (-not $env:MAJORVERSION -or -not $env:MINORVERSION -or -not $env:PATCHVERSION)
 {
     Write-Host "Parsing version from Directory.Build.props..."
+    Write-Host "Source directory: $src"
     
     $buildPropsPath = Join-Path $src 'Directory.Build.props'
+    Write-Host "Reading from: $buildPropsPath"
     
     if (-not (Test-Path $buildPropsPath))
     {
@@ -22,8 +24,26 @@ if (-not $env:MAJORVERSION -or -not $env:MINORVERSION -or -not $env:PATCHVERSION
     try
     {
         [xml]$xml = Get-Content $buildPropsPath
-        $semanticVersion = $xml.Project.PropertyGroup.SemanticVersion | Where-Object { $_ } | Select-Object -First 1
-        $prereleaseLabel = $xml.Project.PropertyGroup.PreReleaseLabel | Where-Object { $_ } | Select-Object -First 1
+        
+        # Find the PropertyGroup element that contains SemanticVersion
+        $propertyGroupWithVersion = $null
+        foreach ($pg in $xml.Project.PropertyGroup)
+        {
+            if ($pg.SemanticVersion)
+            {
+                $propertyGroupWithVersion = $pg
+                break
+            }
+        }
+        
+        if (-not $propertyGroupWithVersion)
+        {
+            Write-Error "PropertyGroup with SemanticVersion not found in Directory.Build.props"
+            exit 1
+        }
+        
+        $semanticVersion = $propertyGroupWithVersion.SemanticVersion.Trim()
+        $prereleaseLabel = $propertyGroupWithVersion.PreReleaseLabel.Trim()
         
         if (-not $semanticVersion)
         {
@@ -51,10 +71,11 @@ if (-not $env:MAJORVERSION -or -not $env:MINORVERSION -or -not $env:PATCHVERSION
             $env:PRERELEASELABEL = ""
         }
         
-        Write-Host "Parsed version: $($env:MAJORVERSION).$($env:MINORVERSION).$($env:PATCHVERSION)"
+        Write-Host "Parsed version from Directory.Build.props: $semanticVersion"
+        Write-Host "Parsed MAJORVERSION: $($env:MAJORVERSION), MINORVERSION: $($env:MINORVERSION), PATCHVERSION: $($env:PATCHVERSION)"
         if ($env:PRERELEASELABEL)
         {
-            Write-Host "Prerelease label: $env:PRERELEASELABEL"
+            Write-Host "Parsed PreReleaseLabel: $env:PRERELEASELABEL"
         }
     }
     catch
