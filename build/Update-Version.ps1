@@ -40,8 +40,38 @@ try
         exit 1
     }
     
-    $semanticVersion = ([string]$propertyGroupWithVersion.SemanticVersion).Trim()
-    $prereleaseLabel = ([string]$propertyGroupWithVersion.PreReleaseLabel).Trim()
+    # XML parser converts simple elements to strings, but elements with attributes remain as XmlElement
+    # SemanticVersion should be a string already
+    $semanticVersion = [string]($propertyGroupWithVersion.SemanticVersion)
+    if (-not $semanticVersion -or $semanticVersion -eq "System.Xml.XmlElement")
+    {
+        # Try InnerText if it's still an element
+        if ($propertyGroupWithVersion.SemanticVersion -is [System.Xml.XmlElement])
+        {
+            $semanticVersion = $propertyGroupWithVersion.SemanticVersion.InnerText
+        }
+    }
+    $semanticVersion = $semanticVersion.Trim()
+    
+    if (-not $semanticVersion)
+    {
+        Write-Error "SemanticVersion element not found or empty"
+        exit 1
+    }
+    
+    # PreReleaseLabel might be an XmlElement (if it has attributes) or a string
+    $prereleaseLabel = ""
+    if ($propertyGroupWithVersion.PreReleaseLabel)
+    {
+        if ($propertyGroupWithVersion.PreReleaseLabel -is [System.Xml.XmlElement])
+        {
+            $prereleaseLabel = $propertyGroupWithVersion.PreReleaseLabel.InnerText.Trim()
+        }
+        else
+        {
+            $prereleaseLabel = [string]($propertyGroupWithVersion.PreReleaseLabel).Trim()
+        }
+    }
     
     if (-not $semanticVersion)
     {
