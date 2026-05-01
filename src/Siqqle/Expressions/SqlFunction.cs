@@ -53,4 +53,34 @@ public class SqlFunction : SqlValue
     /// Gets the expression type of this expression.
     /// </summary>
     public override SqlExpressionType ExpressionType => SqlExpressionType.Function;
+
+    /// <summary>
+    /// Creates a <see cref="SqlFunction"/> that calls the LOWER function on the specified value.
+    /// </summary>
+    /// <param name="value">
+    /// The <see cref="SqlValue"/> to convert to lowercase.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlFunction"/> representing a LOWER() function call.
+    /// </returns>
+    public static SqlFunction Lower(SqlValue value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        return new SqlFunction("LOWER", new[] { value });
+    }
+
+    /// <summary>
+    /// Creates a <see cref="SqlFunction"/> that calls the UPPER function on the specified value.
+    /// </summary>
+    /// <param name="value">
+    /// The <see cref="SqlValue"/> to convert to uppercase.
+    /// </param>
+    /// <returns>
+    /// A <see cref="SqlFunction"/> representing an UPPER() function call.
+    /// </returns>
+    public static SqlFunction Upper(SqlValue value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        return new SqlFunction("UPPER", new[] { value });
+    }
 }
